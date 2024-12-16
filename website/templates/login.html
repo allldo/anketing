@@ -1,82 +1,41 @@
-{% extends "base.html" %} {% block title %}Заполнение анкеты{% endblock %} {%
-block content %} {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-  <!-- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход</title>
-    
-</head> -->
-  <link rel="stylesheet" href="{% static 'login.css' %}" />
-  <div class="login-page">
-    <div class="login-text">
-      <p class="login-text__item">
-        Анкету необходимо предоставить до: 26 апреля 2025 года.
-      </p>
-      <p class="login-text__item">
-        Анкету необходимо заверить подписью ответственного лица и печатью
-        организации.
-      </p>
-      <p class="login-text__item">
-        Материалы предоставляются в версии pdf (заверенная версия).
-      </p>
-      <p class="login-text__item">Заверяется только первый лист анкеты.</p>
-      <p class="login-text__item">
-        По всем вопросам, связанным с участием в рейтинге и/или заполнением
-        анкеты, пишите на profiles@nr2c.ru.
-      </p>
-    </div>
-    <div class="login-form">
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            <div>
-              <input
-                type="text"
-                name="username"
-                placeholder="Логин"
-                required
-              /><br />
-              <input
-                type="password"
-                name="password"
-                placeholder="Пароль"
-                required
-              /><br />
-            </div>
-            <button type="submit">Вход</button>
-          </form>
-    </div>
-    <a class="link-primary" href="{% url 'register' %}">Регистрация</a>
+{% extends "base.html" %}
+{% block title %}Заполнение анкеты{% endblock %}
+{%block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/pages/login.css' %}" />
+<div class="login-page">
+  <div class="login-text">
+    <p class="login-text__item inter-m text-primary">
+      Анкету необходимо предоставить до: 26 апреля 2025 года.
+    </p>
+    <p class="login-text__item inter-m text-primary">
+      Анкету необходимо заверить подписью ответственного лица и печатью
+      организации.
+    </p>
+    <p class="login-text__item inter-m text-primary">
+      Материалы предоставляются в версии pdf (заверенная версия).
+    </p>
+    <p class="login-text__item inter-m text-primary">Заверяется только первый лист анкеты.</p>
+    <p class="login-text__item inter-m text-primary">
+      По всем вопросам, связанным с участием в рейтинге и/или заполнением
+      анкеты, пишите на profiles@nr2c.ru.
+    </p>
   </div>
-  <body>
-    <div style="text-align: center">
-      <p>
-        Анкету необходимо предоставить до: <strong>26 апреля 2025 года</strong
-        ><br />
-        Материалы предоставляются в версии PDF (заверенная версия).<br />
-        Заверяется только первый лист анкеты.
-      </p>
-      <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <div>
-          <input
-            type="text"
-            name="username"
-            placeholder="Логин"
-            required
-          /><br />
-          <input
-            type="password"
-            name="password"
-            placeholder="Пароль"
-            required
-          /><br />
-        </div>
-        <button type="submit">Вход</button>
-      </form>
-      <a href="{% url 'register' %}">Регистрация</a>
-    </div>
-  </body>
-</html>
+  <div class="login-form">
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <input class="login-input" type="text" name="username" placeholder="Логин" required /><br />
+      <input
+        class="login-input"
+        type="password"
+        name="password"
+        placeholder="Пароль"
+        required
+      />
+      <button class="login-btn" type="submit">Вход</button>
+    </form>
+  </div>
+  <a class="login-link link-primary inter-m" href="{% url 'register' %}">Регистрация</a>
+</div>
 {% endblock %}

@@ -2,31 +2,47 @@
 
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Моя страница{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-</head>
-<body>
+    <link rel="stylesheet" href="{% static 'css/other/vars.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/other/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/other/fonts.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/components/components.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/components/header.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/components/footer.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <!-- Верхняя панель -->
     <div class="top-bar">
-        <div class="top-bar-content">
-            <div class="logo">
-                <img src="{% static 'images/logo.png' %}" alt="НР 2К">
-            </div>
-            <div class="title">
-                XII НАЦИОНАЛЬНЫЙ РЕЙТИНГ КОММУНИКАЦИОННЫХ КОМПАНИЙ<br>
-                АНКЕТА 2025 (за 2024 год)
-            </div>
+      <div class="top-bar-content">
+        <div class="logo">
+          <img src="{% static 'images/logo.png' %}" alt="НР 2К" />
+          <b class="logo-title">Регистрация</b>
         </div>
+        <div class="title">
+          XII НАЦИОНАЛЬНЫЙ РЕЙТИНГ КОММУНИКАЦИОННЫХ КОМПАНИЙ<br />
+          АНКЕТА 2025 (за 2024 год)
+        </div>
+      </div>
     </div>
 
     <!-- Основное содержимое -->
     <div class="container">
-        {% block content %}
-        <!-- Содержимое страницы -->
-        {% endblock %}
+      {% block content %}
+      <!-- Содержимое страницы -->
+      {% endblock %}
     </div>
-</body>
+
+    <footer class="footer">
+        <div class="footer-text">© 2025. НР2К</div>
+    </footer>
+  </body>
 </html>

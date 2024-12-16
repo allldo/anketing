@@ -1,0 +1,58 @@
+.top-bar {
+  background-color: var(--blue); /* Синий цвет */
+  color: white; /* Белый текст */
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.top-bar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  gap: 54px;
+  align-items: center;
+}
+
+.logo img {
+  height: 70px; 
+  width: auto; 
+}
+
+/* .logo span {
+  background-color: white;
+  color: #003366;
+  padding: 5px 10px;
+  border-radius: 5px;
+} */
+
+.title {
+  text-align: right;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .top-bar-content {
+    flex-direction: column;
+  }
+
+  .logo {
+    gap: 20px;
+  }
+
+  .title {
+    text-align: center;
+  }
+}

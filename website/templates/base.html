@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Моя страница{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="logo">
+                <img src="{% static 'images/logo.png' %}" alt="НР 2К">
+            </div>
+            <div class="title">
+                XII НАЦИОНАЛЬНЫЙ РЕЙТИНГ КОММУНИКАЦИОННЫХ КОМПАНИЙ<br>
+                АНКЕТА 2025 (за 2024 год)
+            </div>
+        </div>
+    </div>
+
+    <!-- Основное содержимое -->
+    <div class="container">
+        {% block content %}
+        <!-- Содержимое страницы -->
+        {% endblock %}
+    </div>
+</body>
+</html>

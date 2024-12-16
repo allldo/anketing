@@ -1,0 +1,155 @@
+body {
+    margin: 20px;
+}
+h1 {
+    color: #003366;
+}
+.accordion {
+    margin-bottom: 30px;
+    width:70%
+}
+.accordion-item {
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.accordion-header,
+.global-header {
+    color :  #003366; 
+    font-weight: bold;
+    padding: 10px;
+    font-size: 24px;
+    text-align: left;
+}
+.accordion-content {
+    display: none;
+    padding: 15px;
+    background: #f9f9f9;
+}
+
+.files-list a {
+    color: #0055a5;
+    text-decoration: none;
+    display: block;
+    margin: 5px 0;
+}
+.contact-form textarea, .contact-form input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.contact-form button {
+    background-color: #0055a5;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+.form-block {
+margin-bottom: 15px;
+width: 50%;
+align-items: center;
+}
+
+.form-block label {
+display: block; 
+font-weight: bold;
+color: rgb(6, 6, 147); 
+text-align: left; 
+}
+
+.form-block input {
+width: 100%;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+font-size: 14px;
+box-sizing: border-box;
+}
+label {
+    font-weight: bold;
+    font-size: 16px;
+    color: #060693;
+    margin-bottom: 10px;
+    display: block;
+}
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 50%; 
+    box-sizing: border-box;
+}
+button {
+background-color: #003366;
+color: white;
+border: none; 
+border-radius: 5px;
+padding: 10px 20px;
+font-size: 16px; 
+font-weight: bold; 
+text-align: center;
+cursor: pointer; 
+display: inline-block; 
+}
+.head {
+display: flex; 
+justify-content: space-between;
+align-items: flex-start;
+gap: 20px; 
+}
+
+.files-list {
+display: flex;
+flex-direction: column;
+gap: 10px;
+max-width: 600px;
+}
+
+.file-item {
+display: flex;
+align-items: center; 
+justify-content: space-between; 
+gap: 10px;
+}
+
+.file-item label {
+font-weight: bold;
+color: #060693;
+padding-left: 50px;
+margin-right: 10px; /* Отступ от ссылки */
+}
+
+.file-item a {
+color: #0055a5;
+text-decoration: none;
+flex-shrink: 0; /* Запрещаем сжимаемость ссылки */
+}
+
+.file-item a:hover {
+text-decoration: underline;
+}
+
+.callback-form {
+flex: 1; 
+max-width: 30%; 
+padding: 10px; 
+}
+
+.callback-form form {
+display: flex; /* Используем Flexbox для формы */
+flex-direction: column; /* Размещаем поля друг под другом */
+gap: 10px; /* Отступ между полями */
+}
+textarea{
+resize: none; 
+}
+.accordion-icon {
+font-weight: bold;
+font-size: 24px;
+margin-left: 10px;
+}
+.accordion-header.active .accordion-icon {
+content: '-';
+}
+

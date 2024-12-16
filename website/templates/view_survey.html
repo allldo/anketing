@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}Редактировать анкету{% endblock %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'registration.css' %}">
+<div class="container">
+
+        <div class="form-group">
+            <label>1. Фирменное название компании</label>
+            {{ survey.company_name }}
+        </div>
+        <div class="form-group">
+            <label for="{{ survey_form.company_address.id_for_label }}">2. Адрес головного офиса</label>
+            {{ survey.company_address }}
+        </div>
+        <div class="form-group">
+            <label for="{{ survey_form.specialization.id_for_label }}">3. Основная специализация компании</label>
+            {{ survey.specialization }}
+        </div>
+
+        <div class="form-group">
+            <label>4. Приоритетное позиционирование компании</label>
+            <div id="positioning-section" class="dynamic-section">
+                <div class="row">
+                    {% for positioning in positionings %}
+                
+                    {{ positioning.service }}
+                    {{ positioning.revenue_share }}
+                
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>5. География активности</label>
+            {{ survey.geography_activity }}
+        </div>
+
+        <div class="form-group">
+            <label>6. Совокупная выручка</label>
+            <div id="revenue-section" class="dynamic-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Название компании</th>
+                            <th>ИНН</th>
+                            <th>Доля владения (%)</th>
+                            <th>Доля баинга (%)</th>
+                            <th>Выручка (тыс. рублей)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for revenue in revenues %}
+                        <tr>
+                            <td>{{ revenue.company_name }}</td>
+                            <td>{{ revenue.inn }}</td>
+                            <td>{{ revenue.ownership_share }}</td>
+                            <td>{{ revenue.buying_share }}</td>
+                            <td>{{ revenue.amount }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>7. Количество сотрудников</label>
+            <div id="employees-section" class="dynamic-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Компания/Отдел</th>
+                            <th>Количество сотрудников</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in employees %}
+                        <tr>
+                            <td>{{ employee.department }}</td>
+                            <td>{{ employee.employee_count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>        </div>
+
+        <div class="form-group">
+            <label>8. Возраст компании</label>
+            {{ survey.company_age }}
+        </div>
+
+        <div class="form-group">
+            <label>9. Премии</label>
+            <div id="awards-section" class="dynamic-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Категория</th>
+                            <th>Тип награды</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for award in awards %}
+                        <tr>
+                            <td>{{ award.award_name }}</td>
+                            <td>{{ award.award_category }}</td>
+                            <td>{{ award.award_type }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>10. Профессиональные мероприятия</label>
+            <div id="events-section" class="dynamic-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Количество</th>
+                            <th>Аудитория</th>
+                            <th>Участники</th>
+                            <th>Формат</th>
+                            <th>Тип мероприятия</th>
+                            <th>Тип участия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                        <tr>
+                            <td>{{ event.count }}</td>
+                            <td>{{ event.audience }}</td>
+                            <td>{{ event.participant_count }}</td>
+                            <td>{{ event.event_format }}</td>
+                            <td>{{ event.event_type }}</td>
+                            <td>{{ event.participation_type }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Комментарий</label>
+            {{ survey.user_comment }}
+        </div>
+    </form>
+</div>
+{% endblock %}

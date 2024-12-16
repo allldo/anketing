@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% block title %}Заполнение анкеты{% endblock %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модератор</title>
+    <link rel="stylesheet" href="{% static 'user.css' %}">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        .accordion-item {
+            margin-bottom: 10px;
+        }
+        
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            background: #fefbfb;
+        }
+        .accordion-content-survey {
+            display: none;
+            padding: 10px;
+            background: #d7d5d5;
+        }
+        .accordion-content-survey label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .accordion-content-survey .box {
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-height: 40px;
+        }
+
+        .accordion-content-survey .box .row {
+            width: 100%; 
+            margin: 5px 0; 
+            text-align: center;
+            padding: 5px 0; 
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+        form input, form textarea, form button {
+            width: 50%;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        form button {
+            background-color: #262176;
+            color: rgb(255, 255, 255);
+            border: none;
+            cursor: pointer;
+        }
+
+        .accordion-header.active .accordion-icon {
+            content: '-';
+            
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Модератор</h1>
+    <div class="accordion">
+        <!-- Общая информация -->
+        <div class="accordion-item">
+            <div class="accordion-header"><span class="accordion-icon">+</span> Общая информация</div>
+            <div class="accordion-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ general_info_form.as_p }}
+                    <button type="submit" name="general_info_form">Сохранить</button>
+                </form>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header"><span class="accordion-icon">+</span> Анкеты 2024</div>
+            <div class="accordion-content">
+                <div class="accordion">
+                    {% for company_name, surveys in company_surveys.items %}
+    <div class="accordion-item">
+        <div class="accordion-header"><span class="accordion-icon">+</span> {{ company_name }}
+            <span style="font-size: 14px; color: gray;">
+                <span 
+                class="{% if surveys.0.latest_status == 'На модерации' %}status-moderate{% elif surveys.0.latest_status == 'На доработку' %}status-return{% elif surveys.0.latest_status == 'Принят' %}status-approved{% elif surveys.0.latest_status == 'Отклонено' %}status-rejected{% endif %}">
+                {{ surveys.0.latest_status }}
+                </span>
+                {{ surveys.0.survey.submission_date|date:"d.m.Y" }}
+                
+            </span>
+        </div>
+        <div class="accordion-content-survey">
+                {% for entry in surveys %}
+            <label>1. Фирменное название компании, под которым компания или группа компаний позиционирует себя на рынке</label>
+            <div class="box">
+                {{ entry.survey.company_name}}
+            </div>
+            
+            <label>2. Адрес головного офиса компании (представительства и головной компании для международных сетевыхх компаний)</label>
+            <div class="box">
+                {{ entry.survey.company_address}}
+            </div>
+            <label>3. Основная специализация компании</label>
+            <div class="box">
+                {{ entry.survey.specialization}}
+            </div>
+            <label>4. Приоритетное позиционирование компании</label>
+            <div class="box">
+                
+                {% for positioning in entry.positionings %}
+                <div class="row">
+                {{ positioning.revenue_share }}% - {{ positioning.service }} 
+                 </div>
+                {% endfor %}
+            </div>
+
+            <label>5. Укажите географию активности компании</label>
+            <div class="box">
+                {{ entry.survey.get_geography_activity_display }}
+            </div>
+
+            <label>6. Совокупная выручка от осуществления комммуникационной деятельности Вашей компанией или группой компании, полученная:</label>
+            <div class="box">
+                {% for revenue in entry.revenues %}
+                    <div class="row">
+                        {{ revenue.company_name }} {{ revenue.inn }} {{ revenue.ownership_share }} {{ revenue.buying_share }}  {{ revenue.revenue_amount }}
+                    </div>
+                        {% endfor %}
+            </div>
+            <label>7. Количество сотрудников компании на конец года:</label>
+            <div class="box">
+                {% for employee in entry.employees %}
+                <div class="row">
+                {{ employee.department }} {{ employee.employee_count }}
+                </div>
+                {% endfor %}
+            </div>
+            <label>8. Возраст компании:</label>
+            <div class="box">
+                {{ entry.survey.company_age }}
+            </div>
+            <label>9. Премии полученные компанией в течение 2024 года:</label>
+            <div class="box">
+                {% for award in entry.awards %}
+                <div class="row">
+                {{ award.award_name }} ({{ award.award_category }} - {{ award.award_type }})
+                </div>
+                {% endfor %}
+            </div>
+            <label>10. Количество профессиональных мероприятий, организованных в течение года:</label>
+            <div class="box">
+                {% for event in entry.events %}
+                <div class="row">
+                {{ event.event_type }} ({{ event.get_event_format_display }}): {{ event.participant_count }} участников
+                </div>
+                {% endfor %}
+            </div>
+            <label>11. Количество сотрудников, входящих в экспертные/наблюдательные советы профессиональных
+                организаций/мероприятий, выступающих с профильными докладами на отраслевых мероприятиях:</label>
+            <div class="box">
+                {{ entry.survey.num_expert_employees }}
+            </div>
+            <label>12. Количество сотрудников компании, работающих в ней более 3 лет:</label>
+            <div class="box">
+                {{ entry.survey.num_employees_over_3_years }}
+            </div>
+            <label>13. Количество сотрудников компании, работающих в коммуникациях более 3 лет:</label>
+            <div class="box">
+                {{ entry.survey.num_employees_in_communications }}
+            </div>
+            <label>  14. Количество профессиональных сертификатов, а также государственных наград, полученных сотрудниками компании за профессиональную деятельность</label>
+            <div class="box">
+                Госнаграды РФ {{ entry.survey.num_government_awards }}
+                Профильные сертификаты РАСО, IABC, АКОС {{ entry.survey.num_certificates }}
+            </div>
+            <label>Комментарий</label>
+            <div class="box">
+                {{ entry.survey.user_comment }}
+            </div>
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="survey_id" value="{{ entry.survey.id }}">
+
+            
+            <div class="box">
+                <label>Комментарий модератора</label>
+                {% if entry.latest_status == "На модерации" %}
+                {{ entry.comment_form.moderator_comment }}
+                {% else %}
+                <textarea readonly>{{ entry.comment_form.moderator_comment.value|default_if_none:"" }}</textarea>                {% endif %}
+            </div>
+            {% if entry.latest_status == "На модерации" %}
+            <button type="submit" name="edit_status" value="return">На доработку</button>
+            <button type="submit" name="edit_status" value="approved">Одобрено</button>
+            {% endif %}
+            </form>
+                {% empty %}
+                <p>Анкет нет</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% empty %}
+<p>Компании не найдены</p>
+{% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="accordion-item">
+            <div class="accordion-header"><span class="accordion-icon">+</span> Участники</div>
+            <div class="accordion-content">
+                {% for item in profile_forms %}
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span class="accordion-icon">+</span> {{ item.profile.company_name_full }}
+                    </div>
+                    <div class="accordion-content">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ item.form.as_p }}
+                            <button type="submit" name="save_profile" value="{{ item.profile.id }}">Сохранить</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const parentAccordion = header.closest('.accordion-item');
+                parentAccordion.querySelectorAll('.accordion-content').forEach(item => {
+                    if (item !== content) {
+                        item.style.display = 'none';
+                        item.previousElementSibling.classList.remove('active');
+                    }
+                });
+                header.classList.toggle('active');
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

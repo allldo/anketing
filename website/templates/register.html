@@ -2,8 +2,9 @@
 {% block title %}Регистрация{% endblock %}
 {%block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'registration.css' %}">
-<form method="post" enctype="multipart/form-data">
+<link rel="stylesheet" href="{% static 'css/pages/registration.css' %}">
+
+<form class="register-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     
     <div class="form-group">
@@ -20,27 +21,36 @@
     </div>
 
     <div class="form-group">
-        <label for="{{ company_form.email_for_newsletters.id_for_label }}">Email для рассылки новостей</label>
+        <label for="{{ company_form.email_for_newsletters.id_for_label }}">Email для новостей/рассылок НР2К</label>
         {{ company_form.email_for_newsletters }}
     </div>
     <div class="form-group">
-        <label for="{{ company_form.company_name_full.id_for_label }}">Полное название компании</label>
+        <label for="{{ company_form.company_name_full.id_for_label }}">Название компании (полное)</label>
         {{ company_form.company_name_full }}
     </div>
     <div class="form-group">
-        <label for="{{ company_form.company_name_short.id_for_label }}">Краткое название компании</label>
+        <label for="{{ company_form.company_name_short.id_for_label }}">Название компании (краткое, до 20 символов)</label>
         {{ company_form.company_name_short }}
     </div>
-    <div class="form-group">
-        <label for="{{ company_form.company_logo.id_for_label }}">Логотип компании</label>
+    <div class="form-group register-img">
+        <label>Логотип компании (png или svg)</label>
         {{ company_form.company_logo }}
+        <div class="register-img__body">
+            <button type="button" class="register-img__btn btn-primary">Загрузить файл</button>
+            <div class="register-img__text">
+                <span class="register-img__text-title"></span>
+                <button type="button" class="register-img__btn--delete hidden">
+                    <img src="{% static 'images/chrest.svg' %}" alt="delete img">
+                </button>
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <label for="{{ company_form.postal_code.id_for_label }}">Почтовый индекс</label>
         {{ company_form.postal_code }}
     </div>
     <div class="form-group">
-        <label for="{{ company_form.postal_address.id_for_label }}">Почтовый адрес</label>
+        <label for="{{ company_form.postal_address.id_for_label }}">Почтовый адрес (для корреспонденции)</label>
         {{ company_form.postal_address }}
     </div>
     <div class="form-group">
@@ -60,9 +70,14 @@
     </div>
     <div class="confirmation-container">
         <div class="checkbox-container">
-            <label for="{{ company_form.consent_data_processing.id_for_label }}">Согласие на обработку данных и получение рассылки</label>
-            <input type="checkbox" id="confirmation" name="confirmation" required>
-            <label for="{{ company_form.confirmation.id_for_label }}">Я подтверждаю:</label>
+            <div class="checkbox-container__item">
+                <input type="checkbox" id="id_consent_data_processing" name="id_consent_data_processing" required>
+                <label class="checkbox-label" for="{{ company_form.consent_data_processing.id_for_label }}">Согласие на обработку данных и получение рассылки</label>
+            </div>
+            <div class="checkbox-container__item">
+                <input type="checkbox" id="id_confirmation" name="id_confirmation" required>
+                <label class="checkbox-label" for="{{ company_form.confirmation.id_for_label }}">Я подтверждаю:</label>
+            </div>
         </div>
         <ul class="confirmation-list">
             <li>Бренд компании-участника существует на рынке более 3-х лет.</li>
@@ -72,6 +87,6 @@
         </ul>
     </div>
 
-    <button type="submit">Зарегистрироваться</button>
+    <button class="register-btn" type="submit">Зарегистрироваться</button>
 </form>
 {% endblock %}

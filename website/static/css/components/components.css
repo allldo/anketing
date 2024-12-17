@@ -11,3 +11,75 @@
   text-decoration-skip-ink: all;
   text-underline-offset: 2px;
 }
+
+.input {
+  border: 1px solid var(--blue);
+  padding: 12px;
+  height: 40px;
+  width: 282px;
+}
+
+.btn-primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: none;
+  background-color: var(--blue);
+  color: white;
+  padding: 3px 8px;
+}
+
+.btn-primary--disabled {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: none;
+  background-color: #989898;
+  color: white;
+  padding: 3px 8px;
+}
+
+.btn-str {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16.94px;
+  color: var(--blue);
+}
+
+.hidden {
+  display: none;
+}
+
+.custom-select {
+  position: relative;
+  
+  & select {
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding: 24px 100px 24px 24px;
+      border: 1px solid var(--blue);
+      height: 67px;
+  }
+
+  &::after {
+      content: '';
+      position: absolute;
+      background-image: url("data:image/svg+xml,%3Csvg%20width='47'%20height='28'%20viewBox='0%200%2047%2028'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3E%3Cline%20x1='1.76777'%20y1='2.23223'%20x2='25.2678'%20y2='25.7322'%20stroke='%230354B4'%20stroke-width='5'/%3E%3Cline%20x1='21.7322'%20y1='25.7322'%20x2='45.2322'%20y2='2.23224'%20stroke='%230354B4'%20stroke-width='5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      top: 50%;
+      right: 30px;
+      width: 47px;
+      height: 30px;
+      transform: translateY(-50%);
+      pointer-events: none; /* Отключаем взаимодействие с стрелкой */
+      font-size: 14px;
+  }
+}

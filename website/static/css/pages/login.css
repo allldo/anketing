@@ -47,7 +47,7 @@
   border: none;
   border-radius: 50px;
   align-self: center;
-  background-color: #FE3036;
+  background-color: var(--red);
 }
 
 .login-link {

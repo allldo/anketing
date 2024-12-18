@@ -267,7 +267,7 @@
                                     </div>
                                 </div>
                                 <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="addRow('positioning-section')">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="add_row_update('positioning-section')">+ Добавить строку</button>
                                 </div>
                             </div>
                             <div class="form-group geography">
@@ -282,7 +282,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group revenue">
+                            <div class="form-group revenue" >
                                 <label>6. Совокупная выручка от осуществления коммуникационной деятельности Вашей компанией или группой компаний, полученная:</label>
                                 <i>С 2022 года оператор сверяет выручку компании с данными ФНС России, согласно представленным в анкете ИНН. Для сверки используется сервис https:// bo.nalog.ru/. Перед подачей анкеты вы можете проверить какие именно данные есть у ФНС по вашим юридическим лицам. Если вы не согласны с данными ФНС, либо же часть вашей выручки по той или иной причине не учитывается сервисом (ИП, гранты, НКО и пр.), приложите к анкете документы, подтверждающие предоставляемые вами данные. В случае отсутствия документов приоритетными считаются данные ФНС, либо же проставляется 0 в выручке, если компании нет на https://bo.nalog.ru/ и дополнительные документы не предоставлены.<br>
                                     Компании - заявители предоставляют данные о выручке: сведения по строке «Выручка» из Отчёта о финансовых результатах (форма по ОКУД 0710002), предоставленного в ФНС России по итогам 2023 года.<br>
@@ -314,8 +314,9 @@
                                             {% endfor %}
                                         </tbody>
                                     </table> -->
-                                <b class="revenue-price">230 000 000 руб.</b>
-                                <div class="revenue-inputs">
+                                <b class="revenue-price" id="total-revenue"></b>
+                                <div id="revenue-container">
+                                <div class="revenue-inputs revenue_copy" id="revenue_row">
                                     <div class="revenue-inputs__item" style="max-width: 296px;">
                                         <span class="revenue-inputs__item-title">Компания</span>
                                         <input type="text" class="input">
@@ -334,12 +335,13 @@
                                     </div>
                                     <div class="revenue-inputs__item" style="max-width: 123px;">
                                         <span class="revenue-inputs__item-title">доля выручки, тыс. руб.*</span>
-                                        <input type="number" class="input">
+                                        <input type="number" class="input revenue-input" oninput="calculateRevenue()">
                                     </div>
                                 </div>
-                
+                                </div>
                                 <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="addRow('revenue-section')">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="addRevenueRow()">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="addRevenueRow('delete')">- Удалить строку</button>
                                 </div>
                             </div>
                             <div class="form-group position">
@@ -348,26 +350,26 @@
                                     При заполнении анкеты компания - заявитель не учитывает исполнителей по договорам ГПХ, индивидуальных предпринимателей, а также физических лиц, применяющих специальный налоговый режим «Налог на профессиональный доход» (самозанятых). 
                                     Для ГК указывается сумма данных на конец 2023 года для каждого из юр.лиц.</i>
                                 
-                                <div class="position-inputs">
+                                <div class="position-inputs emp_number">
                                     <div class="position-inputs__left">
                                         <p class="position-inputs__left-title">Компания</p>
-                                        <div class="positions-content">
-                                            <input class="input" type="text">
+                                        <div class="positions-content emp_for_copy_text">
+                                            <input class="input input_to_copy_text" type="text">
                                             <input class="input" type="text">
                                             <input class="input" type="text">
                                         </div>
                                     </div>
                                     <div class="position-inputs__right">
                                         <p class="position-inputs__right-title">Количество сотрудников</p>
-                                        <div class="positions-content">
-                                            <input class="input" type="number">
+                                        <div class="positions-content emp_for_copy_number">
+                                            <input class="input input_to_copy_number" type="number">
                                             <input class="input" type="number">
                                             <input class="input" type="number">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="addRow('employees-section')">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="add_emp_number_row()">+ Добавить строку</button>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -389,11 +391,12 @@
                                     В рейтинге не учитываются благодарности клиентов, сертификаты, а также места в рейтингах (в том числе в НР2К) - в зачет идут профессиональные премии, проводимые отраслевыми проф.организациями и объединениями.<br>
                                     Индивидуальные награды, получаемые лично сотрудниками, могут учитываться в списке, предоставляемом компанией, если сотрудник продолжал работу в компании на конец года, за который подаются данные.</i>
                                     <div class="categs">
-                                        <b class="categs-item">Категория А: 12 наград, 15 шорт листов</b>
-                                        <b class="categs-item">Категория Б: 12 наград, 15 шорт листов</b>
-                                        <b class="categs-item">Категория В: 12 наград, 15 шорт листов</b>
+                                        <b class="categs-item">Категория А: <span id="category-a-awards">0</span> наград, <span id="category-a-shortlist">0</span> шорт листов</b>
+                                        <b class="categs-item">Категория Б: <span id="category-b-awards">0</span> наград, <span id="category-b-shortlist">0</span> шорт листов</b>
+                                        <b class="categs-item">Категория В: <span id="category-c-awards">0</span> наград, <span id="category-c-shortlist">0</span> шорт листов</b>
                                     </div>
-                                    <div class="revenue-inputs">
+                                <div id="awards_wrapper">
+                                    <div class="revenue-inputs awards_section" id="award_template">
                                         <div class="revenue-inputs__item">
                                             <span class="revenue-inputs__item-title">Премия</span>
                                             <input type="text" class="input">
@@ -401,29 +404,30 @@
                                         <div class="revenue-inputs__item">
                                             <span class="revenue-inputs__item-title">Категория премии</span>
                                             <div class="custom-select">
-                                                <select>
-                                                    <option value="categ1">А</option>
-                                                    <option value="categ2">Б</option>
-                                                    <option value="categ3">В</option>
+                                                <select class="category-select" onchange="updateCategoryCounts()">
+                                                    <option value="A">А</option>
+                                                    <option value="B">Б</option>
+                                                    <option value="C">В</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="revenue-inputs__item">
                                             <span class="revenue-inputs__item-title">Тип награды</span>
                                             <div class="custom-select">
-                                                <select>
-                                                    <option value="price1">Шорт лист</option>
-                                                    <option value="price2">Награда</option>
-                                                    <option value="price3">Гранд При</option>
+                                                <select class="type-select" onchange="updateCategoryCounts()">
+                                                    <option value="shortlist">Шорт лист</option>
+                                                    <option value="award">Награда</option>
+                                                    <option value="grandprix">Гранд При</option>
                                                 </select>
                                             </div>
                                         </div>
                                     
                                     </div>
-
+</div>
                 
                                 <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="addRow('awards-section', 'awards')">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="add_awards_row()">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="add_awards_row('delete')">- Удалить строку</button>
                                 </div>
                             </div>
                             <div class="form-group revenue">
@@ -531,7 +535,7 @@
                                 </div>
                             </div>
                             <div class="form-group files">
-                                <label">15. Прикрепленные файлы</label>
+                                <label>15. Прикрепленные файлы</label>
                                 <ul class="files-list">
                                     <li class="files-list__item">
                                         <span class="files-list__item-text">asdasdasdasdadasd</span>
@@ -552,7 +556,7 @@
                                 <button type="button" name="create_survey" value="1" class="btn-primary--disabled" disabled>Прикрепить заверенный документ</button>
                                 <button type="button" name="create_survey" value="1" class="btn-primary--disabled" disabled>Прикрепить логотип</button>
                                 <button type="button" name="create_survey" value="1" class="btn-primary">Редактировать</button>
-                                <button type="submit" name="create_survey" value="1" class="btn-primary--disabled" disabled>Сохранить</button>
+                                <button type="submit" name="create_survey" value="1" class="btn-primary">Сохранить</button>
                                 <button type="submit" name="action" value="submit_for_review" class="btn-primary--disabled" disabled>Отправить на модерацию</button>
                             </div>
                         </form>
@@ -1180,5 +1184,127 @@
       console.error(`TOTAL_FORMS input not found for section ${sectionId}`);
     }
   }
+function calculateRevenue() {
+    const revenueInputs = document.querySelectorAll(".revenue-input");
+    let totalRevenue = 0;
+
+    revenueInputs.forEach((input) => {
+        const value = parseFloat(input.value) || 0;
+        totalRevenue += value;
+    });
+    document.getElementById("total-revenue").innerText =
+        new Intl.NumberFormat("ru-RU").format(totalRevenue * 1000) + " руб.";
+}
+    function updateCategoryCounts() {
+    const categoryCounts = {
+        A: { awards: 0, shortlist: 0 },
+        B: { awards: 0, shortlist: 0 },
+        C: { awards: 0, shortlist: 0 },
+    };
+    console.log("start");
+    document.querySelectorAll(".awards_section").forEach((row) => {
+        const category = row.querySelector(".category-select").value;
+        const type = row.querySelector(".type-select").value;
+        console.log("gogo");
+        console.log(category);
+        console.log(type);
+        if (type === "shortlist") {
+            categoryCounts[category].shortlist += 1;
+        } else if (type === "award" || type === "grandprix") {
+            categoryCounts[category].awards += 1;
+        }
+    });
+
+    document.getElementById("category-a-awards").innerText =
+        categoryCounts.A.awards;
+    document.getElementById("category-a-shortlist").innerText =
+        categoryCounts.A.shortlist;
+
+    document.getElementById("category-b-awards").innerText =
+        categoryCounts.B.awards;
+    document.getElementById("category-b-shortlist").innerText =
+        categoryCounts.B.shortlist;
+
+    document.getElementById("category-c-awards").innerText =
+        categoryCounts.C.awards;
+    document.getElementById("category-c-shortlist").innerText =
+        categoryCounts.C.shortlist;
+}
+
+function addRevenueRow(deleteStr) {
+const container = document.getElementById("revenue-container");
+    if (deleteStr ==="delete"){
+    container.removeChild(container.lastElementChild);
+    }
+    else{
+
+
+    if (!container) {
+        console.error("Container with ID 'revenue-container' not found.");
+        return;
+    }
+
+    const firstRow = document.getElementById("revenue_row");
+    if (!firstRow) {
+        console.error("Row with ID 'revenue_row' not found.");
+        return;
+    }
+
+    const newRow = firstRow.cloneNode(true);
+
+    const inputs = newRow.querySelectorAll("input");
+    inputs.forEach((input) => {
+        input.value = "";
+    });
+
+    container.appendChild(newRow);
+    }
+}
+    function add_emp_number_row() {
+    // Найти родительский контейнер для блоков
+    const container = document.querySelector(".emp_for_copy_text");
+    const container2 = document.querySelector(".emp_for_copy_number");
+    if (!container) {
+        console.error("Container for rows not found.");
+        return;
+    }
+
+    // Найти блок, который нужно клонировать
+    const firstRow = document.querySelector(".input_to_copy_text");
+    const secondRow = document.querySelector(".input_to_copy_number");
+    if (!firstRow) {
+        console.error("No '.position-inputs' block found to clone.");
+        return;
+    }
+
+    // Клонировать блок
+    const newRow = firstRow.cloneNode(true);
+    const newRow2 = secondRow.cloneNode(true);
+    // Очистить все инпуты в клонированном блоке
+    newRow.value = "";
+    newRow2.value = "";
+
+    container.appendChild(newRow);
+    container2.appendChild(newRow2);
+}
+    function add_awards_row(deleteStr){
+
+    const template = document.getElementById('award_template');
+    const container = document.getElementById('awards_wrapper');
+    const clone = template.cloneNode(true);
+
+    // Очищаем значения инпутов и селектов
+    const inputs = clone.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        if (input.tagName === 'INPUT') {
+            input.value = ''; // Очищаем текстовые поля
+        } else if (input.tagName === 'SELECT') {
+            input.selectedIndex = 0; // Сбрасываем селекты на первый элемент
+        }
+    });
+
+    // Добавляем клон в контейнер
+    container.appendChild(clone);
+    }
 </script>
 {% endblock %}

@@ -64,7 +64,7 @@
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
-      padding: 24px;
+      padding: 12px 46px 12px 20px;
       border: 1px solid var(--blue);
       height: 67px;
   }

@@ -116,7 +116,12 @@
                 <div class="form-group register-img">
                     <label for="{{ company_form.company_logo.id_for_label }}">Логотип компании (png или svg)</label>
                     <input type="file" name="company_logo" accept="image/*" required="" id="id_company_logo">
-                    {{ profile_form.company_logo }}
+
+                    {% if profile_form.company_logo %}
+                        <img width="25%" height="25%" src="{{ profile.company_logo.url }}" alt="Company Logo">
+                    {% else %}
+                        <p>No logo available</p>
+                    {% endif %}
                     <div class="register-img__body">
                         <button type="button" class="register-img__btn btn-primary">Загрузить файл</button>
                         <div class="register-img__text">
@@ -184,10 +189,9 @@
                             {{ awards_formset.management_form }}
                             {{ events_formset.management_form }}
                             <div class="form-group comment">
-                                <span class="comment__title">- Комментарий</span>
-                                <p class="comment__text">Текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария</p>
-                                <!-- <label for="{{ survey_form.user_comment.id_for_label }}">Комментарий</label>
-                                {{ survey_form.user_comment }} -->
+
+
+                                {% if survey_form.moderator_comment  %}<span class="comment__title">- Комментарий</span><p class="comment__text">{{ survey_form.moderator_comment }}</p>{% endif %}
                             </div>
                             <div class="form-group">
                                 <label for="{{ survey_form.company_name.id_for_label }}">1. Фирменное название компании, под которым компания или группа компаний позиционирует себя на рынке</label>
@@ -200,7 +204,7 @@
                             <div class="form-group specialization">
                                 <label for="{{ survey_form.specialization.id_for_label }}">3. Основная специализация компании</label>
                                 <i>Укажите ОДНУ основную специализацию, если специализаций несколько, указывайте п.1 - "Полного цикла" </i>
-                                <!-- {{ survey_form.specialization }} -->
+<!--                                 {{ survey_form.specialization }}-->
                                 <div class="custom-select">
                                     <select>
                                         <option value="specialization1">Агенство полного цикла</option>
@@ -238,39 +242,11 @@
                                                     <option value="position1-9">Агентство полного цикла</option>
                                                 </select>
                                             </div>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="position2-1">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                                    <option value="position2-2">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
-                                                    <option value="position2-3">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>
-                                                    <option value="position2-4">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                                    <option value="position2-5">Политические коммуникации / Политическое консультирование</option>
-                                                    <option value="position2-6">Рекламные коммуникации / Реклама</option>
-                                                    <option value="position2-7">Событийные коммуникации / Мероприятия / Event</option>
-                                                    <option value="position2-8">Цифровые коммуникации / Digital</option>
-                                                    <option value="position2-9">Агентство полного цикла</option>
-                                                </select>
-                                            </div>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="position3-1">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                                    <option value="position3-2">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
-                                                    <option value="position3-3">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>
-                                                    <option value="position3-4">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                                    <option value="position3-5">Политические коммуникации / Политическое консультирование</option>
-                                                    <option value="position3-6">Рекламные коммуникации / Реклама</option>
-                                                    <option value="position3-7">Событийные коммуникации / Мероприятия / Event</option>
-                                                    <option value="position3-8">Цифровые коммуникации / Digital</option>
-                                                    <option value="position3-9">Агентство полного цикла</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="position-inputs__right">
                                         <p class="position-inputs__right-title">Распределение выручки (%)</p>
                                         <div class="positions-content" id="position-inputs-container">
-                                            <input class="input" type="number">
-                                            <input class="input" type="number">
                                             <input class="input input_to_copy_number" type="number">
                                         </div>
                                     </div>
@@ -365,16 +341,12 @@
                                         <p class="position-inputs__left-title">Компания</p>
                                         <div class="positions-content emp_for_copy_text">
                                             <input class="input input_to_copy_text" type="text">
-                                            <input class="input" type="text">
-                                            <input class="input" type="text">
                                         </div>
                                     </div>
                                     <div class="position-inputs__right">
                                         <p class="position-inputs__right-title">Количество сотрудников</p>
                                         <div class="positions-content emp_for_copy_number">
                                             <input class="input input_to_copy_number" type="number">
-                                            <input class="input" type="number">
-                                            <input class="input" type="number">
                                         </div>
                                 </div>
                                 </div>
@@ -402,9 +374,9 @@
                                     В рейтинге не учитываются благодарности клиентов, сертификаты, а также места в рейтингах (в том числе в НР2К) - в зачет идут профессиональные премии, проводимые отраслевыми проф.организациями и объединениями.<br>
                                     Индивидуальные награды, получаемые лично сотрудниками, могут учитываться в списке, предоставляемом компанией, если сотрудник продолжал работу в компании на конец года, за который подаются данные.</i>
                                     <div class="categs">
-                                        <b class="categs-item">Категория А: <span id="category-a-awards">0</span> наград, <span id="category-a-shortlist">0</span> шорт листов</b>
-                                        <b class="categs-item">Категория Б: <span id="category-b-awards">0</span> наград, <span id="category-b-shortlist">0</span> шорт листов</b>
-                                        <b class="categs-item">Категория В: <span id="category-c-awards">0</span> наград, <span id="category-c-shortlist">0</span> шорт листов</b>
+                                        <b class="categs-item">Категория А: <span id="category-a-awards">0</span> наград, <span id="category-a-shortlist">0</span> шорт листов, <span id="category-a-grandprix">0</span> гранд приксов</b>
+                                        <b class="categs-item">Категория Б: <span id="category-b-awards">0</span> наград, <span id="category-b-shortlist">0</span> шорт листов , <span id="category-b-grandprix">0</span> гранд приксов</b>
+                                        <b class="categs-item">Категория В: <span id="category-c-awards">0</span> наград, <span id="category-c-shortlist">0</span> шорт листов , <span id="category-c-grandprix">0</span> гранд приксов</b>
                                     </div>
                                 <div id="awards_wrapper">
                                     <div class="revenue-inputs awards_section" id="award_template">
@@ -466,7 +438,7 @@
                                             <span class="revenue-inputs__item-title">Количество участников</span>
                                             <input type="number" class="input">
                                         </div>
-                                        <div class="revenue-inputs__item" style="width: 140px;">
+                                        <div class="revenue-inputs__item" style="width: 180px;">
                                             <span class="revenue-inputs__item-title">Формат проведения</span>
                                             <div class="custom-select">
                                                 <select>
@@ -475,7 +447,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="revenue-inputs__item" style="width: 160px;">
+                                        <div class="revenue-inputs__item" style="width: 230px;">
                                             <span class="revenue-inputs__item-title">Формат мероприятия</span>
                                             <div class="custom-select">
                                                 <select>
@@ -484,7 +456,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="revenue-inputs__item" style="width: 133px;">
+                                        <div class="revenue-inputs__item" style="width: 163px;">
                                             <span class="revenue-inputs__item-title">Статус участия</span>
                                             <div class="custom-select">
                                                 <select>
@@ -550,18 +522,18 @@
                             <div class="form-group files">
                                 <label>15. Прикрепленные файлы</label>
                                 <ul class="files-list">
-                                    <li class="files-list__item">
-                                        <span class="files-list__item-text">asdasdasdasdadasd</span>
-                                        <img src="{% static 'images/chrest.png' %}" alt="">
-                                    </li>
-                                    <li class="files-list__item">
-                                        <span class="files-list__item-text">asdasdasdasdadasd</span>
-                                        <img src="{% static 'images/chrest.png' %}" alt="">
-                                    </li>
-                                    <li class="files-list__item">
-                                        <span class="files-list__item-text">asdasdasdasdadasd</span>
-                                        <img src="{% static 'images/chrest.png' %}" alt="">
-                                    </li>
+<!--                                    <li class="files-list__item">-->
+<!--                                        <span class="files-list__item-text">asdasdasdasdadasd</span>-->
+<!--                                        <img src="{% static 'images/chrest.png' %}" alt="">-->
+<!--                                    </li>-->
+<!--                                    <li class="files-list__item">-->
+<!--                                        <span class="files-list__item-text">asdasdasdasdadasd</span>-->
+<!--                                        <img src="{% static 'images/chrest.png' %}" alt="">-->
+<!--                                    </li>-->
+<!--                                    <li class="files-list__item">-->
+<!--                                        <span class="files-list__item-text">asdasdasdasdadasd</span>-->
+<!--                                        <img src="{% static 'images/chrest.png' %}" alt="">-->
+<!--                                    </li>-->
                                 </ul>
                             </div>
                             <div class="survey_form__btns">
@@ -1210,9 +1182,9 @@ function calculateRevenue() {
 }
     function updateCategoryCounts() {
     const categoryCounts = {
-        A: { awards: 0, shortlist: 0 },
-        B: { awards: 0, shortlist: 0 },
-        C: { awards: 0, shortlist: 0 },
+        A: { awards: 0, shortlist: 0, grandprix: 0 },
+        B: { awards: 0, shortlist: 0, grandprix: 0 },
+        C: { awards: 0, shortlist: 0, grandprix: 0 },
     };
     console.log("start");
     document.querySelectorAll(".awards_section").forEach((row) => {
@@ -1223,8 +1195,11 @@ function calculateRevenue() {
         console.log(type);
         if (type === "shortlist") {
             categoryCounts[category].shortlist += 1;
-        } else if (type === "award" || type === "grandprix") {
+        } else if (type === "award") {
             categoryCounts[category].awards += 1;
+        }
+        else if (type === "grandprix"){
+            categoryCounts[category].grandprix += 1;
         }
     });
 
@@ -1233,15 +1208,24 @@ function calculateRevenue() {
     document.getElementById("category-a-shortlist").innerText =
         categoryCounts.A.shortlist;
 
+    document.getElementById("category-a-grandprix").innerText =
+        categoryCounts.A.grandprix;
+
     document.getElementById("category-b-awards").innerText =
         categoryCounts.B.awards;
     document.getElementById("category-b-shortlist").innerText =
         categoryCounts.B.shortlist;
 
+    document.getElementById("category-b-grandprix").innerText =
+        categoryCounts.B.grandprix;
+
     document.getElementById("category-c-awards").innerText =
         categoryCounts.C.awards;
     document.getElementById("category-c-shortlist").innerText =
         categoryCounts.C.shortlist;
+    document.getElementById("category-c-grandprix").innerText =
+        categoryCounts.C.grandprix;
+
 }
 
 function addRevenueRow(deleteStr) {
@@ -1342,7 +1326,7 @@ const container = document.getElementById("revenue-container");
     container.appendChild(clone);
     }
     }
-let rowCount = 3; // Счётчик строк
+let rowCount = 1; // Счётчик строк
 
 function add_row_pos_update() {
     rowCount++; // Увеличиваем счётчик строк

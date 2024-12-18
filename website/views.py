@@ -266,7 +266,7 @@ def user_dashboard(request):
                 survey = survey_form.save(commit=False)
                 survey.user = request.user
                 survey.save()
-
+                print(positioning_formset.data)
                 for formset in [
                     positioning_formset,
                     revenue_formset,

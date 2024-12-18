@@ -105,8 +105,17 @@ class CompanyPositioningForm(forms.ModelForm):
         model = CompanyPositioning
         fields = ['service', 'revenue_share']
         widgets = {
-            'service': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите название компании'}),
-            'revenue_share': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Распределение выручки (%)',
+            'service': forms.Select(choices=[('students', 'Агентство полного цикла'),
+                                             ('service', 'Маркетинговые коммуникации / Маркетинговые услуги'),
+                                             ('explore', 'Коммуникационные исследования и аналитика / Исследования и аналитика'),
+                                             ('commune', 'Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью'),
+                                             ('consult', 'Политические коммуникации / Политическое консультирование'),
+                                             ('ads', 'Рекламные коммуникации / Реклама'),
+                                             ('event', 'Событийные коммуникации / Мероприятия / Event'),
+                                             ('digital', 'Цифровые коммуникации / Digital'),
+
+                                             ]),
+            'revenue_share': forms.NumberInput(attrs={'class': 'form-control',
                                                       'min' :0, 'max' : 100, 'step' : 1, 'onkeypress' : only_digit, 'oninput': only_procent }),
         }
 
@@ -115,10 +124,10 @@ class CompanyEmployeesForm(forms.ModelForm):
         model = CompanyEmployees
         fields = ['department', 'employee_count']
         widgets = {
-            'employee_count': forms.NumberInput(attrs={'min' :0,  'step' : 1, 'onkeypress' : only_digit,
+            'employee_count': forms.NumberInput(attrs={'min' :0,  'step' : 1, 'onkeypress' : only_digit,'class': 'input_to_copy_number'
             }),
             'department': forms.TextInput(attrs={
-                'placeholder': 'Введите название компании или отдела'
+                'placeholder': 'Введите название компании или отдела', 'class': 'input_to_copy_text'
             })
         }
 
@@ -132,6 +141,18 @@ class CompanyAwardsForm(forms.ModelForm):
     class Meta:
         model = CompanyAwards
         fields = ['award_name', 'award_category', 'award_type']
+        widgets = {
+            'award_category': forms.Select(choices=[
+            ('A', 'А'),
+            ('B', 'Б'),
+            ('C', 'В'),
+        ], attrs={'class': 'category-select',"onchange":"updateCategoryCounts()"}),
+            'award_type': forms.Select(choices=[
+                ('shortlist', 'Шорт лист'),
+                ('award', 'Награда'),
+                ('grandprix', 'Гранд При'),
+            ], attrs={'class': 'type-select', "onchange": "updateCategoryCounts()"}),
+        }
 
 class CompanyEventForm(forms.ModelForm):
     class Meta:
@@ -139,10 +160,10 @@ class CompanyEventForm(forms.ModelForm):
         fields = ['event_count', 'audience', 'participant_count', 'event_format', 'event_type', 'participation_type']
         widgets = {
             'event_count': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Количество мероприятий','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),
-            'audience': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Аудитория'}),
-            'participant_count': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Количество участников','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),
+            'audience': forms.Select(choices=[('students', 'Студенты'),('prof', 'Проф. Сообщества')],attrs={'class': 'form-control', 'placeholder': 'Аудитория'}),
+            'participant_count': forms.NumberInput(attrs={'class': 'form-control','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),
             'event_format': forms.Select(attrs={'class': 'form-control'}),
-            'event_type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Формат мероприятия'}),
+            'event_type': forms.Select(choices=[('solo', 'Единичное'),('complex', 'Комплекснная программа')],attrs={'class': 'form-control', 'placeholder': 'Формат мероприятия'}),
             'participation_type': forms.Select(attrs={'class': 'form-control'}),
         }
 

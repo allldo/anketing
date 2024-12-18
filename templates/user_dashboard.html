@@ -230,24 +230,25 @@
                                         <p class="position-inputs__left-title">Позиционирование</p>
                                         <div class="positions-content" id="position-selects-container">
                                             <div class="custom-select" >
-                                                <select>
-                                                    <option value="position1-1">Агентство полного цикла</option>
-                                                    <option value="position1-2">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                                    <option value="position1-3">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
-                                                    <option value="position1-4">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>
-                                                    <option value="position1-5">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                                    <option value="position1-6">Политические коммуникации / Политическое консультирование</option>
-                                                    <option value="position1-7">Рекламные коммуникации / Реклама</option>
-                                                    <option value="position1-8">Событийные коммуникации / Мероприятия / Event</option>
-                                                    <option value="position1-9">Цифровые коммуникации / Digital</option>
-                                                </select>
+                                                {% for form in positioning_formset %}{{ form.service }} {% endfor %}
+<!--                                                <select>-->
+<!--                                                    <option value="position1-1">Агентство полного цикла</option>-->
+<!--                                                    <option value="position1-2">Маркетинговые коммуникации / Маркетинговые услуги</option>-->
+<!--                                                    <option value="position1-3">Коммуникационные исследования и аналитика / Исследования и аналитика</option>-->
+<!--                                                    <option value="position1-4">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>-->
+<!--                                                    <option value="position1-6">Политические коммуникации / Политическое консультирование</option>-->
+<!--                                                    <option value="position1-7">Рекламные коммуникации / Реклама</option>-->
+<!--                                                    <option value="position1-8">Событийные коммуникации / Мероприятия / Event</option>-->
+<!--                                                    <option value="position1-9">Цифровые коммуникации / Digital</option>-->
+<!--                                                </select>-->
                                             </div>
                                         </div>
                                     </div>
                                     <div class="position-inputs__right">
                                         <p class="position-inputs__right-title">Распределение выручки (%)</p>
                                         <div class="positions-content" id="position-inputs-container">
-                                            <input class="input input_to_copy_number" type="number">
+                                            {% for form in positioning_formset %}{{ form.revenue_share }} {% endfor %}
+<!--                                            <input class="input input_to_copy_number" type="number">-->
                                         </div>
                                     </div>
                                 </div>
@@ -355,13 +356,19 @@
                                     <div class="position-inputs__left">
                                         <p class="position-inputs__left-title">Компания</p>
                                         <div class="positions-content emp_for_copy_text">
-                                            <input class="input input_to_copy_text" type="text">
+                                            {% for form in employees_formset %}
+                                            {{ form.department  }}
+                                            {% endfor %}
+<!--                                            <input class="input input_to_copy_text" type="text">-->
                                         </div>
                                     </div>
                                     <div class="position-inputs__right">
                                         <p class="position-inputs__right-title">Количество сотрудников</p>
                                         <div class="positions-content emp_for_copy_number">
-                                            <input class="input input_to_copy_number" type="number">
+                                            {% for form in employees_formset %}
+                                            {{ form.employee_count  }}
+                                            {% endfor %}
+<!--                                            <input class="input input_to_copy_number" type="number">-->
                                         </div>
                                 </div>
                                 </div>
@@ -397,26 +404,28 @@
                                     <div class="revenue-inputs awards_section" id="award_template">
                                         <div class="revenue-inputs__item">
                                             <span class="revenue-inputs__item-title">Премия</span>
-                                            <input type="text" class="input">
+                                            {% for form in awards_formset %}{{ form.award_name }} {% endfor %}
+<!--                                            <input type="text" class="input">-->
                                         </div>
                                         <div class="revenue-inputs__item">
                                             <span class="revenue-inputs__item-title">Категория премии</span>
-                                            <div class="custom-select">
-                                                <select class="category-select" onchange="updateCategoryCounts()">
-                                                    <option value="A">А</option>
-                                                    <option value="B">Б</option>
-                                                    <option value="C">В</option>
-                                                </select>
+                                            <div class="custom-select">{% for form in awards_formset %}{{ form.award_category }} {% endfor %}
+<!--                                                <select class="category-select" onchange="updateCategoryCounts()">-->
+<!--                                                    <option value="A">А</option>-->
+<!--                                                    <option value="B">Б</option>-->
+<!--                                                    <option value="C">В</option>-->
+<!--                                                </select>-->
                                             </div>
                                         </div>
                                         <div class="revenue-inputs__item">
                                             <span class="revenue-inputs__item-title">Тип награды</span>
                                             <div class="custom-select">
-                                                <select class="type-select" onchange="updateCategoryCounts()">
-                                                    <option value="shortlist">Шорт лист</option>
-                                                    <option value="award">Награда</option>
-                                                    <option value="grandprix">Гранд При</option>
-                                                </select>
+                                                {% for form in awards_formset %}{{ form.award_type }} {% endfor %}
+<!--                                                <select class="type-select" onchange="updateCategoryCounts()">-->
+<!--                                                    <option value="shortlist">Шорт лист</option>-->
+<!--                                                    <option value="award">Награда</option>-->
+<!--                                                    <option value="grandprix">Гранд При</option>-->
+<!--                                                </select>-->
                                             </div>
                                         </div>
                                     
@@ -437,47 +446,53 @@
                                     <div class="revenue-inputs" id="mero_template">
                                         <div class="revenue-inputs__item" style="width: 208px;">
                                             <span class="revenue-inputs__item-title">Мероприятие</span>
+<!--                                            {% for form in events_formset %} {{ form. }} {% endfor %}-->
                                             <input type="text" class="input">
                                         </div>
                                         <div class="revenue-inputs__item" style="width: 130px;">
                                             <span class="revenue-inputs__item-title">Аудитория</span>
                                             <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Студенты</option>
-                                                    <option value="option4">Проф. сообщества</option>
-                                                </select>
+                                                {% for form in events_formset %} {{ form.audience }} {% endfor %}
+<!--                                                <select>-->
+<!--                                                    <option value="option1">Студенты</option>-->
+<!--                                                    <option value="option4">Проф. сообщества</option>-->
+<!--                                                </select>-->
                                             </div>
                                         </div>
 
                                         <div class="revenue-inputs__item" style="width: 70px;">
                                             <span class="revenue-inputs__item-title">Количество участников</span>
-                                            <input type="number" class="input">
+                                            {% for form in events_formset %} {{ form.participant_count }} {% endfor %}
+<!--                                            <input type="number" class="input">-->
                                         </div>
                                         <div class="revenue-inputs__item" style="width: 180px;">
                                             <span class="revenue-inputs__item-title">Формат проведения</span>
                                             <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Оффлайн</option>
-                                                    <option value="option4">Онлайн</option>
-                                                </select>
+                                                {% for form in events_formset %} {{ form.event_format }} {% endfor %}
+<!--                                                <select>-->
+<!--                                                    <option value="option1">Оффлайн</option>-->
+<!--                                                    <option value="option4">Онлайн</option>-->
+<!--                                                </select>-->
                                             </div>
                                         </div>
                                         <div class="revenue-inputs__item" style="width: 230px;">
                                             <span class="revenue-inputs__item-title">Формат мероприятия</span>
                                             <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Единичное</option>
-                                                    <option value="option4">Комплекснная программа</option>
-                                                </select>
+                                                {% for form in events_formset %} {{ form.event_type }} {% endfor %}
+<!--                                                <select>-->
+<!--                                                    <option value="option1">Единичное</option>-->
+<!--                                                    <option value="option4">Комплекснная программа</option>-->
+<!--                                                </select>-->
                                             </div>
                                         </div>
                                         <div class="revenue-inputs__item" style="width: 163px;">
                                             <span class="revenue-inputs__item-title">Статус участия</span>
                                             <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Организатор</option>
-                                                    <option value="option4">Участник</option>
-                                                </select>
+                                                {% for form in events_formset %} {{ form.participation_type }} {% endfor %}
+<!--                                                <select>-->
+<!--                                                    <option value="option1">Организатор</option>-->
+<!--                                                    <option value="option4">Участник</option>-->
+<!--                                                </select>-->
                                             </div>
                                         </div>
                                     </div>
@@ -523,13 +538,15 @@
                                     <div class="position-inputs__left">
                                         <p class="position-inputs__left-title">Госнаграды РФ</p>
                                         <div class="positions-content">
-                                            <input class="input" type="number">
+                                            {{ survey_form.num_government_awards }}
+<!--                                            <input class="input" type="number">-->
                                         </div>
                                     </div>
                                     <div class="position-inputs__right">
                                         <p class="position-inputs__right-title">Профильные сертификаты РАСО, IABC, АКОС</p>
                                         <div class="positions-content">
-                                            <input class="input" type="number">
+                                            {{ survey_form.num_certificates }}
+<!--                                            <input class="input" type="number">-->
                                         </div>
                                     </div>
                                 </div>
@@ -1212,6 +1229,7 @@ function calculateRevenue() {
         console.log(category);
         console.log(type);
         if (type === "shortlist") {
+        console.log(categoryCounts[category].shortlist);
             categoryCounts[category].shortlist += 1;
         } else if (type === "award") {
             categoryCounts[category].awards += 1;

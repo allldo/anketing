@@ -616,13 +616,13 @@ def user_dashboard(request):
         # Формсеты для анкеты
         print(survey)
         if survey:
-            PositioningFormSet = modelformset_factory(CompanyPositioning, form=CompanyPositioningForm, extra=1,
+            PositioningFormSet = modelformset_factory(CompanyPositioning, form=CompanyPositioningForm, extra=0,
                                                           can_delete=True)
-            RevenueFormSet = modelformset_factory(CompanyRevenue, form=CompanyRevenueForm, extra=1, can_delete=True)
-            EmployeesFormSet = modelformset_factory(CompanyEmployees, form=CompanyEmployeesForm, extra=1,
+            RevenueFormSet = modelformset_factory(CompanyRevenue, form=CompanyRevenueForm, extra=0, can_delete=True)
+            EmployeesFormSet = modelformset_factory(CompanyEmployees, form=CompanyEmployeesForm, extra=0,
                                                         can_delete=True)
-            AwardsFormSet = modelformset_factory(CompanyAwards, form=CompanyAwardsForm, extra=1, can_delete=True)
-            EventsFormSet = modelformset_factory(CompanyEvent, form=CompanyEventForm, extra=1, can_delete=True)
+            AwardsFormSet = modelformset_factory(CompanyAwards, form=CompanyAwardsForm, extra=0, can_delete=True)
+            EventsFormSet = modelformset_factory(CompanyEvent, form=CompanyEventForm, extra=0, can_delete=True)
         else:
             PositioningFormSet = modelformset_factory(CompanyPositioning, form=CompanyPositioningForm, extra=1,
                                                       can_delete=True)

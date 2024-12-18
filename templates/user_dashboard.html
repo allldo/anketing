@@ -116,7 +116,7 @@
                 <div class="form-group register-img">
                     <label for="{{ company_form.company_logo.id_for_label }}">Логотип компании (png или svg)</label>
                     <input type="file" name="company_logo" accept="image/*" required="" id="id_company_logo">
-                    {{ company_form.company_logo }}
+                    {{ profile_form.company_logo }}
                     <div class="register-img__body">
                         <button type="button" class="register-img__btn btn-primary">Загрузить файл</button>
                         <div class="register-img__text">
@@ -178,6 +178,11 @@
                         <form class="survey_form" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ survey_form.management_form }}
+                            {{ positioning_formset.management_form }}
+                            {{ revenue_formset.management_form }}
+                            {{ employees_formset.management_form }}
+                            {{ awards_formset.management_form }}
+                            {{ events_formset.management_form }}
                             <div class="form-group comment">
                                 <span class="comment__title">- Комментарий</span>
                                 <p class="comment__text">Текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария</p>
@@ -198,14 +203,15 @@
                                 <!-- {{ survey_form.specialization }} -->
                                 <div class="custom-select">
                                     <select>
-                                        <option value="specialization1">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                        <option value="specialization2">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
-                                        <option value="specialization3">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>
-                                        <option value="specialization4">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                        <option value="specialization5">Политические коммуникации / Политическое консультирование</option>
-                                        <option value="specialization6">Рекламные коммуникации / Реклама</option>
-                                        <option value="specialization7">Событийные коммуникации / Мероприятия / Event</option>
-                                        <option value="specialization8">Цифровые коммуникации / Digital</option>
+                                        <option value="specialization1">Агенство полного цикла</option>
+                                        <option value="specialization2">Маркетинговые коммуникации / Маркетинговые услуги</option>
+                                        <option value="specialization3">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
+                                        <option value="specialization4">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>
+                                        <option value="specialization5">Маркетинговые коммуникации / Маркетинговые услуги</option>
+                                        <option value="specialization6">Политические коммуникации / Политическое консультирование</option>
+                                        <option value="specialization7">Рекламные коммуникации / Реклама</option>
+                                        <option value="specialization8">Событийные коммуникации / Мероприятия / Event</option>
+                                        <option value="specialization9">Цифровые коммуникации / Digital</option>
                                     </select>
                                 </div>
                             </div>
@@ -218,8 +224,8 @@
                                 <div class="position-inputs">
                                     <div class="position-inputs__left">
                                         <p class="position-inputs__left-title">Позиционирование</p>
-                                        <div class="positions-content">
-                                            <div class="custom-select">
+                                        <div class="positions-content" id="position-selects-container">
+                                            <div class="custom-select" >
                                                 <select>
                                                     <option value="position1-1">Маркетинговые коммуникации / Маркетинговые услуги</option>
                                                     <option value="position1-2">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
@@ -229,6 +235,7 @@
                                                     <option value="position1-6">Рекламные коммуникации / Реклама</option>
                                                     <option value="position1-7">Событийные коммуникации / Мероприятия / Event</option>
                                                     <option value="position1-8">Цифровые коммуникации / Digital</option>
+                                                    <option value="position1-9">Агентство полного цикла</option>
                                                 </select>
                                             </div>
                                             <div class="custom-select">
@@ -241,6 +248,7 @@
                                                     <option value="position2-6">Рекламные коммуникации / Реклама</option>
                                                     <option value="position2-7">Событийные коммуникации / Мероприятия / Event</option>
                                                     <option value="position2-8">Цифровые коммуникации / Digital</option>
+                                                    <option value="position2-9">Агентство полного цикла</option>
                                                 </select>
                                             </div>
                                             <div class="custom-select">
@@ -253,21 +261,23 @@
                                                     <option value="position3-6">Рекламные коммуникации / Реклама</option>
                                                     <option value="position3-7">Событийные коммуникации / Мероприятия / Event</option>
                                                     <option value="position3-8">Цифровые коммуникации / Digital</option>
+                                                    <option value="position3-9">Агентство полного цикла</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="position-inputs__right">
                                         <p class="position-inputs__right-title">Распределение выручки (%)</p>
-                                        <div class="positions-content">
+                                        <div class="positions-content" id="position-inputs-container">
                                             <input class="input" type="number">
                                             <input class="input" type="number">
-                                            <input class="input" type="number">
+                                            <input class="input input_to_copy_number" type="number">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="add_row_update('positioning-section')">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="add_row_pos_update()">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="remove_row_update('')">- Удалить строку</button>
                                 </div>
                             </div>
                             <div class="form-group geography">
@@ -349,7 +359,7 @@
                                 <i>Под «сотрудником компании» понимается сотрудник, с которым заключён бессрочный либо срочный трудовой договор, и сотрудник включён в штатное расписание компании. 
                                     При заполнении анкеты компания - заявитель не учитывает исполнителей по договорам ГПХ, индивидуальных предпринимателей, а также физических лиц, применяющих специальный налоговый режим «Налог на профессиональный доход» (самозанятых). 
                                     Для ГК указывается сумма данных на конец 2023 года для каждого из юр.лиц.</i>
-                                
+
                                 <div class="position-inputs emp_number">
                                     <div class="position-inputs__left">
                                         <p class="position-inputs__left-title">Компания</p>
@@ -366,10 +376,11 @@
                                             <input class="input" type="number">
                                             <input class="input" type="number">
                                         </div>
-                                    </div>
                                 </div>
-                                <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="add_emp_number_row()">+ Добавить строку</button>
+                                </div>
+                                    <div class="button-container">
+                                    <button class="btn-str" type="button" onclick="add_emp_number_row('non_delete', 'emp_for_copy_text', 'emp_for_copy_number', 'input_to_copy_text', 'input_to_copy_number')">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="add_emp_number_row('delete', 'emp_for_copy_text', 'emp_for_copy_number', 'input_to_copy_text', 'input_to_copy_number')">- Удалить строку</button>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -435,8 +446,8 @@
                                 <i>В параметре учитываются мероприятия, ориентированные на специалистов по коммуникациям, предполагающие равные возможности 
                                     доступа для всех желающих участвовать. При этом учитываются обучающие программы в ВУЗах, но не учитываются клиентские 
                                     обучающие программы и тренинги. Наибольший вес при подсчете имеют крупные отраслевые мероприятия (Дни PR, Baltic Weekend et c.), обучающие программы в ВУЗах учитываются как одно мероприятие при условии, что это комплексные программы. Единичные мастер классы для студентов не учитываются. НЕ УЧИТЫВАЮТСЯ КЛИЕНТСКИЕ МЕРОПРИЯТИЯ.Онлайн, а также студенческие мероприятия учитываются на 1 градацию ниже, чем оффлайн или мероприятия, ориентированные на специалистов. Т.е. курс онлайн лекций для студентов будет учитываться как небольшое мероприятие, даже если участников были "тысячи". </i>
-                                
-                                    <div class="revenue-inputs">
+                                    <div id="mero_wrapper">
+                                    <div class="revenue-inputs" id="mero_template">
                                         <div class="revenue-inputs__item" style="width: 208px;">
                                             <span class="revenue-inputs__item-title">Мероприятие</span>
                                             <input type="text" class="input">
@@ -483,9 +494,11 @@
                                             </div>
                                         </div>
                                     </div>
-                            
+                            </div>
                                 <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="addRow('events-section')">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="add_mero_row()">+ Добавить строку</button>
+                                    <button class="btn-str" type="button" onclick="add_mero_row('delete')">- Удалить строку</button>
+
                                 </div>
                             </div>
                             <div class="form-group">
@@ -552,12 +565,12 @@
                                 </ul>
                             </div>
                             <div class="survey_form__btns">
-                                <button type="button" name="create_survey" value="1" class="btn-primary--disabled" disabled>Загрузить файл</button>
+                                <button type="button" name="create_survey" value="1" class="btn-primary">Загрузить файл</button>
                                 <button type="button" name="create_survey" value="1" class="btn-primary--disabled" disabled>Прикрепить заверенный документ</button>
                                 <button type="button" name="create_survey" value="1" class="btn-primary--disabled" disabled>Прикрепить логотип</button>
                                 <button type="button" name="create_survey" value="1" class="btn-primary">Редактировать</button>
                                 <button type="submit" name="create_survey" value="1" class="btn-primary">Сохранить</button>
-                                <button type="submit" name="action" value="submit_for_review" class="btn-primary--disabled" disabled>Отправить на модерацию</button>
+                                <button type="submit" name="action" value="submit_for_review" class="btn-primary">Отправить на модерацию</button>
                             </div>
                         </form>
                     </div>
@@ -1260,18 +1273,26 @@ const container = document.getElementById("revenue-container");
     container.appendChild(newRow);
     }
 }
-    function add_emp_number_row() {
+    function add_emp_number_row(deleteStr, text_class, number_class, input_text, input_number) {
+    if (deleteStr === "delete"){
+    const firstRow = document.querySelector("."+text_class);
+    const secondRow = document.querySelector("."+number_class);
+    firstRow.removeChild(firstRow.lastElementChild);
+    secondRow.removeChild(secondRow.lastElementChild);
+    }
+    else{
+
     // Найти родительский контейнер для блоков
-    const container = document.querySelector(".emp_for_copy_text");
-    const container2 = document.querySelector(".emp_for_copy_number");
+    const container = document.querySelector("."+text_class);
+    const container2 = document.querySelector("."+number_class);
     if (!container) {
         console.error("Container for rows not found.");
         return;
     }
 
     // Найти блок, который нужно клонировать
-    const firstRow = document.querySelector(".input_to_copy_text");
-    const secondRow = document.querySelector(".input_to_copy_number");
+    const firstRow = document.querySelector("."+input_text);
+    const secondRow = document.querySelector("."+input_number);
     if (!firstRow) {
         console.error("No '.position-inputs' block found to clone.");
         return;
@@ -1286,9 +1307,23 @@ const container = document.getElementById("revenue-container");
 
     container.appendChild(newRow);
     container2.appendChild(newRow2);
+    }
 }
     function add_awards_row(deleteStr){
+    if (deleteStr === "delete"){
+    const container = document.getElementById('awards_wrapper');
 
+    // Получаем все добавленные элементы (кроме шаблона)
+    const rows = container.querySelectorAll('.awards_section');
+
+    // Удаляем последний элемент, если их больше одного
+    if (rows.length > 1) {
+        container.removeChild(rows[rows.length - 1]);
+    } else {
+        alert("Нельзя удалить последнюю строку!");
+    }
+    }
+    else{
     const template = document.getElementById('award_template');
     const container = document.getElementById('awards_wrapper');
     const clone = template.cloneNode(true);
@@ -1305,6 +1340,80 @@ const container = document.getElementById("revenue-container");
 
     // Добавляем клон в контейнер
     container.appendChild(clone);
+    }
+    }
+let rowCount = 3; // Счётчик строк
+
+function add_row_pos_update() {
+    rowCount++; // Увеличиваем счётчик строк
+    const customSelectDiv = document.createElement('div');
+    customSelectDiv.classList.add('custom-select');
+    const select = document.createElement('select');
+    select.innerHTML = `
+        <option value="position${rowCount}-1">Маркетинговые коммуникации / Маркетинговые услуги</option>
+        <option value="position${rowCount}-2">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
+        <option value="position${rowCount}-3">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>
+        <option value="position${rowCount}-4">Маркетинговые коммуникации / Маркетинговые услуги</option>
+        <option value="position${rowCount}-5">Политические коммуникации / Политическое консультирование</option>
+        <option value="position${rowCount}-6">Рекламные коммуникации / Реклама</option>
+        <option value="position${rowCount}-7">Событийные коммуникации / Мероприятия / Event</option>
+        <option value="position${rowCount}-8">Цифровые коммуникации / Digital</option>
+        <option value="position${rowCount}-9">Агентство полного цикла</option>
+    `;
+customSelectDiv.appendChild(select);
+
+    // Добавляем новый div.custom-select в контейнер
+    document.getElementById('position-selects-container').appendChild(customSelectDiv);
+
+    // Создаём новый input для распределения выручки
+    const input = document.createElement('input');
+    input.classList.add('input');
+    input.type = 'number';
+
+    // Добавляем input в контейнер
+    document.getElementById('position-inputs-container').appendChild(input);
+}
+
+function remove_row_update() {
+    if (rowCount > 0) {
+        // Удаляем последний select и input
+        const selects = document.querySelectorAll('#position-selects-container select');
+        const inputs = document.querySelectorAll('#position-inputs-container input');
+        const select = document.getElementById('position-selects-container');
+        select.removeChild(select.lastElementChild);
+        inputs[inputs.length - 1].remove();
+
+        rowCount--; // Уменьшаем счётчик строк
+    }
+}
+
+
+    function add_mero_row(deleteStr){
+    if (deleteStr === "delete"){
+    const container = document.getElementById('mero_wrapper');
+
+    const rows = container.querySelectorAll('.revenue_inputs');
+    container.removeChild(container.lastElementChild);
+
+    }
+    else{
+    const template = document.getElementById('mero_template');
+    const container = document.getElementById('mero_wrapper');
+    const clone = template.cloneNode(true);
+
+    // Очищаем значения инпутов и селектов
+    const inputs = clone.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        if (input.tagName === 'INPUT') {
+            input.value = ''; // Очищаем текстовые поля
+        } else if (input.tagName === 'SELECT') {
+            input.selectedIndex = 0; // Сбрасываем селекты на первый элемент
+        }
+    });
+
+    // Добавляем клон в контейнер
+    container.appendChild(clone);
+    }
     }
 </script>
 {% endblock %}

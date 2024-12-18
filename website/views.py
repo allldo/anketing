@@ -255,7 +255,6 @@ def user_dashboard(request):
             events_formset = modelformset_factory(
                 CompanyEvent, form=CompanyEventForm, extra=1, can_delete=True
             )(request.POST, prefix='events')
-
             if (
                 survey_form.is_valid()
                 and positioning_formset.is_valid()
@@ -300,7 +299,8 @@ def user_dashboard(request):
                     )
                 return redirect('user_dashboard')
 
-            # Если есть ошибки, отобразите их
+
+
             return render(request, 'user_dashboard.html', {
                 'survey_form': survey_form,
                 'positioning_formset': positioning_formset,

@@ -84,3 +84,6 @@
       font-size: 14px;
   }
 }
+.custom-select.no-after::after {
+    content: none;
+}

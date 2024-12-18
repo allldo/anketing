@@ -614,46 +614,59 @@ def user_dashboard(request):
         survey_form = CompanySurveyForm(instance=survey) if survey else CompanySurveyForm()
 
         # Формсеты для анкеты
-        PositioningFormSet = modelformset_factory(CompanyPositioning, form=CompanyPositioningForm, extra=0,
-                                                  can_delete=True)
+        print(survey)
+        if survey:
+            PositioningFormSet = modelformset_factory(CompanyPositioning, form=CompanyPositioningForm, extra=1,
+                                                          can_delete=True)
+            RevenueFormSet = modelformset_factory(CompanyRevenue, form=CompanyRevenueForm, extra=1, can_delete=True)
+            EmployeesFormSet = modelformset_factory(CompanyEmployees, form=CompanyEmployeesForm, extra=1,
+                                                        can_delete=True)
+            AwardsFormSet = modelformset_factory(CompanyAwards, form=CompanyAwardsForm, extra=1, can_delete=True)
+            EventsFormSet = modelformset_factory(CompanyEvent, form=CompanyEventForm, extra=1, can_delete=True)
+        else:
+            PositioningFormSet = modelformset_factory(CompanyPositioning, form=CompanyPositioningForm, extra=1,
+                                                      can_delete=True)
+            RevenueFormSet = modelformset_factory(CompanyRevenue, form=CompanyRevenueForm, extra=1, can_delete=True)
+            EmployeesFormSet = modelformset_factory(CompanyEmployees, form=CompanyEmployeesForm, extra=1,
+                                                    can_delete=True)
+            AwardsFormSet = modelformset_factory(CompanyAwards, form=CompanyAwardsForm, extra=1, can_delete=True)
+            EventsFormSet = modelformset_factory(CompanyEvent, form=CompanyEventForm, extra=1, can_delete=True)
+
         PositioningFormSet = PositioningFormSet(
             queryset=CompanyPositioning.objects.filter(survey=survey) if survey else CompanyPositioning.objects.none(),
             prefix='positioning')
 
-        RevenueFormSet = modelformset_factory(CompanyRevenue, form=CompanyRevenueForm, extra=0, can_delete=True)
+
         RevenueFormSet = RevenueFormSet(
             queryset=CompanyRevenue.objects.filter(survey=survey) if survey else CompanyRevenue.objects.none(),
             prefix='revenue')
 
-        EmployeesFormSet = modelformset_factory(CompanyEmployees, form=CompanyEmployeesForm, extra=0, can_delete=True)
         EmployeesFormSet = EmployeesFormSet(
             queryset=CompanyEmployees.objects.filter(survey=survey) if survey else CompanyEmployees.objects.none(),
             prefix='employees')
 
-        AwardsFormSet = modelformset_factory(CompanyAwards, form=CompanyAwardsForm, extra=0, can_delete=True)
         AwardsFormSet = AwardsFormSet(
             queryset=CompanyAwards.objects.filter(survey=survey) if survey else CompanyAwards.objects.none(),
             prefix='awards')
 
-        EventsFormSet = modelformset_factory(CompanyEvent, form=CompanyEventForm, extra=0, can_delete=True)
         EventsFormSet = EventsFormSet(
             queryset=CompanyEvent.objects.filter(survey=survey) if survey else CompanyEvent.objects.none(),
             prefix='events')
 
     return render(request, 'user_dashboard.html', {
-        'survey': survey,
-        'profile_form': profile_form,
-        'profile': profile,
-        'user_form': user_form,
-        'password_form': password_form,
-        'user_message_form': user_message_form,
-        'survey_form': survey_form,
-        'positioning_formset': PositioningFormSet,
-        'revenue_formset': RevenueFormSet,
-        'employees_formset': EmployeesFormSet,
-        'awards_formset': AwardsFormSet,
-        'events_formset': EventsFormSet,
-    })
+            'survey': survey,
+            'profile_form': profile_form,
+            'profile': profile,
+            'user_form': user_form,
+            'password_form': password_form,
+            'user_message_form': user_message_form,
+            'survey_form': survey_form,
+            'positioning_formset': PositioningFormSet,
+            'revenue_formset': RevenueFormSet,
+            'employees_formset': EmployeesFormSet,
+            'awards_formset': AwardsFormSet,
+            'events_formset': EventsFormSet,
+        })
 
 @login_required
 def fill_survey(request):

@@ -155,7 +155,7 @@ class CompanyRevenueForm(forms.ModelForm):
             'inn': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ИНН','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),
             'ownership_share': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Доля владения (%)','min' :0, 'max' : 100, 'step' : 1, 'onkeypress' : only_digit, 'oninput': only_procent,}),
             'buying_share': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Доля баинга в выручке (%)','min' :0, 'max' : 100, 'step' : 1, 'onkeypress' : only_digit, 'oninput': only_procent}),
-            'revenue_amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Доля выручки (тыс. рублей)','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),
+            'revenue_amount': forms.NumberInput(attrs={'class': 'form-control revenue-input', 'placeholder': 'Доля выручки (тыс. рублей)','min' :0, 'step' : 1, 'onkeypress' : only_digit, 'oninput': 'calculateRevenue()'}),
         }
 
 

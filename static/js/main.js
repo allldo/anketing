@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlPath = window.location.pathname
   
   if (urlPath.includes('register') || urlPath.includes('dashboard')) {
-    chooseImg()
+    chooseImg();
+//    chooseImgSurvey()
   }
 
   if (urlPath.includes('dashboard')) {
@@ -23,7 +24,7 @@ function chooseImg() {
   const inputImgBtnDelete =  document.querySelector('.register-img__btn--delete')
   const imgText = document.querySelector('.register-img__text-title')
 
-  console.log('inputImgBtn', inputImgBtn);
+  console.log('inputImgBtnzxc', inputImgBtn);
 
   if (inputImgBtn && inputImg) {
     inputImgBtn.addEventListener('click', (e) => {
@@ -55,6 +56,47 @@ function chooseImg() {
         inputImgBtnDelete.classList.add('hidden')
         console.log('files', inputImg.value);
       })
+  }
+}
+
+function chooseImgSurvey() {
+  const inputImg = document.querySelector('#survey_loader')
+  const inputImgBtn =  document.querySelector('.load_file_survey')
+//  const inputImgBtnDelete =  document.querySelector('.register-img__btn--delete')
+  const imgText = document.querySelector('.load_file_survey_text')
+
+  console.log('inputImgBtnSurvey', inputImgBtn);
+
+  if (inputImgBtn) {
+    inputImgBtn.addEventListener('click', (e) => {
+      console.log('inputImg', inputImg);
+      e.preventDefault()
+      inputImg.click()
+    })
+  }
+
+  if (inputImgBtn) {
+
+      inputImg.addEventListener('change', (e) => {
+        const files = e.target.files
+
+        if (files.length) {
+          imgText.textContent = files[0].name
+//          inputImgBtnDelete.classList.remove('hidden')
+        } else {
+          imgText.textContent = ''
+//          inputImgBtnDelete.classList.add('hidden')
+        }
+        console.log('e', e);
+      })
+
+//      inputImgBtnDelete.addEventListener('click', () => {
+//        console.log('inputImg', inputImg.value);
+//        inputImg.value = ''
+//        imgText.textContent = ''
+////        inputImgBtnDelete.classList.add('hidden')
+//        console.log('files', inputImg.value);
+//      })
   }
 }
 

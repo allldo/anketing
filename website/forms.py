@@ -81,7 +81,7 @@ class CompanySurveyForm(forms.ModelForm):
             'company_name', 'company_address', 'specialization', 'revenue', 
             'geography_activity', 'company_age', 'num_expert_employees', 
             'num_employees_over_3_years', 'num_employees_in_communications', 
-            'num_government_awards', 'num_certificates','user_comment'
+            'num_government_awards', 'num_certificates','user_comment', 'survey_file'
         ]
         widgets = {
             'company_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите название компании'}),
@@ -191,10 +191,10 @@ class UserUpdateForm(forms.ModelForm):
 
 class SinglePasswordChangeForm(forms.Form):
     new_password = forms.CharField(
-        label="Новый пароль",
+        label="",
         widget=forms.PasswordInput,
-        help_text="Введите новый пароль.",
-        validators=[validate_password],
+        help_text="",
+        validators=[validate_password], required=False
     )
 
 
@@ -208,3 +208,7 @@ class ModeratorCommentForm(forms.ModelForm):
         labels = {
             'moderator_comment': 'Комментарий модератора',
         }
+
+
+class SurveyFormUpdate(forms.Form):
+    survey_id = forms.IntegerField(widget=forms.HiddenInput())

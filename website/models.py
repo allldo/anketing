@@ -100,6 +100,8 @@ class CompanySurvey(models.Model):
         null=True,
         blank=True
     )
+
+    survey_file = models.FileField(upload_to='survey_docs/', null=True, blank=True, verbose_name="File")
     def __str__(self):
         return f"Анкета {self.company_name} - {self.submission_date}"
     

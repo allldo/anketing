@@ -55,7 +55,11 @@
 .hidden {
   display: none;
 }
-
+.positioning{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 .custom-select {
   position: relative;
   

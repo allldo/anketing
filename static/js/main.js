@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   if (urlPath.includes('register') || urlPath.includes('dashboard')) {
     chooseImg();
-//    chooseImgSurvey()
+    chooseImgSurvey()
   }
 
   if (urlPath.includes('dashboard')) {

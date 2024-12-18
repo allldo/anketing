@@ -8,11 +8,11 @@ from django.contrib.auth import login,authenticate
 from .models import (GeneralInfo,CompanySurvey, CompanyProfile, CompanyPositioning, CompanyEvent,
                      CompanyRevenue, CompanyAwards,
                     CompanyEmployees, SurveyStatus)
-from .forms import (UserRegistrationForm, CompanyProfileForm, GeneralInfoForm,CompanyEventForm,
-                    CompanySurveyForm,CompanyAwardsForm, CompanyEmployeesForm, CompanyPositioningForm,
-                    CompanyRevenueForm,UserUpdateForm,SinglePasswordChangeForm,UserMessageForm,
-                    ModeratorCommentForm
-)
+from .forms import (UserRegistrationForm, CompanyProfileForm, GeneralInfoForm, CompanyEventForm,
+                    CompanySurveyForm, CompanyAwardsForm, CompanyEmployeesForm, CompanyPositioningForm,
+                    CompanyRevenueForm, UserUpdateForm, SinglePasswordChangeForm, UserMessageForm,
+                    ModeratorCommentForm, SurveyFormUpdate
+                    )
 from django.forms import modelformset_factory
 from datetime import datetime
 import json
@@ -159,7 +159,7 @@ def edit_general_info(request):
 
 
 @login_required
-def user_dashboard(request):
+def user_dashboardq(request):
     profile, created = CompanyProfile.objects.get_or_create(user=request.user)
     general_info, created = GeneralInfo.objects.get_or_create(
         id=1,
@@ -214,8 +214,8 @@ def user_dashboard(request):
     )
 
     if request.method == 'POST':
-        print("Данные POST:")
-        print(json.dumps(request.POST, indent=4, ensure_ascii=False))
+        # print("Данные POST:")
+        # print(json.dumps(request.POST, indent=4, ensure_ascii=False))
         profile_form = CompanyProfileForm(request.POST, request.FILES, instance=profile)
         user_form = UserUpdateForm(request.POST, instance=request.user)
         password_form = SinglePasswordChangeForm(request.POST)
@@ -232,13 +232,90 @@ def user_dashboard(request):
             user = request.user
             user.set_password(new_password)
             user.save()
-            update_session_auth_hash(request, user) 
+            update_session_auth_hash(request, user)
             return redirect('user_dashboard')
 
         if user_message_form.is_valid():
             user_message_form.save()
-        
+
         if 'create_survey' in request.POST or 'update_survey' in request.POST or 'submit_for_review' in request.POST:
+            survey_form = SurveyFormUpdate(request.POST)
+
+
+
+
+
+
+
+
+            if survey_form.is_valid():
+                survey_id = survey_form.cleaned_data['survey_id']
+                survey = CompanySurvey.objects.get(id=survey_id)
+                print("редачим")
+                survey_form = CompanySurveyForm(request.POST, instance=survey)
+                positioning_formset = modelformset_factory(
+                    CompanyPositioning, form=CompanyPositioningForm, extra=0, can_delete=True
+                )(request.POST, prefix='positioning', queryset=survey.positionings.all())
+
+                revenue_formset = modelformset_factory(
+                    CompanyRevenue, form=CompanyRevenueForm, extra=0, can_delete=True
+                )(request.POST, prefix='revenue', queryset=survey.revenues.all())
+
+                employees_formset = modelformset_factory(
+                    CompanyEmployees, form=CompanyEmployeesForm, extra=0, can_delete=True
+                )(request.POST, prefix='employees', queryset=survey.employees.all())
+
+                awards_formset = modelformset_factory(
+                    CompanyAwards, form=CompanyAwardsForm, extra=0, can_delete=True
+                )(request.POST, prefix='awards', queryset=survey.awards.all())
+
+                events_formset = modelformset_factory(
+                    CompanyEvent, form=CompanyEventForm, extra=0, can_delete=True
+                )(request.POST, prefix='events', queryset=survey.events.all())
+
+                # Если все формы прошли валидацию
+                if (
+                        positioning_formset.is_valid() and
+                        revenue_formset.is_valid() and
+                        employees_formset.is_valid() and
+                        awards_formset.is_valid() and
+                        events_formset.is_valid()
+                ):
+                    print('all valid gogogo')
+                    # Сохраняем обновленную анкету
+                    survey_form = CompanySurveyForm(request.POST, instance=survey)
+                    if survey_form.is_valid():
+                        print('survey valid googgogo')
+                        survey_form.save()
+
+                    # Сохраняем все связанные формы
+                    for formset in [
+                        positioning_formset,
+                        revenue_formset,
+                        employees_formset,
+                        awards_formset,
+                        events_formset,
+                    ]:
+                        instances = formset.save(commit=False)
+                        for instance in instances:
+                            instance.survey = survey
+
+                            print('saving kekekekek')
+                            instance.save()
+
+                    messages.success(request, "Анкета успешно обновлена!")
+                    return redirect('user_dashboard')
+
+
+
+
+
+
+
+
+
+
+
             survey_form = CompanySurveyForm(request.POST)
             positioning_formset = modelformset_factory(
                 CompanyPositioning, form=CompanyPositioningForm, extra=1, can_delete=True
@@ -297,7 +374,14 @@ def user_dashboard(request):
                         status='moderate',
                         user=request.user
                     )
-                return redirect('user_dashboard')
+                return render(request, 'user_dashboard.html', {
+                'survey_form': survey_form,
+                'positioning_formset': positioning_formset,
+                'revenue_formset': revenue_formset,
+                'employees_formset': employees_formset,
+                'awards_formset': awards_formset,
+                'events_formset': events_formset,
+            })
 
 
 
@@ -317,82 +401,113 @@ def user_dashboard(request):
         survey=OuterRef('pk')
     ).order_by('-created_at').values('status')[:1]
 
-    user_surveys = CompanySurvey.objects.filter(
+    user_surveys = [CompanySurvey.objects.filter(
         user=request.user,
         submission_date__year=current_year
-    ).annotate(
-        latest_status=Subquery(latest_status)
-    ).order_by('-submission_date')
+    ).last()]
+    if user_surveys[0] is None:
+        context = {
+            # 'surveys_with_forms': surveys_with_forms,
+            'profile_form': profile_form,
+            'user_form': user_form,
+            'password_form': password_form,
+            'profile': profile,
+            'user_surveys': user_surveys,
+            # 'old_surveys': old_surveys,
+            "user_message_form": user_message_form,
+            "survey_form": survey_form,
+            "positioning_formset": positioning_formset,
+            "revenue_formset": revenue_formset,
+            "employees_formset": employees_formset,
+            "awards_formset": awards_formset,
+            "events_formset": events_formset,
+            "general_info": general_info,
+            "methodology_file": methodology_file,
+            "charter_file": charter_file,
+            "results_file": results_file,
+            "current_year": current_year,
+        }
 
-    surveys_with_forms = []
-    for survey in user_surveys:
-        print(survey)
+        return render(request, 'user_dashboard.html', context)
+    else:
+        survey_id_context = None
+        surveys_with_forms = []
+        for survey in user_surveys:
+            print(survey)
+            survey_id_context = survey.id
+            current_survey_form = CompanySurveyForm(instance=survey)
+            # survey.latest_status_text = STATUS_DISPLAY.get(survey.latest_status, "Unknown")
+            survey_positioning_formset = modelformset_factory(
+                CompanyPositioning,
+                form=CompanyPositioningForm,
+                extra=0
+            )(queryset=survey.positionings.all())
 
-        current_survey_form = CompanySurveyForm(instance=survey)
-    
-        survey.latest_status_text = STATUS_DISPLAY.get(survey.latest_status, "Unknown")
-        survey_positioning_formset = modelformset_factory(
-            CompanyPositioning,
-            form=CompanyPositioningForm,
-            extra=0
-        )(queryset=survey.positionings.all())
+
+            survey_employees_formset = modelformset_factory(
+                CompanyEmployees,
+                form=CompanyEmployeesForm,
+                extra=0
+            )(queryset=survey.employees.all())
+
+            survey_awards_formset = modelformset_factory(
+                CompanyAwards,
+                form=CompanyAwardsForm,
+                extra=0
+            )(queryset=survey.awards.all())
+
+            survey_events_formset = modelformset_factory(
+                CompanyEvent,
+                form=CompanyEventForm,
+                extra=0
+            )(queryset=survey.events.all())
+
+            survey_revenue_formset = modelformset_factory(
+                CompanyRevenue,
+                form=CompanyRevenueForm,
+                extra=0
+            )(queryset=survey.revenues.all())
+
+            surveys_with_forms.append({
+            'survey': survey,
+            'current_survey_form': current_survey_form,
+            'positioning_formset': survey_positioning_formset,
+            'employees_formset': survey_employees_formset,
+            'awards_formset': survey_awards_formset,
+            'events_formset': survey_events_formset,
+            'revenue_formset': survey_revenue_formset,
+        })
 
 
-        survey_employees_formset = modelformset_factory(
-            CompanyEmployees,
-            form=CompanyEmployeesForm,
-            extra=0
-        )(queryset=survey.employees.all())
 
-        survey_awards_formset = modelformset_factory(
-            CompanyAwards,
-            form=CompanyAwardsForm,
-            extra=0
-        )(queryset=survey.awards.all())
-
-        survey_events_formset = modelformset_factory(
-            CompanyEvent,
-            form=CompanyEventForm,
-            extra=0
-        )(queryset=survey.events.all())
-
-        survey_revenue_formset = modelformset_factory(
-            CompanyRevenue,
-            form=CompanyRevenueForm,
-            extra=0
-        )(queryset=survey.revenues.all())
-        
-        surveys_with_forms.append({
-        'survey': survey,
-        'current_survey_form': current_survey_form,
+    # old_surveys = CompanySurvey.objects.filter(
+    #     user=request.user
+    # ).exclude(submission_date__year=current_year).order_by('-submission_date')
+    survey_form_update = SurveyFormUpdate(initial={'survey_id': survey_id_context})
+    print(survey_positioning_formset, survey_revenue_formset )
+    context = {
+        # "survey_id": survey_id_context,
+        "survey_form_update": survey_form_update,
+        'survey_form': current_survey_form,
         'positioning_formset': survey_positioning_formset,
+        'revenue_formset': survey_revenue_formset,
         'employees_formset': survey_employees_formset,
         'awards_formset': survey_awards_formset,
         'events_formset': survey_events_formset,
-        'revenue_formset': survey_revenue_formset,
-    })
-
-
-
-    old_surveys = CompanySurvey.objects.filter(
-        user=request.user
-    ).exclude(submission_date__year=current_year).order_by('-submission_date')
-
-    context = {
         'surveys_with_forms': surveys_with_forms,
         'profile_form': profile_form,
         'user_form': user_form,
         'password_form': password_form,
         'profile': profile,
         'user_surveys': user_surveys,
-        'old_surveys': old_surveys,
+        # 'old_surveys': old_surveys,
         "user_message_form": user_message_form,
-        "survey_form": survey_form,
-        "positioning_formset": positioning_formset,
-        "revenue_formset": revenue_formset,
-        "employees_formset": employees_formset,
-        "awards_formset": awards_formset,
-        "events_formset": events_formset,
+        # "survey_form": survey_form,
+        # "positioning_formset": positioning_formset,
+        # "revenue_formset": revenue_formset,
+        # "employees_formset": employees_formset,
+        # "awards_formset": awards_formset,
+        # "events_formset": events_formset,
         "general_info": general_info,
         "methodology_file": methodology_file,
         "charter_file": charter_file,
@@ -401,6 +516,144 @@ def user_dashboard(request):
     }
 
     return render(request, 'user_dashboard.html', context)
+
+
+@login_required
+def user_dashboard(request):
+    profile, created = CompanyProfile.objects.get_or_create(user=request.user)
+
+    survey = CompanySurvey.objects.filter(user=request.user).last()
+    # Проверяем, существует ли анкета для пользователя, если да - редактируем
+
+    if request.method == 'POST':
+        print("postimm")
+        if 'create_survey' in request.POST or 'update_survey' in request.POST:
+            try:
+               survey_form = CompanySurveyForm(request.POST, request.FILES, instance=survey)
+            except:
+                survey = None
+                survey_form = CompanySurveyForm(request.POST, request.FILES)
+
+            PositioningFormSet = modelformset_factory(CompanyPositioning, form=CompanyPositioningForm)
+            RevenueFormSet = modelformset_factory(CompanyRevenue, form=CompanyRevenueForm, extra=0)
+            EmployeesFormSet = modelformset_factory(CompanyEmployees, form=CompanyEmployeesForm, extra=0)
+            AwardsFormSet = modelformset_factory(CompanyAwards, form=CompanyAwardsForm, extra=0)
+            EventsFormSet = modelformset_factory(CompanyEvent, form=CompanyEventForm, extra=0)
+
+            positioning_formset = PositioningFormSet(request.POST or None,
+                                                     queryset=CompanyPositioning.objects.filter(survey=survey),
+                                                     prefix='positioning')
+            print("Non-form errors:", positioning_formset.non_form_errors())
+
+            revenue_formset = RevenueFormSet(request.POST or None,
+                                             queryset=CompanyRevenue.objects.filter(survey=survey), prefix='revenue')
+            employees_formset = EmployeesFormSet(request.POST or None,
+                                                 queryset=CompanyEmployees.objects.filter(survey=survey),
+                                                 prefix='employees')
+            awards_formset = AwardsFormSet(request.POST or None, queryset=CompanyAwards.objects.filter(survey=survey),
+                                           prefix='awards')
+            events_formset = EventsFormSet(request.POST or None, queryset=CompanyEvent.objects.filter(survey=survey),
+                                           prefix='events')
+
+            print(positioning_formset.is_valid(), revenue_formset.is_valid(),employees_formset.is_valid(),awards_formset.is_valid(),events_formset.is_valid(),)
+            # print(request.POST)
+            if survey_form.is_valid():
+                survey = survey_form.save(commit=False)
+                survey.user = request.user
+                survey.save()
+            for formset in [positioning_formset, revenue_formset, employees_formset, awards_formset, events_formset]:
+                # print('savingg', formset)
+                if formset.is_valid():
+                    instances = formset.save(commit=False)
+                    print(formset.deleted_objects)
+                    for instance in instances:
+                        instance.survey = survey
+                        instance.save()
+
+                    # Обработка создания или обновления анкеты
+                    if 'create_survey' in request.POST:
+                        SurveyStatus.objects.create(
+                            survey=survey,
+                            status='draft',
+                            user=request.user
+                        )
+                    if 'update_survey' in request.POST:
+                        # Обновление анкеты (если нужно)
+                        messages.success(request, f'Анкета "{survey.company_name}" успешно обновлена.')
+
+                    return redirect('user_dashboard')
+
+        profile_form = CompanyProfileForm(request.POST, request.FILES, instance=profile)
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        password_form = SinglePasswordChangeForm(request.POST)
+        user_message_form = UserMessageForm(request.POST)
+
+        if profile_form.is_valid():
+            profile_form.save()
+
+        if user_form.is_valid():
+            user_form.save()
+
+        if password_form.is_valid():
+            new_password = password_form.cleaned_data['new_password']
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)  # Обновляем сессию после смены пароля
+            return redirect('user_dashboard')
+
+        if user_message_form.is_valid():
+            user_message_form.save()
+    else:
+        profile_form = CompanyProfileForm(instance=profile)
+        user_form = UserUpdateForm(instance=request.user)
+        password_form = SinglePasswordChangeForm()
+        user_message_form = UserMessageForm()
+
+        # Для редактирования анкеты, если она существует
+        survey_form = CompanySurveyForm(instance=survey) if survey else CompanySurveyForm()
+
+        # Формсеты для анкеты
+        PositioningFormSet = modelformset_factory(CompanyPositioning, form=CompanyPositioningForm, extra=0,
+                                                  can_delete=True)
+        PositioningFormSet = PositioningFormSet(
+            queryset=CompanyPositioning.objects.filter(survey=survey) if survey else CompanyPositioning.objects.none(),
+            prefix='positioning')
+
+        RevenueFormSet = modelformset_factory(CompanyRevenue, form=CompanyRevenueForm, extra=0, can_delete=True)
+        RevenueFormSet = RevenueFormSet(
+            queryset=CompanyRevenue.objects.filter(survey=survey) if survey else CompanyRevenue.objects.none(),
+            prefix='revenue')
+
+        EmployeesFormSet = modelformset_factory(CompanyEmployees, form=CompanyEmployeesForm, extra=0, can_delete=True)
+        EmployeesFormSet = EmployeesFormSet(
+            queryset=CompanyEmployees.objects.filter(survey=survey) if survey else CompanyEmployees.objects.none(),
+            prefix='employees')
+
+        AwardsFormSet = modelformset_factory(CompanyAwards, form=CompanyAwardsForm, extra=0, can_delete=True)
+        AwardsFormSet = AwardsFormSet(
+            queryset=CompanyAwards.objects.filter(survey=survey) if survey else CompanyAwards.objects.none(),
+            prefix='awards')
+
+        EventsFormSet = modelformset_factory(CompanyEvent, form=CompanyEventForm, extra=0, can_delete=True)
+        EventsFormSet = EventsFormSet(
+            queryset=CompanyEvent.objects.filter(survey=survey) if survey else CompanyEvent.objects.none(),
+            prefix='events')
+
+    return render(request, 'user_dashboard.html', {
+        'survey': survey,
+        'profile_form': profile_form,
+        'profile': profile,
+        'user_form': user_form,
+        'password_form': password_form,
+        'user_message_form': user_message_form,
+        'survey_form': survey_form,
+        'positioning_formset': PositioningFormSet,
+        'revenue_formset': RevenueFormSet,
+        'employees_formset': EmployeesFormSet,
+        'awards_formset': AwardsFormSet,
+        'events_formset': EventsFormSet,
+    })
 
 @login_required
 def fill_survey(request):

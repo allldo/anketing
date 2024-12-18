@@ -72,13 +72,17 @@
         <div class="accordeon-body hidden profile">
             <form class="register-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                {{ profile_form.management_form }}
+                {{ user_form.management_form }}
+                {{ password_form.management_form }}
                 <div class="form-group">
                     <label for="{{ user_form.username.id_for_label }}">Логин (email)</label>
                     {{ user_form.username }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ user_form.password.id_for_label }}">Пароль</label>
-                    {{ user_form.password }} <!-- на бэке не работает -->
+
+                    <label for="{{ password_form.password.id_for_label }}">Пароль</label>
+                    {{ password_form }} <!-- на бэке не работает -->
                 </div>
             
                 <div class="form-group">
@@ -182,6 +186,7 @@
                     <div class="subaccordeon-body">
                         <form class="survey_form" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
+
                             {{ survey_form.management_form }}
                             {{ positioning_formset.management_form }}
                             {{ revenue_formset.management_form }}
@@ -229,8 +234,8 @@
                                     <div class="position-inputs__left">
                                         <p class="position-inputs__left-title">Позиционирование</p>
                                         <div class="positions-content" id="position-selects-container">
-                                            <div class="custom-select" >
-                                                {% for form in positioning_formset %}{{ form.service }} {% endfor %}
+                                            <div class="custom-select positioning" >
+                                                {% for form in positioning_formset %}{{ form.id }}{{ form.service }} {% endfor %}
 <!--                                                <select>-->
 <!--                                                    <option value="position1-1">Агентство полного цикла</option>-->
 <!--                                                    <option value="position1-2">Маркетинговые коммуникации / Маркетинговые услуги</option>-->
@@ -276,31 +281,6 @@
                                     Под выручкой понимаются полученные компанией / группой компаний от клиентов средства за вычетом НДС.<br>
                                     Для группы компаний, при доле владения бизнесом 50 % +1 акция и более, выручка консолидируется в размере 100 %. Если доля владения меньше - в качестве показателя выручки для Рейтинга интегрируется доля, соответствующая доле владения.<br>
                                     Для группы компаний данные о выручке представляются по форме ОКУД 0710002 по итогам 2023 года отдельно для каждого из юридических лиц, а затем суммируются.</i>
-                                    <!-- <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Название компании</th>
-                                                <th>ИНН</th>
-                                                <th>Доля владения (%)</th>
-                                                <th>Доля баинга в выручке (%)</th>
-                                                <th>Доля выручки (тыс. рублей)</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                
-                                        <tbody id="revenue-section">
-                                            {{ revenue_formset.management_form }} 
-                                            {% for form in revenue_formset %}
-                                            <tr>
-                                                <td>{{ form.company_name }}</td>
-                                                <td>{{ form.inn }}</td>
-                                                <td>{{ form.ownership_share }}</td>
-                                                <td>{{ form.buying_share }}</td>
-                                                <td>{{ form.revenue_amount }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table> -->
                                 <b class="revenue-price" id="total-revenue"></b>
                                 <div id="revenue-container">
                                 <div class="revenue-inputs revenue_copy" id="revenue_row">
@@ -308,12 +288,14 @@
                                         <span class="revenue-inputs__item-title">Компания</span>
 <!--                                        <input type="text" class="input">-->
                                         {% for form in revenue_formset %}
+                                        {{ form.id }}
                                             {{ form.company_name }}
                                         {% endfor %}
                                     </div>
                                     <div class="revenue-inputs__item" style="max-width: 130px;">
                                         <span class="revenue-inputs__item-title">ИНН</span>
                                         {% for form in revenue_formset %}
+                                        {{ form.id }}
                                             {{ form.inn }}
                                         {% endfor %}
 <!--                                        <input type="text" class="input">-->
@@ -321,6 +303,7 @@
                                     <div class="revenue-inputs__item" style="max-width: 75px;">
                                         <span class="revenue-inputs__item-title">доля владения %</span>
                                         {% for form in revenue_formset %}
+                                        {{ form.id }}
                                             {{ form.ownership_share }}
                                         {% endfor %}
 <!--                                        <input type="number" class="input">-->
@@ -328,6 +311,7 @@
                                     <div class="revenue-inputs__item" style="max-width: 85px;">
                                         <span class="revenue-inputs__item-title">доля баинга в выручке %</span>
                                         {% for form in revenue_formset %}
+                                        {{ form.id }}
                                             {{ form.buying_share }}
                                         {% endfor %}
 <!--                                        <input type="number" class="input">-->
@@ -335,6 +319,7 @@
                                     <div class="revenue-inputs__item" style="max-width: 123px;">
                                         <span class="revenue-inputs__item-title">доля выручки, тыс. руб.*</span>
                                         {% for form in revenue_formset %}
+                                        {{ form.id }}
                                             {{ form.revenue_amount }}
                                         {% endfor %}
 <!--                                        <input type="number" class="input revenue-input" oninput="calculateRevenue()">-->
@@ -357,6 +342,7 @@
                                         <p class="position-inputs__left-title">Компания</p>
                                         <div class="positions-content emp_for_copy_text">
                                             {% for form in employees_formset %}
+                                            {{ form.id }}
                                             {{ form.department  }}
                                             {% endfor %}
 <!--                                            <input class="input input_to_copy_text" type="text">-->
@@ -366,6 +352,7 @@
                                         <p class="position-inputs__right-title">Количество сотрудников</p>
                                         <div class="positions-content emp_for_copy_number">
                                             {% for form in employees_formset %}
+                                            {{ form.id }}
                                             {{ form.employee_count  }}
                                             {% endfor %}
 <!--                                            <input class="input input_to_copy_number" type="number">-->
@@ -404,12 +391,12 @@
                                     <div class="revenue-inputs awards_section" id="award_template">
                                         <div class="revenue-inputs__item">
                                             <span class="revenue-inputs__item-title">Премия</span>
-                                            {% for form in awards_formset %}{{ form.award_name }} {% endfor %}
+                                            {% for form in awards_formset %}{{ form.id }}{{ form.award_name }} {% endfor %}
 <!--                                            <input type="text" class="input">-->
                                         </div>
                                         <div class="revenue-inputs__item">
                                             <span class="revenue-inputs__item-title">Категория премии</span>
-                                            <div class="custom-select">{% for form in awards_formset %}{{ form.award_category }} {% endfor %}
+                                            <div class="custom-select">{% for form in awards_formset %}{{ form.id }}{{ form.award_category }} {% endfor %}
 <!--                                                <select class="category-select" onchange="updateCategoryCounts()">-->
 <!--                                                    <option value="A">А</option>-->
 <!--                                                    <option value="B">Б</option>-->
@@ -420,7 +407,7 @@
                                         <div class="revenue-inputs__item">
                                             <span class="revenue-inputs__item-title">Тип награды</span>
                                             <div class="custom-select">
-                                                {% for form in awards_formset %}{{ form.award_type }} {% endfor %}
+                                                {% for form in awards_formset %}{{ form.id }}{{ form.award_type }} {% endfor %}
 <!--                                                <select class="type-select" onchange="updateCategoryCounts()">-->
 <!--                                                    <option value="shortlist">Шорт лист</option>-->
 <!--                                                    <option value="award">Награда</option>-->
@@ -452,7 +439,7 @@
                                         <div class="revenue-inputs__item" style="width: 130px;">
                                             <span class="revenue-inputs__item-title">Аудитория</span>
                                             <div class="custom-select">
-                                                {% for form in events_formset %} {{ form.audience }} {% endfor %}
+                                                {% for form in events_formset %}{{ form.id }} {{ form.audience }} {% endfor %}
 <!--                                                <select>-->
 <!--                                                    <option value="option1">Студенты</option>-->
 <!--                                                    <option value="option4">Проф. сообщества</option>-->
@@ -462,13 +449,13 @@
 
                                         <div class="revenue-inputs__item" style="width: 70px;">
                                             <span class="revenue-inputs__item-title">Количество участников</span>
-                                            {% for form in events_formset %} {{ form.participant_count }} {% endfor %}
+                                            {% for form in events_formset %}{{ form.id }} {{ form.participant_count }} {% endfor %}
 <!--                                            <input type="number" class="input">-->
                                         </div>
                                         <div class="revenue-inputs__item" style="width: 180px;">
                                             <span class="revenue-inputs__item-title">Формат проведения</span>
                                             <div class="custom-select">
-                                                {% for form in events_formset %} {{ form.event_format }} {% endfor %}
+                                                {% for form in events_formset %}{{ form.id }} {{ form.event_format }} {% endfor %}
 <!--                                                <select>-->
 <!--                                                    <option value="option1">Оффлайн</option>-->
 <!--                                                    <option value="option4">Онлайн</option>-->
@@ -478,7 +465,7 @@
                                         <div class="revenue-inputs__item" style="width: 230px;">
                                             <span class="revenue-inputs__item-title">Формат мероприятия</span>
                                             <div class="custom-select">
-                                                {% for form in events_formset %} {{ form.event_type }} {% endfor %}
+                                                {% for form in events_formset %} {{ form.id }}{{ form.event_type }} {% endfor %}
 <!--                                                <select>-->
 <!--                                                    <option value="option1">Единичное</option>-->
 <!--                                                    <option value="option4">Комплекснная программа</option>-->
@@ -488,7 +475,7 @@
                                         <div class="revenue-inputs__item" style="width: 163px;">
                                             <span class="revenue-inputs__item-title">Статус участия</span>
                                             <div class="custom-select">
-                                                {% for form in events_formset %} {{ form.participation_type }} {% endfor %}
+                                                {% for form in events_formset %} {{ form.id }}{{ form.participation_type }} {% endfor %}
 <!--                                                <select>-->
 <!--                                                    <option value="option1">Организатор</option>-->
 <!--                                                    <option value="option4">Участник</option>-->
@@ -558,15 +545,8 @@
                                         <span class="load_file_survey_text"></span>
 <!--                                        <span class="files-list__item-text">asdasdasdasdadasd</span>-->
 <!--                                        <img src="{% static 'images/chrest.png' %}" alt="">-->
+                                        {{ survey.survey_file.name }}
                                     </li>
-<!--                                    <li class="files-list__item">-->
-<!--                                        <span class="files-list__item-text">asdasdasdasdadasd</span>-->
-<!--                                        <img src="{% static 'images/chrest.png' %}" alt="">-->
-<!--                                    </li>-->
-<!--                                    <li class="files-list__item">-->
-<!--                                        <span class="files-list__item-text">asdasdasdasdadasd</span>-->
-<!--                                        <img src="{% static 'images/chrest.png' %}" alt="">-->
-<!--                                    </li>-->
                                 </ul>
                             </div>
                             <div class="survey_form__btns">
@@ -576,9 +556,8 @@
                                 <button type="button" name="create_survey" value="1" class="btn-primary">Редактировать</button>
                                 <button type="submit" name="create_survey" value="1" class="btn-primary">Сохранить</button>
                                 <button type="submit" name="action" value="submit_for_review" class="btn-primary">Отправить на модерацию</button>
-<!--                            <input type="file" name="survey_file" style="visibility: hidden" accept="image/*" required="" id="survey_loader">-->
+                            <input type="file" name="survey_file" style="visibility: hidden" accept="image/*" id="survey_loader">
                             </div>
-
                         </form>
                     </div>
                 </li>
@@ -1263,17 +1242,21 @@ function calculateRevenue() {
         categoryCounts.C.grandprix;
 
 }
-
 function addRevenueRow(deleteStr) {
-const container = document.getElementById("revenue-container");
-    if (deleteStr ==="delete"){
-    container.removeChild(container.lastElementChild);
-    }
-    else{
-
+    const container = document.getElementById("revenue-container");
+    const totalFormsInput = document.getElementById("id_revenue-TOTAL_FORMS");
 
     if (!container) {
         console.error("Container with ID 'revenue-container' not found.");
+        return;
+    }
+
+    if (deleteStr === "delete") {
+        const lastRow = container.lastElementChild;
+        if (lastRow) {
+            container.removeChild(lastRow);
+            totalFormsInput.value = parseInt(totalFormsInput.value) - 1; // Уменьшаем общее количество форм
+        }
         return;
     }
 
@@ -1283,22 +1266,36 @@ const container = document.getElementById("revenue-container");
         return;
     }
 
+    // Получаем индекс новой строки
+    const formIndex = totalFormsInput.value;
+
+    // Клонируем строку
     const newRow = firstRow.cloneNode(true);
 
-    const inputs = newRow.querySelectorAll("input");
-    inputs.forEach((input) => {
-        input.value = "";
-    });
+    // Очищаем значения в полях и обновляем атрибуты
+    const inputs = newRow.querySelectorAll("input, select, textarea");
+    const newInput = document.createElement("input");
+    newInput.type = "hidden";
+    newInput.name = `revenue-${formIndex}-id`;  // Пример с индексом
+    newInput.id = `id_revenue-${formIndex}-id`;
+    container.appendChild(newInput);
+    console.log(newInput);
+    // Увеличиваем общее количество форм
+    totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
 
+    // Добавляем новую строку в контейнер
     container.appendChild(newRow);
-    }
 }
+
+
     function add_emp_number_row(deleteStr, text_class, number_class, input_text, input_number) {
     if (deleteStr === "delete"){
     const firstRow = document.querySelector("."+text_class);
     const secondRow = document.querySelector("."+number_class);
     firstRow.removeChild(firstRow.lastElementChild);
     secondRow.removeChild(secondRow.lastElementChild);
+        //var form_idx = $('#id_form-TOTAL_FORMS').val();
+    //$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1);
     }
     else{
 
@@ -1327,6 +1324,8 @@ const container = document.getElementById("revenue-container");
 
     container.appendChild(newRow);
     container2.appendChild(newRow2);
+        //var form_idx = $('#id_form-TOTAL_FORMS').val();
+    //$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
     }
 }
     function add_awards_row(deleteStr){
@@ -1339,6 +1338,8 @@ const container = document.getElementById("revenue-container");
     // Удаляем последний элемент, если их больше одного
     if (rows.length > 1) {
         container.removeChild(rows[rows.length - 1]);
+         //   var form_idx = $('#id_form-TOTAL_FORMS').val();
+    //$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1);
     } else {
         alert("Нельзя удалить последнюю строку!");
     }
@@ -1360,51 +1361,110 @@ const container = document.getElementById("revenue-container");
 
     // Добавляем клон в контейнер
     container.appendChild(clone);
+        //var form_idx = $('#id_form-TOTAL_FORMS').val();
+   // $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
     }
     }
-let rowCount = 1; // Счётчик строк
 
 function add_row_pos_update() {
-    rowCount++; // Увеличиваем счётчик строк
+    // Получаем все элементы с id, содержащими 'positioning-'
+    const existingIds = document.querySelectorAll('[id^="id_positioning-"]');
+    let maxIndex = 0;
+
+    // Находим максимальный индекс среди существующих id
+    existingIds.forEach((element) => {
+        const match = element.id.match(/positioning-(\d+)-/); // Ищем числа в id
+        if (match) {
+            const index = parseInt(match[1], 10);
+            maxIndex = Math.max(maxIndex, index);
+        }
+    });
+
+    // Новый индекс будет больше максимального на 1
+    const rowCount = maxIndex + 1;
+
+    // Создаем новый div с классом custom-select
     const customSelectDiv = document.createElement('div');
     customSelectDiv.classList.add('custom-select');
-    const select = document.createElement('select');
-    select.innerHTML = `
-        <option value="position${rowCount}-1">Маркетинговые коммуникации / Маркетинговые услуги</option>
-        <option value="position${rowCount}-2">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
-        <option value="position${rowCount}-3">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>
-        <option value="position${rowCount}-4">Маркетинговые коммуникации / Маркетинговые услуги</option>
-        <option value="position${rowCount}-5">Политические коммуникации / Политическое консультирование</option>
-        <option value="position${rowCount}-6">Рекламные коммуникации / Реклама</option>
-        <option value="position${rowCount}-7">Событийные коммуникации / Мероприятия / Event</option>
-        <option value="position${rowCount}-8">Цифровые коммуникации / Digital</option>
-        <option value="position${rowCount}-9">Агентство полного цикла</option>
-    `;
-customSelectDiv.appendChild(select);
 
-    // Добавляем новый div.custom-select в контейнер
+    // Создаем скрытый input для id
+    const hiddenInputId = document.createElement('input');
+    hiddenInputId.type = 'hidden';
+    hiddenInputId.name = `positioning-${rowCount}-id`;  // Имя для id
+    hiddenInputId.id = `id_positioning-${rowCount}-id`;  // id для скрытого инпута
+    hiddenInputId.value = ''; // Устанавливаем значение id пустым, для новой строки
+    customSelectDiv.appendChild(hiddenInputId);
+
+    // Создаем select
+    const select = document.createElement('select');
+    select.name = `positioning-${rowCount}-service`;  // Имя для select элемента
+    select.id = `id_positioning-${rowCount}-service`;  // id для select элемента
+
+    // Добавляем варианты в select
+    select.innerHTML = `
+        <option value="students" selected>Агентство полного цикла</option>
+        <option value="service">Маркетинговые коммуникации / Маркетинговые услуги</option>
+        <option value="explore">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
+        <option value="commune">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>
+        <option value="consult">Политические коммуникации / Политическое консультирование</option>
+        <option value="ads">Рекламные коммуникации / Реклама</option>
+        <option value="event">Событийные коммуникации / Мероприятия / Event</option>
+        <option value="digital">Цифровые коммуникации / Digital</option>
+    `;
+    customSelectDiv.appendChild(select);
+
+    // Добавляем customSelectDiv в контейнер для select
     document.getElementById('position-selects-container').appendChild(customSelectDiv);
 
-    // Создаём новый input для распределения выручки
+    // Создаем новый input для распределения выручки
     const input = document.createElement('input');
     input.classList.add('input');
     input.type = 'number';
-
-    // Добавляем input в контейнер
+    input.name = `positioning-${rowCount}-revenue_share`;  // Имя для поля распределения выручки
+    input.id = `id_positioning-${rowCount}-revenue_share`;  // id для input элемента
     document.getElementById('position-inputs-container').appendChild(input);
+
+    // Обновляем TOTAL_FORMS, чтобы отслеживать количество форм
+    const totalFormsInput = document.getElementById('id_positioning-TOTAL_FORMS');
+    totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
 }
 
+
 function remove_row_update() {
-    if (rowCount > 0) {
-        // Удаляем последний select и input
+    const totalFormsInput = document.getElementById('id_positioning-TOTAL_FORMS');
+
+        // Удаляем последний select и input для позиции
         const selects = document.querySelectorAll('#position-selects-container select');
         const inputs = document.querySelectorAll('#position-inputs-container input');
-        const select = document.getElementById('position-selects-container');
-        select.removeChild(select.lastElementChild);
-        inputs[inputs.length - 1].remove();
 
-        rowCount--; // Уменьшаем счётчик строк
-    }
+        // Удаляем последний select
+        const select = selects[selects.length - 1];
+        select.remove();  // Удаляем весь div, содержащий select
+
+        // Удаляем последний input для распределения выручки
+        const input = inputs[inputs.length - 1];
+        input.remove();  // Удаляем input для выручки
+        const existingIds = document.querySelectorAll('[id^="id_positioning-"]');
+        let maxIndex = 0;
+
+        // Находим максимальный индекс среди существующих id
+        existingIds.forEach((element) => {
+            const match = element.id.match(/positioning-(\d+)-/); // Ищем числа в id
+            if (match) {
+                const index = parseInt(match[1], 10);
+                maxIndex = Math.max(maxIndex, index);
+            }
+        });
+
+        const hiddenInputId = document.getElementById(`id_positioning-${maxIndex}-id`);
+        console.log(hiddenInputId);
+        if (hiddenInputId) {
+            hiddenInputId.remove();  // Удаляем скрытый input для id
+        }
+
+        // Обновляем значение TOTAL_FORMS
+        totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
+
 }
 
 

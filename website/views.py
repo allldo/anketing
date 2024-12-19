@@ -98,7 +98,7 @@ def moderator_dashboard(request):
             survey = CompanySurvey.objects.get(id=survey_id)
             SurveyStatus.objects.create(
                 survey=survey,
-                status=new_status
+                status=new_status, user=request.user
             )
         except CompanySurvey.DoesNotExist:
             print('Анкета не найдена')

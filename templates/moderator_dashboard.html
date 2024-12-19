@@ -301,16 +301,17 @@
                                 <label for="{{ survey_data.survey.user_comment.id_for_label }}">+ Коментарий</label>
                                 <div class="form-text">
                                     <div class="form-text__title">
-                                        {{ survey_data.survey.user_comment. }}
+                                        {{ survey_data.survey.user_comment }}
                                     </div>
                                 </div>
                             </div>
                             <div class="comment">
                                 <textarea class="comment-textarea"></textarea>
+                                <input type="hidden" name="survey_id" value="{{ survey_data.survey.id }}">
                                 <div class="btns">
-                                    <button type="submit" class="btn-primary">На доработку</button>
-                                    <button type="submit" class="btn-primary">Одобрено</button>
-                                    <button type="submit" class="btn-primary">Принято</button>
+                                    <button type="submit" name="edit_status" value="return" class="btn-primary">На доработку</button>
+                                    <button type="submit" name="edit_status" value="approved" class="btn-primary">Одобрено</button>
+                                    <button type="submit" name="edit_status" class="btn-primary">Принято</button>
                                 </div>
                             </div>
                         </form>

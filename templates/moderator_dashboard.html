@@ -100,8 +100,9 @@
             <p class="accordeon-title__text">Анкеты 2025</p>
         </div>
         <div class="accordeon-body hidden">
-          {% for company_name, surveys in company_surveys.items %}
+
             <ul class="subaccordeon ankets" id="ankets">
+                {% for company_name, surveys in company_surveys.items %}
                 <li class="subaccordeon-item">
                     <div class="subaccordeon-header">
                         <div class="subaccordeon-header__company">
@@ -316,8 +317,9 @@
                       {% endfor %}
                     </div>
                 </li>
+                {% endfor %}<!-- для company name и surveys -->
             </ul>
-         {% endfor %}<!-- для company name и surveys -->
+
         </div>
     </li>
     <li class="accordeon-item">
@@ -328,6 +330,7 @@
         </div>
         <div class="accordeon-body ankets-sub">
             <ul class="subaccordeon participans" id="participans">
+<!--                {% %}-->
                 <li class="subaccordeon-item">
                     <div class="subaccordeon-header">
                         <div class="subaccordeon-header__company">
@@ -414,6 +417,7 @@
                         </form>
                     </div>
                 </li>
+<!--                {% %}-->
             </ul>
         </div>
     </li>

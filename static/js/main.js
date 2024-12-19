@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     makeAccordeon()
     toggleForms()
     makeSubAccordeon('current-archive')
+    chooseImgLogo()
   }
 
   if (urlPath.includes('moderator')) {
@@ -17,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     makeSubAccordeon('mod-archive')
     makeSubAccordeon('ankets')
     makeSubAccordeon('participans')
+    chooseImgModerator()
+    chooseDocument()
   }
 })
 
@@ -100,6 +103,53 @@ function chooseImgSurvey() {
 //        console.log('files', inputImg.value);
 //      })
   }
+}
+
+function chooseImgModerator() {
+  const generalList = document.querySelector('.general-list')
+  const generalItems = generalList.querySelectorAll('.general-list__item')
+  console.log('generalItems', generalItems);
+  for (const item of generalItems) {
+    const input = item.querySelector('input')
+    const btn = item.querySelector('button')
+    const imgText = item.querySelector('.general-list__item-link')
+    console.log('imgText', imgText);
+
+    btn.addEventListener('click', () => {
+      input.click()
+    })
+
+    input.addEventListener('change', (e) => {
+      const files = e.target.files
+    
+      if (files.length) {
+        imgText.textContent = files[0].name
+      } else {
+        imgText.textContent = ''
+      }
+      console.log('e', e);
+    })
+  }
+}
+
+function chooseImgLogo() {
+  const btnsList = document.querySelector('.survey_form__btns')
+  const chooseLogoBtn = btnsList.querySelector('#choose-logo')
+  const input = btnsList.querySelector('#choose-logo-input')
+
+  chooseLogoBtn.addEventListener('click', () => {
+    input.click()
+  })
+}
+
+function chooseDocument() {
+  const btnsList = document.querySelector('.survey_form__btns')
+  const chooseLogoBtn = btnsList.querySelector('#choose-logo')
+  const input = btnsList.querySelector('#choose-doc-input')
+
+  chooseLogoBtn.addEventListener('click', () => {
+    input.click()
+  })
 }
 
 function makeAccordeon() {

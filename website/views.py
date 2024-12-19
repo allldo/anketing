@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login,authenticate
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import (GeneralInfo,CompanySurvey, CompanyProfile, CompanyPositioning, CompanyEvent,
                      CompanyRevenue, CompanyAwards,
                     CompanyEmployees, SurveyStatus)
@@ -529,13 +531,44 @@ def user_dashboardqqqq(request):
     return render(request, 'user_dashboard.html', context)
 
 
+@csrf_exempt
 @login_required
 def user_dashboard(request):
     profile, created = CompanyProfile.objects.get_or_create(user=request.user)
     survey = CompanySurvey.objects.filter(user=request.user).last()
-
+    general_info, created = GeneralInfo.objects.get_or_create(
+        id=1,
+        defaults={
+            'methodology_file': '',
+            'charter_file': '',
+            'results_file': '',
+        }
+    )
+    methodology_file = general_info.methodology_file.name.split('/')[-1] if general_info.methodology_file else 'No File'
+    charter_file = general_info.charter_file.name.split('/')[-1] if general_info.charter_file else 'No File'
+    results_file = general_info.results_file.name.split('/')[-1] if general_info.results_file else 'No File'
     if request.method == 'POST':
         print("POST request received.")
+        profile_form = CompanyProfileForm(request.POST, instance=profile)
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        password_form = SinglePasswordChangeForm(request.POST)
+        user_message_form = UserMessageForm(request.POST)
+        print(request.POST)
+        if profile_form.is_valid():
+            profile_form.save()
+
+        print(profile_form.errors)
+
+        if user_form.is_valid():
+            user_form.save()
+
+        if password_form.is_valid():
+            new_password = password_form.cleaned_data['new_password']
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)
+            return redirect('user_dashboard')
         if 'create_survey' in request.POST or 'update_survey' in request.POST or 'submit_for_review' in request.POST:
             # Попытка получить или создать анкету
             survey_form = CompanySurveyForm(request.POST, request.FILES,instance=survey)
@@ -609,24 +642,7 @@ def user_dashboard(request):
                 return redirect('user_dashboard')
 
         # Профиль, пользователь, пароль и сообщения
-        profile_form = CompanyProfileForm(request.POST, request.FILES, instance=profile)
-        user_form = UserUpdateForm(request.POST, instance=request.user)
-        password_form = SinglePasswordChangeForm(request.POST)
-        user_message_form = UserMessageForm(request.POST)
 
-        if profile_form.is_valid():
-            profile_form.save()
-
-        if user_form.is_valid():
-            user_form.save()
-
-        if password_form.is_valid():
-            new_password = password_form.cleaned_data['new_password']
-            user = request.user
-            user.set_password(new_password)
-            user.save()
-            update_session_auth_hash(request, user)
-            return redirect('user_dashboard')
 
         if user_message_form.is_valid():
             user_message_form.save()
@@ -686,6 +702,10 @@ def user_dashboard(request):
         'employees_formset': EmployeesFormSet,
         'awards_formset': AwardsFormSet,
         'events_formset': EventsFormSet,
+        "general_info": general_info,
+        "methodology_file": methodology_file,
+        "charter_file": charter_file,
+        "results_file": results_file
     })
 
 @login_required

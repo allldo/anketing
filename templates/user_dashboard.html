@@ -72,49 +72,46 @@
         <div class="accordeon-body hidden profile">
             <form class="register-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ profile_form.management_form }}
-                {{ user_form.management_form }}
-                {{ password_form.management_form }}
                 <div class="form-group">
-                    <label for="{{ user_form.username.id_for_label }}">Логин (email)</label>
+                    <label>Логин (email)</label>
                     {{ user_form.username }}
                 </div>
                 <div class="form-group">
 
-                    <label for="{{ password_form.password.id_for_label }}">Пароль</label>
+                    <label>Пароль</label>
                     {{ password_form }} <!-- на бэке не работает -->
                 </div>
             
                 <div class="form-group">
-                    <label for="{{ company_form.email_for_newsletters.id_for_label }}">Email для новостей/рассылок НР2К</label>
+                    <label for="{{ profile_form.email_for_newsletters.id_for_label }}">Email для новостей/рассылок НР2К</label>
                     {{ profile_form.email_for_newsletters }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ company_form.company_name_full.id_for_label }}">Название компании (полное)</label>
+                    <label for="{{ profile_form.company_name_full.id_for_label }}">Название компании (полное)</label>
                     {{ profile_form.company_name_full }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ company_form.company_name_short.id_for_label }}">Название компании (краткое)</label>
+                    <label for="{{ profile_form.company_name_short.id_for_label }}">Название компании (краткое)</label>
                     {{ profile_form.company_name_short }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ company_form.postal_code.id_for_label }}">Почтовый индекс</label>
+                    <label for="{{ profile_form.postal_code.id_for_label }}">Почтовый индекс</label>
                     {{ profile_form.postal_code }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ company_form.postal_address.id_for_label }}">Почтовый адрес (для корреспонденции)</label>
+                    <label for="{{ profile_form.postal_address.id_for_label }}">Почтовый адрес (для корреспонденции)</label>
                     {{ profile_form.postal_address }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ company_form.responsible_email.id_for_label }}">Email ответственного</label>
+                    <label for="{{ profile_form.responsible_email.id_for_label }}">Email ответственного</label>
                     {{ profile_form.responsible_email }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ company_form.responsible_name.id_for_label }}">Имя и фамилия ответственного</label>
+                    <label for="{{ profile_form.responsible_name.id_for_label }}">Имя и фамилия ответственного</label>
                     {{ profile_form.responsible_name }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ company_form.responsible_phone.id_for_label }}">Телефон ответственного</label>
+                    <label for="{{ profile_form.responsible_phone.id_for_label }}">Телефон ответственного</label>
                     {{ profile_form.responsible_phone }}
                 </div>
                 <div class="form-group register-img">
@@ -142,7 +139,7 @@
             
                 <div class="form-btns">
                     <button type="button" class="btn-primary" id="btn-change-form">Редактировать</button>
-                    <button class="btn-primary--disabled" disabled type="submit" id="btn-submit-form">Сохранить</button>
+                    <button class="btn-primary--disabled" name="edit_profile" disabled type="submit" id="btn-submit-form">Сохранить</button>
                 </div>
             </form>
         </div>

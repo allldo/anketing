@@ -144,7 +144,6 @@ def moderator_dashboard(request):
         survey_count=Count('user__surveys')
     ).filter(survey_count__gt=0)
 
-
     context = {
         'general_info_form': form,
         'company_surveys': company_surveys,

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum
+
 
 class CompanyProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='company_profile')
@@ -157,7 +159,17 @@ class CompanyRevenue(models.Model):
 
     def __str__(self):
         return f"{self.company_name} (ИНН: {self.inn}) - Выручка: {self.revenue_amount} тыс. руб."
-    
+
+    def calculate_total_revenue_for_survey(self):
+        """
+        Считает общую выручку для всех объектов CompanyRevenue,
+        привязанных к указанной анкете.
+        """
+        total_revenue = CompanyRevenue.objects.filter(survey=self.survey).aggregate(
+            total=Sum('revenue_amount')
+        )['total']
+        return total_revenue or 0
+
 class CompanyEvent(models.Model):
     EVENT_FORMAT_CHOICES = [
         ('online', 'Онлайн'),

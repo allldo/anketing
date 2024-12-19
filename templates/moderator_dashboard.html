@@ -97,63 +97,59 @@
             <p class="accordeon-title__text">Анкеты 2025</p>
         </div>
         <div class="accordeon-body hidden">
+          {% for company_name, surveys in company_surveys.items %}
             <ul class="subaccordeon ankets" id="ankets">
                 <li class="subaccordeon-item">
                     <div class="subaccordeon-header">
                         <div class="subaccordeon-header__company">
                             <img src="{% static 'images/plus.svg' %}" class="subaccordeon-item__open-symbol--plus" />
                             <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
-                            <span class="subaccordeon-header__company-title">EMG</span>
+                            <span class="subaccordeon-header__company-title">{{ company_name }}</span>
                         </div>
                     </div>
                     <div class="subaccordeon-body hidden" style="margin-left: 20px;">
+<!--                      {{ surveys }}-->
+                      {% for survey_data in surveys %}
+                    {{ survey_data }}
                         <form class="anket_form" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
 
-                            {{ survey_form.management_form }}
-                            {{ positioning_formset.management_form }}
-                            {{ revenue_formset.management_form }}
-                            {{ employees_formset.management_form }}
-                            {{ awards_formset.management_form }}
-                            {{ events_formset.management_form }}
+                            {{ survey_data.survey.management_form }}
+                            {{ survey_data.survey.positionings.management_form }}
+                            {{ survey_data.survey.revenues.management_form }}
+                            {{ survey_data.survey.employees.management_form }}
+                            {{ survey_data.survey.awards.management_form }}
+                            {{ survey_data.survey.events.management_form }}
                             <div class="form-group">
-                                <label for="{{ survey_form.company_name.id_for_label }}">1. Фирменное название компании, под которым компания или группа компаний позиционирует себя на рынке</label>
+                                <label for="{{ survey_data.survey.company_name.id_for_label }}">1. Фирменное название компании, под которым компания или группа компаний позиционирует себя на рынке</label>
+
+
+<div class="form-text"><p class="form-text__title">{{ survey_data.survey.company_name }}</p></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ survey_data.survey.company_address.id_for_label }}">2. Адрес головного офиса компании (представительства и головной компании для международных сетевыхх компаний)</label>
                                 <div class="form-text">
-                                    <p class="form-text__title">fff</p>
-                                    <p class="form-text__title">fff</p>
-                                    <p class="form-text__title">fff</p>
+                                    <p class="form-text__title">{{ survey_data.survey.company_address }}</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="{{ survey_form.company_address.id_for_label }}">2. Адрес головного офиса компании (представительства и головной компании для международных сетевыхх компаний)</label>
+                                <label for="{{ survey_data.survey.specialization.id_for_label }}">3. Основная специализация компании</label>
                                 <div class="form-text">
-                                    <p class="form-text__title">asd</p>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.specialization.id_for_label }}">3. Основная специализация компании</label>
-                                <div class="form-text">
-                                    <p class="form-text__title"></p>
+                                    <p class="form-text__title">{{ survey_data.survey.specialization }}</p>
                                 </div>
                             </div>
                             <div class="form-group position">
-                                <label for="{{ positioning_formset.service.id_for_label }}">4. Приоритетное позиционирование компании</label>
+                                <label for="{{ survey_data.survey.service.id_for_label }}">4. Приоритетное позиционирование компании</label>
                                 <div class="form-text">
-                                    <p class="form-text__title">60% - Маркетинговые коммуникации / Маркетинговые услуги 
+                                    <p class="form-text__title">{{ survey_data.survey.specialization }}
                                     </p>
-                                    <p class="form-text__title">20% - Политические коммуникации / Политическое консультирование 
- 
-                                    </p>
-                                    <div class="form-text__title">
-                                        10% - Рекламные коммуникации / Реклама 
-                                    </div>
                                 </div>
                             </div>
                             <div class="form-group geography">
-                                <label for="{{ survey_form.geography_activity.id_for_label }}">5. Укажите Географию активности компании</label>
+                                <label for="{{ survey_data.survey.geography_activity.id_for_label }}">5. Укажите Географию активности компании</label>
                                 <div class="form-text">
                                     <div class="form-text__title">
-                                        "Федеральный уровень": более 50% проектов агентства в течение годе реализованы в 2-х и более ФО РФ, либо же на федеральном уровне. Агентства, работающие в столице, не являются "федеральными" по умолчанию.
+                                      {{ survey_data.survey.geography_activity }}
                                     </div>
                                 </div>
                             </div>
@@ -161,53 +157,42 @@
                                 <label >6. Совокупная выручка от осуществления коммуникационной деятельности Вашей компанией или группой компаний, полученная:</label>
                                 <div class="form-text">
                                     <div class="form-text__title">
-                                        Совокупная выручка: 230 000 000
+                                        Совокупная выручка: {% for revenue in survey_data.revenues %}{{ revenue.calculate_total_revenue_for_survey }} {% endfor %}
                                     </div>
+                                    {% for revenue in survey_data.revenues %}
+
                                     <div class="form-text__title grid">
                                         <span class="grid-item">
-                                            EMG -1
+                                            {{ revenue.company_name }}
                                         </span>
-                                        <div class="grid-item">12345678901</div>
-                                        <div class="grid-item">10%</div>
-                                        <div class="grid-item">20%</div>
-                                        <div class="grid-item">46 000 000</div>
+                                        <div class="grid-item">{{ revenue.inn }}</div>
+                                        <div class="grid-item">{{ revenue.ownership_share }}</div>
+                                        <div class="grid-item">{{ revenue.buying_share }}</div>
+                                        <div class="grid-item">{{ revenue.revenue_amount }}</div>
                                     </div>
-                                    <div class="form-text__title grid">
-                                        <span class="grid-item">
-                                            EMG -1
-                                        </span>
-                                        <div class="grid-item">12345678901</div>
-                                        <div class="grid-item">10%</div>
-                                        <div class="grid-item">20%</div>
-                                        <div class="grid-item">46 000 000</div>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="form-group position">
                                 <label>7. Количество сотрудников компании (группы компаний) на конец года:</label>
+                                {% for employee in survey_data.employees %}
+
                                 <div class="form-text">
-                                    <div class="form-text__title">
-                                        Совокупная выручка: 230 000 000
-                                    </div>
                                     <div class="form-text__title grid">
                                         <span class="grid-item">
-                                            EMG -1
+                                            {{ employee.department }}
                                         </span>
-                                        <div class="grid-item">12345678901</div>
-                                    </div>
-                                    <div class="form-text__title grid">
-                                        <span class="grid-item">
-                                            EMG -1
-                                        </span>
-                                        <div class="grid-item">46 000 000</div>
+                                        <div class="grid-item">{{employee.employee_count}}</div>
                                     </div>
                                 </div>
+
+                                {% endfor%}
                             </div>
                             <div class="form-group">
-                                <label for="{{ survey_form.company_age.id_for_label }}">8. Возраст компании</label>
+                                <label for="{{ survey_data.survey.company_age.id_for_label }}">8. Возраст компании</label>
                                 <div class="form-text">
                                     <div class="form-text__title">
-                                        50
+                                        {{ survey_data.survey.company_age }}
                                     </div>
                                 </div>
                             </div>
@@ -257,43 +242,43 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="{{ survey_form.company_age.id_for_label }}">11. Количество сотрудников, входящих в экспертные/наблюдательные советы профессиональных организаций/мероприятий, выступающих с профильными докладами на отраслевых мероприятиях</label>
+                                <label for="{{ survey_data.survey.num_expert_employees.id_for_label }}">11. Количество сотрудников, входящих в экспертные/наблюдательные советы профессиональных организаций/мероприятий, выступающих с профильными докладами на отраслевых мероприятиях</label>
                                 <div class="form-text">
                                     <div class="form-text__title">
-                                        50
+                                        {{ survey_data.survey.num_expert_employees }}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="{{ survey_form.company_age.id_for_label }}">12. Количество сотрудников компании, работающих в ней более 3 лет </label>
+                                <label for="{{ survey_data.survey.num_employees_over_3_years.id_for_label }}">12. Количество сотрудников компании, работающих в ней более 3 лет </label>
                                 <div class="form-text">
                                     <div class="form-text__title">
-                                        50
+                                        {{ survey_data.survey.num_employees_over_3_years }}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="{{ survey_form.company_age.id_for_label }}">13. Количество сотрудников компании, работающих в коммуникациях более 3 лет</label>
+                                <label for="{{ survey_data.survey.num_employees_in_communications.id_for_label }}">13. Количество сотрудников компании, работающих в коммуникациях более 3 лет</label>
                                 <div class="form-text">
                                     <div class="form-text__title">
-                                        50
+                                       {{ survey_data.survey.num_employees_in_communications }}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group position">
-                                <label>14. Количество профессиональных сертификатов, а также государственных наград, полученных сотрудниками компании за профессиональную деятельность</label>
+                                <label for="{{ survey_data.survey.num_government_awards.id_for_label }}">14. Количество профессиональных сертификатов, а также государственных наград, полученных сотрудниками компании за профессиональную деятельность</label>
                                 <div class="form-text">
                                     <div class="form-text__title grid">
                                         <span class="grid-item">
                                             Госнаграды РФ
                                         </span>
-                                        <div class="grid-item">11</div>
+                                        <div class="grid-item">{{ survey_data.survey.num_government_awards }}</div>
                                     </div>
                                     <div class="form-text__title grid">
                                         <span class="grid-item">
                                             Профильные сертификаты РАСО, IABC, АКОС
                                         </span>
-                                        <div class="grid-item">10</div>
+                                        <div class="grid-item">{{ survey_data.survey.num_certificates }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -306,9 +291,11 @@
                                 </div>
                             </div>
                         </form>
+                      {% endfor %}
                     </div>
                 </li>
             </ul>
+         {% endfor %}<!-- для company name и surveys -->
         </div>
     </li>
     <li class="accordeon-item">

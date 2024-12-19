@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
   if (urlPath.includes('register') || urlPath.includes('dashboard')) {
     chooseImg();
-    chooseImgSurvey()
   }
 
   if (urlPath.includes('dashboard')) {
@@ -11,15 +10,21 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleForms()
     makeSubAccordeon('current-archive')
     chooseImgLogo()
+    chooseDocument()
+    chooseFileDocument()
   }
 
   if (urlPath.includes('moderator')) {
+    chooseImg()
     makeAccordeon()
     makeSubAccordeon('mod-archive')
     makeSubAccordeon('ankets')
     makeSubAccordeon('participans')
+
     chooseImgModerator()
     chooseDocument()
+
+    validateCheckboxes()
   }
 })
 
@@ -64,47 +69,6 @@ function chooseImg() {
   }
 }
 
-function chooseImgSurvey() {
-  const inputImg = document.querySelector('#survey_loader')
-  const inputImgBtn =  document.querySelector('.load_file_survey')
-//  const inputImgBtnDelete =  document.querySelector('.register-img__btn--delete')
-  const imgText = document.querySelector('.load_file_survey_text')
-
-  console.log('inputImgBtnSurvey', inputImgBtn);
-
-  if (inputImgBtn) {
-    inputImgBtn.addEventListener('click', (e) => {
-      console.log('inputImg', inputImg);
-      e.preventDefault()
-      inputImg.click()
-    })
-  }
-
-  if (inputImgBtn) {
-
-      inputImg.addEventListener('change', (e) => {
-        const files = e.target.files
-
-        if (files.length) {
-          imgText.textContent = files[0].name
-//          inputImgBtnDelete.classList.remove('hidden')
-        } else {
-          imgText.textContent = ''
-//          inputImgBtnDelete.classList.add('hidden')
-        }
-        console.log('e', e);
-      })
-
-//      inputImgBtnDelete.addEventListener('click', () => {
-//        console.log('inputImg', inputImg.value);
-//        inputImg.value = ''
-//        imgText.textContent = ''
-////        inputImgBtnDelete.classList.add('hidden')
-//        console.log('files', inputImg.value);
-//      })
-  }
-}
-
 function chooseImgModerator() {
   const generalList = document.querySelector('.general-list')
   const generalItems = generalList.querySelectorAll('.general-list__item')
@@ -144,12 +108,63 @@ function chooseImgLogo() {
 
 function chooseDocument() {
   const btnsList = document.querySelector('.survey_form__btns')
-  const chooseLogoBtn = btnsList.querySelector('#choose-logo')
+  const chooseDocBtn = btnsList.querySelector('#choose-doc')
   const input = btnsList.querySelector('#choose-doc-input')
 
-  chooseLogoBtn.addEventListener('click', () => {
+  chooseDocBtn.addEventListener('click', () => {
     input.click()
   })
+}
+
+function chooseFileDocument() {
+  const btnsList = document.querySelector('.survey_form__btns')
+  const chooseFileBtn = btnsList.querySelector('#choose-file-doc')
+  const input = btnsList.querySelector('#choose-doc-input')
+
+  const filesList = document.querySelector('.form-files-list')
+  const filesListItems = filesList.querySelectorAll('.files-list__item')
+  const btnDeleteList = filesList.querySelectorAll('button')
+  console.log('filesList', filesList);
+
+  chooseFileBtn.addEventListener('click', () => {
+    input.click()
+  })
+
+  input.addEventListener('change', (e) => {
+    const files = e.target.files
+
+    if (files.length) {
+      for (const file of files) {
+        const li = document.createElement('li')
+        li.classList.add('files-list__item')
+        const p = document.createElement('p')
+        p.classList.add('files-list__item-text')
+        p.innerHTML = file.name
+
+        const btn = document.createElement('button')
+        btn.classList.add('files-list__item-delete')
+
+        const img = document.createElement('img')
+        img.src = '../static/images/chrest.svg'
+
+        btn.appendChild(img)
+
+        li.appendChild(p)
+        li.appendChild(btn)
+        filesList.appendChild(li)
+      }
+    }
+  })
+
+  if (filesListItems && filesListItems.length) {
+    for (let i = 0; i < filesListItems.length; i++) {
+      const btnDelete = filesListItems[i].querySelector('button')
+
+      btnDelete.addEventListener('click', () => {
+        filesListItems[i].remove()
+      })
+    }
+  }
 }
 
 function makeAccordeon() {
@@ -263,4 +278,8 @@ function toggleForms() {
     submitBtn.classList.remove('btn-primary--disabled')
     submitBtn.classList.add('btn-primary')
   })
+}
+
+function validateCheckboxes() {
+
 }

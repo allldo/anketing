@@ -227,16 +227,6 @@
                                     <div class="positions-content" id="position-selects-container">
                                         <div class="custom-select positioning" >
                                             {% for form in positioning_formset %}{{ form.id }}{{ form.service }} {% endfor %}
-<!--                                                <select>-->
-<!--                                                    <option value="position1-1">Агентство полного цикла</option>-->
-<!--                                                    <option value="position1-2">Маркетинговые коммуникации / Маркетинговые услуги</option>-->
-<!--                                                    <option value="position1-3">Коммуникационные исследования и аналитика / Исследования и аналитика</option>-->
-<!--                                                    <option value="position1-4">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>-->
-<!--                                                    <option value="position1-6">Политические коммуникации / Политическое консультирование</option>-->
-<!--                                                    <option value="position1-7">Рекламные коммуникации / Реклама</option>-->
-<!--                                                    <option value="position1-8">Событийные коммуникации / Мероприятия / Event</option>-->
-<!--                                                    <option value="position1-9">Цифровые коммуникации / Digital</option>-->
-<!--                                                </select>-->
                                         </div>
                                     </div>
                                 </div>
@@ -574,25 +564,32 @@
                         </div>
                         <div class="form-group files">
                             <label>15. Прикрепленные файлы</label>
-                            <ul class="files-list" style="list-style-type: none;">
+                            <ul class="form-files-list">
                                 <li class="files-list__item">
-                                    <span class="load_file_survey_text"></span>
-<!--                                        <span class="files-list__item-text">asdasdasdasdadasd</span>-->
-                                    <!-- <img src="{% static 'images/chrest.png' %}" alt=""> -->
-                                    {{ survey.survey_file.name }}
+                                    <p class="files-list__item-text">asdfasf</p>
+                                    <button type="button" class="files-list__item-delete">
+                                        <img src="{% static 'images/chrest.svg' %}" alt="delete img">
+                                    </button>
                                 </li>
+                                <!-- <div class="register-img__text" style="display: flex;">
+                                    <span class="register-img__text-title">sdfsdfsdfsdfsd</span>
+                                    <div class="register-img__btn--delete">
+                                        <img src="{% static 'images/chrest.svg' %}" alt="delete img">
+                                    </div>
+                                </div> -->
                             </ul>
                         </div>
                         <div class="survey_form__btns">
+                            <input id="choose-file-input" type="file" style="display: none;">
+                            <input id="choose-doc-input" multiple type="file" style="display: none;">
                             <input id="choose-logo-input" type="file" style="display: none;">
-                            <input id="choose-doc-input" type="file" style="display: none;">
-                            <button type="button" class="btn-primary load_file_survey">Загрузить файл</button>
+
+                            <button id="choose-file-doc" type="button" class="btn-primary">Загрузить файл</button>
                             <button id="choose-doc" type="button" name="create_survey" value="1" class="btn-primary">Прикрепить заверенный документ</button>
                             <button id="choose-logo" type="button" name="create_survey" value="1" class="btn-primary">Прикрепить логотип</button>
                             <button type="button" name="create_survey" value="1" class="btn-primary">Редактировать</button>
                             <button type="submit" name="create_survey" value="1" class="btn-primary">Сохранить</button>
                             <button type="submit" name="action" value="submit_for_review" class="btn-primary">Отправить на модерацию</button>
-                        <input type="file" name="survey_file" style="visibility: hidden" accept="image/*" id="survey_loader">
                         </div>
                     </form>
                     <div class="subaccordeon"  style="display: none;">

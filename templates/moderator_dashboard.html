@@ -203,44 +203,55 @@
                                 <label>9. Премии, полученные компанией в течение 2024 года</label>
                                 <div class="form-text">
                                     <div class="form-text__title grid">
+                                        {% for awards in survey_data.awards %}
+
                                         <span class="grid-item">
-                                            Категория А: 12 наград, 15 шорт листов
-                                            <div class="sub-grid">
-                                                <span class="sub-grid-item">Премия 1</span>
-                                                <span class="sub-grid-item">A</span>
-                                            </div>
+                                            Название награды: {{ awards.award_name }}
                                         </span>
-                                        <div class="grid-item">
-                                            Категория Б: 12 наград, 15 шорт листов
-                                            <div class="sub-grid-premia">
-                                                <span class="sub-grid-item">Награды: 2</span>
-                                                <span class="sub-grid-item">Награды: 2</span>
-                                            </div>
-                                        </div>
                                         <span class="grid-item">
-                                            Категория В: 12 наград, 15 шорт листов
+                                            Категори награды: {{ awards.award_category }}
                                         </span>
+                                        <span class="grid-item">
+                                            Тип награды: {{ awards.award_type }}
+                                        </span>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group mero">
                                 <label>10. Количество профессиональных мероприятий, организованных в течение года:</label>
                                 <div class="form-text">
+                                    {%  for event in survey_data.events %}
+
+
+
+
+
+
                                     <div class="form-text__title">
-                                        Совокупная выручка: 230 000 000
+                                        {{ event.event_name }}
                                     </div>
                                     <div class="form-text__title grid">
                                         <span class="grid-item">
-                                            EMG -1
+                                         {{ event.event_count }}
                                         </span>
-                                        <div class="grid-item">12345678901</div>
-                                    </div>
-                                    <div class="form-text__title grid">
                                         <span class="grid-item">
-                                            EMG -1
+                                         {{ event.audience }}
                                         </span>
-                                        <div class="grid-item">46 000 000</div>
+                                        <span class="grid-item">
+                                         {{ event.participant_count }}
+                                        </span><span class="grid-item">
+                                         {{ event.event_format }}
+                                        </span>
+                                        <span class="grid-item">
+                                         {{ event.event_type }}
+                                        </span>
+                                        <span class="grid-item">
+                                         {{ event.participation_type }}
+                                        </span>
                                     </div>
+
+                                    {% endfor %}
                                 </div>
                             </div>
 
@@ -286,10 +297,10 @@
                                 </div>
                             </div>
                             <div class="form-group comment-client">
-                                <label>+ Коментарий<label>
+                                <label for="{{ survey_data.survey.user_comment.id_for_label }}">+ Коментарий</label>
                                 <div class="form-text">
                                     <div class="form-text__title">
-                                        50
+                                        {{ survey_data.survey.user_comment. }}
                                     </div>
                                 </div>
                             </div>

@@ -330,69 +330,66 @@
         </div>
         <div class="accordeon-body ankets-sub">
             <ul class="subaccordeon participans" id="participans">
+            {% for item in profile_forms %}
 
                 <li class="subaccordeon-item">
                     <div class="subaccordeon-header">
                         <div class="subaccordeon-header__company">
                             <img src="{% static 'images/plus.svg' %}" class="subaccordeon-item__open-symbol--plus" />
                             <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
-                            <span class="subaccordeon-header__company-title">Михайлова</span>
+                            <span class="subaccordeon-header__company-title">{{ item.profile.company_name_short }}</span>
                         </div>
                     </div>
                     <div class="subaccordeon-body profile hidden" style="margin-left: 20px;">
+
                         <form class="register-form" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ profile_form.management_form }}
                             {{ user_form.management_form }}
                             {{ password_form.management_form }}
                             <div class="form-group">
-                                <label for="{{ user_form.username.id_for_label }}">Логин (email)</label>
-                                {{ user_form.username }}
+                                <label>Логин (email)</label>
+                                    <input type="email" disabled value="{{ item.profile.user.email }}" maxlength="254" required="">
                             </div>
                             <div class="form-group">
-            
-                                <label for="{{ password_form.password.id_for_label }}">Пароль</label>
-                                {{ password_form }} <!-- на бэке не работает -->
-                            </div>
-                        
-                            <div class="form-group">
-                                <label for="{{ company_form.email_for_newsletters.id_for_label }}">Email для новостей/рассылок НР2К</label>
-                                {{ profile_form.email_for_newsletters }}
+                                <label>Email для новостей/рассылок НР2К</label>
+                                {{ item.form.email_for_newsletters }}
                             </div>
                             <div class="form-group">
-                                <label for="{{ company_form.company_name_full.id_for_label }}">Название компании (полное)</label>
-                                {{ profile_form.company_name_full }}
+                                <label>Название компании (полное)</label>
+                                {{ item.form.company_name_full }}
                             </div>
                             <div class="form-group">
-                                <label for="{{ company_form.company_name_short.id_for_label }}">Название компании (краткое)</label>
-                                {{ profile_form.company_name_short }}
+                                <label>Название компании (краткое)</label>
+                               {{ item.form.company_name_short }}
                             </div>
                             <div class="form-group">
-                                <label for="{{ company_form.postal_code.id_for_label }}">Почтовый индекс</label>
-                                {{ profile_form.postal_code }}
+                                <label>Почтовый индекс</label>
+                                {{ item.form.postal_code }}
                             </div>
                             <div class="form-group">
-                                <label for="{{ company_form.postal_address.id_for_label }}">Почтовый адрес (для корреспонденции)</label>
-                                {{ profile_form.postal_address }}
+                                <label>Почтовый адрес (для корреспонденции)</label>
+                               {{ item.form.postal_address }}
                             </div>
                             <div class="form-group">
-                                <label for="{{ company_form.responsible_email.id_for_label }}">Email ответственного</label>
-                                {{ profile_form.responsible_email }}
+                                <label>Email ответственного</label>
+                               {{ item.form.responsible_email }}
                             </div>
                             <div class="form-group">
-                                <label for="{{ company_form.responsible_name.id_for_label }}">Имя и фамилия ответственного</label>
-                                {{ profile_form.responsible_name }}
+                                <label>Имя и фамилия ответственного</label>
+                {{ item.form.responsible_name }}
                             </div>
                             <div class="form-group">
-                                <label for="{{ company_form.responsible_phone.id_for_label }}">Телефон ответственного</label>
-                                {{ profile_form.responsible_phone }}
+                                <label>Телефон ответственного</label>
+                                {{ item.form.responsible_phone }}
                             </div>
                             <div class="form-group register-img">
-                                <label for="{{ company_form.company_logo.id_for_label }}">Логотип компании (png или svg)</label>
+                                <label>Логотип компании (png или svg)</label>
                                 <input type="file" name="company_logo" accept="image/*" required="" id="id_company_logo">
             
-                                {% if profile_form.company_logo %}
-                                    <img width="25%" height="25%" src="{{ profile.company_logo.url }}" alt="Company Logo">
+                                {% if item.form.company_logo %}
+
+                                    <img width="25%" height="25%" src="{{ item.form.instance.company_logo.url }}" alt="Company Logo">
                                 {% else %}
                                     <p>No logo available</p>
                                 {% endif %}
@@ -417,7 +414,7 @@
                         </form>
                     </div>
                 </li>
-
+             {% endfor %}
             </ul>
         </div>
     </li>

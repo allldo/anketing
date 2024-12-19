@@ -97,7 +97,7 @@
   }
 }
 
-.mod-archive {
+.mod-archive-sub {
   .subaccordeon {
     margin-left: 40px;
     display: flex;
@@ -111,6 +111,27 @@
     .subaccordeon-body {
       /* display: flex;
       flex-direction: column; */
+      align-items: start;
+      text-align: start;
+    }
+
+    .archive-list__link {
+      text-decoration: underline;
+      color: #000;
+    }
+  }
+}
+
+.ankets-sub {
+  .subaccordeon {
+    margin-left: 40px;
+    gap: 10px;
+
+    .subaccordeon-item {
+      gap: 10px;
+    }
+
+    .subaccordeon-body {
       align-items: start;
       text-align: start;
     }

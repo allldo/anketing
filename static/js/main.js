@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     makeAccordeon()
     makeSubAccordeon('mod-archive')
     makeSubAccordeon('ankets')
+    makeSubAccordeon('participans')
   }
 })
 
@@ -129,19 +130,36 @@ function makeAccordeon() {
       accordeonBody.classList.remove('hidden')
       accordeonPlus.classList.add('hidden')
       accordeonminus.classList.remove('hidden')
+
+      const subAccordeon = item.querySelector('.subaccordeon')
+
+      if (subAccordeon) {
+        const subItems = subAccordeon.querySelectorAll('.subaccordeon-item')
+
+        for (const item of subItems) {
+          const accordeonBody = item.querySelector('.subaccordeon-body')
+          const accordeonPlus = item.querySelector('.subaccordeon-item__open-symbol--plus')
+          const accordeonminus = item.querySelector('.subaccordeon-item__open-symbol--minus')
+
+          accordeonBody.classList.add('hidden')
+          accordeonPlus.classList.remove('hidden')
+          accordeonminus.classList.add('hidden')
+        }
+      }
+
     })
   }
 }
 
 function makeSubAccordeon(id) {
-  
   const accordeon = document.querySelector(`.subaccordeon#${id}`)
   const accordeonItems = accordeon.querySelectorAll('.subaccordeon-item')
+  console.log('id', id);
+  console.log('subaccordeonItems', accordeonItems);
   
   for (const item of accordeonItems) {
-    item.addEventListener('click', async (e) => {
+    item.addEventListener('click', (e) => {
       e.stopPropagation()
-      e.stopImmediatePropagation()
       console.group('Subaccordeon')
       console.log('id', id);
       console.log('accordeon', accordeon);

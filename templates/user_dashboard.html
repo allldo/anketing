@@ -119,7 +119,7 @@
                 </div>
                 <div class="form-group register-img">
                     <label for="{{ company_form.company_logo.id_for_label }}">Логотип компании (png или svg)</label>
-                    <input type="file" name="company_logo" accept="image/*" required="" id="id_company_logo">
+                    <input type="file" name="company_logo" accept="image/*" id="id_company_logo">
 
                     {% if profile_form.company_logo %}
                         <img width="25%" height="25%" src="{{ profile.company_logo.url }}" alt="Company Logo">
@@ -127,7 +127,7 @@
                         <p>No logo available</p>
                     {% endif %}
                     <div class="register-img__body">
-                        <button type="button" class="register-img__btn btn-primary">Загрузить файл</button>
+                        <button type="button" class="register-img__btn btn-primary--disabled">Загрузить файл</button>
                         <div class="register-img__text">
                             <span class="register-img__text-title"></span>
                             <button type="button" class="register-img__btn--delete hidden">

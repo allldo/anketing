@@ -350,7 +350,9 @@
                             {{ password_form.management_form }}
                             <div class="form-group">
                                 <label>Логин (email)</label>
+
                                     <input type="email" disabled value="{% if item.profile.user.email %}{{ item.profile.user.email }}{% else %}{{ item.profile.user.username }}{% endif %}" maxlength="254" required="">
+
                             </div>
                             <div class="form-group">
                                 <label>Email для новостей/рассылок НР2К</label>
@@ -386,7 +388,7 @@
                             </div>
                             <div class="form-group register-img">
                                 <label>Логотип компании (png или svg)</label>
-                                <input type="file" name="company_logo" accept="image/*" required="" id="id_company_logo">
+                                <input type="file" name="company_logo" accept="image/*" id="id_company_logo">
             
                                 {% if item.form.company_logo %}
 
@@ -395,7 +397,7 @@
                                     <p>No logo available</p>
                                 {% endif %}
                                 <div class="register-img__body">
-                                    <button type="button" class="register-img__btn btn-primary">Загрузить файл</button>
+                                    <button type="button" class="register-img__btn btn-primary--disabled">Загрузить файл</button>
                                     <div class="register-img__text">
                                         <span class="register-img__text-title"></span>
                                         <button type="button" class="register-img__btn--delete hidden">

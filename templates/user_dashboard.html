@@ -292,40 +292,57 @@
                                             {{ form.company_name }}
                                         {% endfor %}
                                     </div>
-                                    <div class="revenue-inputs__item" style="max-width: 130px;">
+                                    <div class="revenue-inputs__item" >
                                         <span class="revenue-inputs__item-title">ИНН</span>
                                         {% for form in revenue_formset %}
-                                        {{ form.id }}
+<!--                                        {{ form.id }}-->
                                             {{ form.inn }}
                                         {% endfor %}
 <!--                                        <input type="text" class="input">-->
                                     </div>
-                                    <div class="revenue-inputs__item" style="max-width: 75px;">
+                                    <div class="revenue-inputs__item">
                                         <span class="revenue-inputs__item-title">доля владения %</span>
                                         {% for form in revenue_formset %}
-                                        {{ form.id }}
+<!--                                        {{ form.id }}-->
                                             {{ form.ownership_share }}
                                         {% endfor %}
 <!--                                        <input type="number" class="input">-->
                                     </div>
-                                    <div class="revenue-inputs__item" style="max-width: 85px;">
+                                    <div class="revenue-inputs__item" >
                                         <span class="revenue-inputs__item-title">доля баинга в выручке %</span>
                                         {% for form in revenue_formset %}
-                                        {{ form.id }}
+<!--                                        {{ form.id }}-->
                                             {{ form.buying_share }}
                                         {% endfor %}
 <!--                                        <input type="number" class="input">-->
                                     </div>
-                                    <div class="revenue-inputs__item" style="max-width: 123px;">
+                                    <div class="revenue-inputs__item">
                                         <span class="revenue-inputs__item-title">доля выручки, тыс. руб.*</span>
                                         {% for form in revenue_formset %}
-                                        {{ form.id }}
+<!--                                        {{ form.id }}-->
                                             {{ form.revenue_amount }}
                                         {% endfor %}
 <!--                                        <input type="number" class="input revenue-input" oninput="calculateRevenue()">-->
                                     </div>
                                 </div>
                                 </div>
+                                <div id="revenue_template" class="revenue-inputs hidden" style="display:none;">
+    <div class="revenue-inputs__item">
+        <input type="text" class="form-control" name="revenue-__prefix__-company_name" id="id_revenue-__prefix__-company_name" placeholder="Название компании" maxlength="255">
+    </div>
+    <div class="revenue-inputs__item">
+        <input type="text" class="form-control" name="revenue-__prefix__-inn" id="id_revenue-__prefix__-inn" placeholder="ИНН" maxlength="12">
+    </div>
+    <div class="revenue-inputs__item">
+        <input type="number" class="form-control" name="revenue-__prefix__-ownership_share" id="id_revenue-__prefix__-ownership_share"  min="0" max="100">
+    </div>
+                                    <div class="revenue-inputs__item">
+        <input type="number" class="form-control" name="revenue-__prefix__-buying_share" id="id_revenue-__prefix__-buying_share"  min="0" max="100">
+    </div>
+                                    <div class="revenue-inputs__item">
+        <input type="number" class="form-control" name="revenue-__prefix__-revenue_amount" id="id_revenue-__prefix__-revenue_amount" min="0" max="100">
+    </div>
+</div>
                                 <div class="button-container">
                                     <button class="btn-str" type="button" onclick="addRevenueRow()">+ Добавить строку</button>
                                     <button class="btn-str" type="button" onclick="addRevenueRow('delete')">- Удалить строку</button>
@@ -433,8 +450,8 @@
                                     <div class="revenue-inputs" id="mero_template">
                                         <div class="revenue-inputs__item" style="width: 208px;">
                                             <span class="revenue-inputs__item-title">Мероприятие</span>
-<!--                                            {% for form in events_formset %} {{ form. }} {% endfor %}-->
-                                            <input type="text" class="input">
+                                            {% for form in events_formset %} {{ form.id }}{{ form.event_name }} {% endfor %}
+<!--                                            <input type="text" class="input">-->
                                         </div>
                                         <div class="revenue-inputs__item" style="width: 130px;">
                                             <span class="revenue-inputs__item-title">Аудитория</span>
@@ -1242,6 +1259,11 @@ function calculateRevenue() {
         categoryCounts.C.grandprix;
 
 }
+
+
+
+
+
 function addRevenueRow(deleteStr) {
     const container = document.getElementById("revenue-container");
     const totalFormsInput = document.getElementById("id_revenue-TOTAL_FORMS");
@@ -1251,35 +1273,63 @@ function addRevenueRow(deleteStr) {
         return;
     }
 
+    // Удаление последней строки
     if (deleteStr === "delete") {
         const lastRow = container.lastElementChild;
         if (lastRow) {
             container.removeChild(lastRow);
-            totalFormsInput.value = parseInt(totalFormsInput.value) - 1; // Уменьшаем общее количество форм
+            //document.getElementById("id_revenue-8-id");
+            totalFormsInput.value = parseInt(totalFormsInput.value) - 1; // Уменьшаем количество форм
+
         }
         return;
     }
 
+    // Получаем все элементы с id, содержащими 'revenue-'
+    const existingIds = document.querySelectorAll('[id^="id_revenue-"]');
+    let maxIndex = 0;
+
+    // Находим максимальный индекс среди существующих id
+    existingIds.forEach((element) => {
+        const match = element.id.match(/revenue-(\d+)-/); // Ищем числа в id
+        if (match) {
+            const index = parseInt(match[1], 10);
+            maxIndex = Math.max(maxIndex, index);
+        }
+    });
+
+    // Новый индекс будет больше максимального на 1
+    const formIndex = maxIndex + 1;
+
+    // Клонируем строку для ввода данных
     const firstRow = document.getElementById("revenue_row");
     if (!firstRow) {
         console.error("Row with ID 'revenue_row' not found.");
         return;
     }
-
-    // Получаем индекс новой строки
-    const formIndex = totalFormsInput.value;
-
-    // Клонируем строку
-    const newRow = firstRow.cloneNode(true);
-
+ const template = document.getElementById("revenue_template");
+    // Клонируем первую строку
+    const newRow = template.cloneNode(true);
+    newRow.style = "";
     // Очищаем значения в полях и обновляем атрибуты
     const inputs = newRow.querySelectorAll("input, select, textarea");
-    const newInput = document.createElement("input");
-    newInput.type = "hidden";
-    newInput.name = `revenue-${formIndex}-id`;  // Пример с индексом
-    newInput.id = `id_revenue-${formIndex}-id`;
-    container.appendChild(newInput);
-    console.log(newInput);
+    inputs.forEach(input => {
+        // Очищаем значения в полях
+        input.value = '';
+        // Обновляем атрибуты name и id с новым индексом
+        const regex = /\d+/;
+        input.name = input.name.replace("__prefix__", formIndex);
+        input.id = input.id.replace("__prefix__", formIndex);
+    });
+
+    // Создаем новый скрытый инпут для ID
+    const hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = `revenue-${formIndex}-id`;  // Имя для id
+    hiddenInput.id = `id_revenue-${formIndex}-id`;
+    hiddenInput.value = '';  // Очищаем значение
+    container.appendChild(hiddenInput);
+
     // Увеличиваем общее количество форм
     totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
 
@@ -1288,83 +1338,190 @@ function addRevenueRow(deleteStr) {
 }
 
 
-    function add_emp_number_row(deleteStr, text_class, number_class, input_text, input_number) {
-    if (deleteStr === "delete"){
-    const firstRow = document.querySelector("."+text_class);
-    const secondRow = document.querySelector("."+number_class);
-    firstRow.removeChild(firstRow.lastElementChild);
-    secondRow.removeChild(secondRow.lastElementChild);
-        //var form_idx = $('#id_form-TOTAL_FORMS').val();
-    //$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1);
-    }
-    else{
 
-    // Найти родительский контейнер для блоков
-    const container = document.querySelector("."+text_class);
-    const container2 = document.querySelector("."+number_class);
-    if (!container) {
-        console.error("Container for rows not found.");
-        return;
-    }
 
-    // Найти блок, который нужно клонировать
-    const firstRow = document.querySelector("."+input_text);
-    const secondRow = document.querySelector("."+input_number);
-    if (!firstRow) {
-        console.error("No '.position-inputs' block found to clone.");
-        return;
-    }
 
-    // Клонировать блок
-    const newRow = firstRow.cloneNode(true);
-    const newRow2 = secondRow.cloneNode(true);
-    // Очистить все инпуты в клонированном блоке
-    newRow.value = "";
-    newRow2.value = "";
+function add_emp_number_row(deleteStr, text_class, number_class, input_text, input_number) {
+    const totalFormsInput = document.getElementById("id_employees-TOTAL_FORMS");
 
-    container.appendChild(newRow);
-    container2.appendChild(newRow2);
-        //var form_idx = $('#id_form-TOTAL_FORMS').val();
-    //$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+    if (deleteStr === "delete") {
+        const textContainer = document.querySelector("." + text_class);
+        const numberContainer = document.querySelector("." + number_class);
+
+        if (!textContainer || !numberContainer) {
+            console.error("Text or number container not found.");
+            return;
+        }
+
+        // Удаляем последнюю строку из обоих контейнеров
+        if (textContainer.lastElementChild) {
+            textContainer.removeChild(textContainer.lastElementChild);
+        }
+        if (numberContainer.lastElementChild) {
+            numberContainer.removeChild(numberContainer.lastElementChild);
+        }
+
+        // Уменьшаем значение TOTAL_FORMS
+        totalFormsInput.value = Math.max(parseInt(totalFormsInput.value, 10) - 1, 0);
+
+    } else {
+        // Найти максимальный индекс
+        const existingIds = document.querySelectorAll('[id^="id_employees-"]');
+        let maxIndex = 0;
+
+        existingIds.forEach((element) => {
+            const match = element.id.match(/employees-(\d+)-/);
+            if (match) {
+                const index = parseInt(match[1], 10);
+                maxIndex = Math.max(maxIndex, index);
+            }
+        });
+
+        // Новый индекс
+        const formIndex = maxIndex + 1;
+
+        // Контейнеры
+        const textContainer = document.querySelector("." + text_class);
+        const numberContainer = document.querySelector("." + number_class);
+
+        if (!textContainer || !numberContainer) {
+            console.error("Text or number container not found.");
+            return;
+        }
+
+        // Найти элементы для клонирования
+        const textInput = document.querySelector("." + input_text);
+        const numberInput = document.querySelector("." + input_number);
+
+        if (!textInput || !numberInput) {
+            console.error("Input elements not found.");
+            return;
+        }
+
+        // Клонирование
+        const newTextInput = textInput.cloneNode(true);
+        const newNumberInput = numberInput.cloneNode(true);
+
+        // Очистить значения
+        newTextInput.value = "";
+        newNumberInput.value = "";
+
+        // Обновить атрибуты
+        newTextInput.name = `employees-${formIndex}-department`;
+        newTextInput.id = `id_employees-${formIndex}-department`;
+
+        newNumberInput.name = `employees-${formIndex}-employee_count`;
+        newNumberInput.id = `id_employees-${formIndex}-employee_count`;
+
+        // Создать скрытое поле для идентификатора
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = `employees-${formIndex}-id`;
+        hiddenInput.id = `id_employees-${formIndex}-id`;
+        hiddenInput.value = ""; // Новая строка, идентификатор пустой
+
+        // Добавить новые элементы в контейнеры
+        textContainer.appendChild(hiddenInput);
+        textContainer.appendChild(newTextInput);
+        numberContainer.appendChild(newNumberInput);
+
+        // Увеличить значение TOTAL_FORMS
+        totalFormsInput.value = parseInt(totalFormsInput.value, 10) + 1;
     }
 }
-    function add_awards_row(deleteStr){
-    if (deleteStr === "delete"){
-    const container = document.getElementById('awards_wrapper');
 
-    // Получаем все добавленные элементы (кроме шаблона)
-    const rows = container.querySelectorAll('.awards_section');
 
-    // Удаляем последний элемент, если их больше одного
-    if (rows.length > 1) {
-        container.removeChild(rows[rows.length - 1]);
-         //   var form_idx = $('#id_form-TOTAL_FORMS').val();
-    //$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1);
-    } else {
-        alert("Нельзя удалить последнюю строку!");
+
+
+
+function add_awards_row(deleteStr) {
+    const totalFormsInput = document.getElementById("id_awards-TOTAL_FORMS");
+    const container = document.getElementById("awards_wrapper");
+
+    if (!totalFormsInput || !container) {
+        console.error("Контейнер или поле TOTAL_FORMS не найдены.");
+        return;
     }
-    }
-    else{
-    const template = document.getElementById('award_template');
-    const container = document.getElementById('awards_wrapper');
-    const clone = template.cloneNode(true);
 
-    // Очищаем значения инпутов и селектов
-    const inputs = clone.querySelectorAll('input, select');
-    inputs.forEach(input => {
-        if (input.tagName === 'INPUT') {
-            input.value = ''; // Очищаем текстовые поля
-        } else if (input.tagName === 'SELECT') {
-            input.selectedIndex = 0; // Сбрасываем селекты на первый элемент
+    if (deleteStr === "delete") {
+        // Получаем все добавленные элементы (кроме шаблона)
+        const rows = container.querySelectorAll(".awards_section");
+
+        // Удаляем последний элемент, если их больше одного
+        if (rows.length > 1) {
+            container.removeChild(rows[rows.length - 1]);
+
+            // Уменьшаем значение TOTAL_FORMS
+            totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
+        } else {
+            alert("Нельзя удалить последнюю строку!");
+        }
+        return;
+    }
+
+    // Добавление новой строки
+    const template = document.getElementById("award_template");
+    if (!template) {
+        console.error("Шаблон award_template не найден.");
+        return;
+    }
+
+    const existingIds = container.querySelectorAll('[id^="id_awards-"]');
+    let maxIndex = 0;
+
+    // Находим максимальный индекс среди существующих строк
+    existingIds.forEach((element) => {
+        const match = element.id.match(/awards-(\d+)-/);
+        if (match) {
+            const index = parseInt(match[1], 10);
+            maxIndex = Math.max(maxIndex, index);
         }
     });
 
-    // Добавляем клон в контейнер
+    // Новый индекс для формы
+    const formIndex = maxIndex + 1;
+
+    // Клонируем шаблон
+    const clone = template.cloneNode(true);
+    clone.classList.remove("hidden"); // Убедитесь, что новая строка становится видимой
+    clone.id = ""; // Убираем id у клона, чтобы избежать дублирования
+
+    // Очищаем значения инпутов и селектов
+    const inputs = clone.querySelectorAll("input, select");
+    inputs.forEach((input) => {
+        if (input.tagName === "INPUT") {
+            input.value = ""; // Очищаем текстовые поля
+        } else if (input.tagName === "SELECT") {
+            input.selectedIndex = 0; // Сбрасываем селекты на первый элемент
+        }
+
+        // Обновляем атрибуты name и id
+        if (input.name) {
+            input.name = input.name.replace(/awards-\d+-/, `awards-${formIndex}-`);
+        }
+        if (input.id) {
+            input.id = input.id.replace(/id_awards-\d+-/, `id_awards-${formIndex}-`);
+        }
+    });
+
+    // Создаём скрытое поле для ID
+    const hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = `awards-${formIndex}-id`;
+    hiddenInput.id = `id_awards-${formIndex}-id`;
+    hiddenInput.value = ""; // Новая форма, ID пустое
+
+    // Добавляем скрытое поле и клон в контейнер
+    container.appendChild(hiddenInput);
     container.appendChild(clone);
-        //var form_idx = $('#id_form-TOTAL_FORMS').val();
-   // $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-    }
-    }
+
+    // Увеличиваем значение TOTAL_FORMS
+    totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
+}
+
+
+
+
 
 function add_row_pos_update() {
     // Получаем все элементы с id, содержащими 'positioning-'
@@ -1439,7 +1596,11 @@ function remove_row_update() {
 
         // Удаляем последний select
         const select = selects[selects.length - 1];
-        select.remove();  // Удаляем весь div, содержащий select
+        if (select) {
+        // Добавляем класс, чтобы скрыть псевдоэлемент перед удалением
+        select.classList.add('hidden');
+        select.remove();
+    }  // Удаляем весь div, содержащий select
 
         // Удаляем последний input для распределения выручки
         const input = inputs[inputs.length - 1];
@@ -1468,32 +1629,83 @@ function remove_row_update() {
 }
 
 
-    function add_mero_row(deleteStr){
-    if (deleteStr === "delete"){
-    const container = document.getElementById('mero_wrapper');
 
-    const rows = container.querySelectorAll('.revenue_inputs');
-    container.removeChild(container.lastElementChild);
 
+
+function add_mero_row(deleteStr) {
+    const totalFormsInput = document.getElementById("id_events-TOTAL_FORMS");
+    const container = document.getElementById("mero_wrapper");
+
+    if (!totalFormsInput || !container) {
+        console.error("Контейнер или поле TOTAL_FORMS не найдены.");
+        return;
     }
-    else{
-    const template = document.getElementById('mero_template');
-    const container = document.getElementById('mero_wrapper');
+
+    if (deleteStr === "delete") {
+        // Получаем все добавленные элементы (кроме шаблона)
+        const rows = container.querySelectorAll(".revenue_inputs");
+        container.removeChild(rows[rows.length - 1]);
+        totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
+        return;
+    }
+
+    // Добавление новой строки
+    const template = document.getElementById("mero_template");
+    if (!template) {
+        console.error("Шаблон mero_template не найден.");
+        return;
+    }
+
+    const existingIds = container.querySelectorAll('[id^="id_events-"]');
+    let maxIndex = 0;
+
+    // Находим максимальный индекс среди существующих строк
+    existingIds.forEach((element) => {
+        const match = element.id.match(/events-(\d+)-/);
+        if (match) {
+            const index = parseInt(match[1], 10);
+            maxIndex = Math.max(maxIndex, index);
+        }
+    });
+    // Новый индекс для формы
+    const formIndex = maxIndex + 1;
+
+    // Клонируем шаблон
     const clone = template.cloneNode(true);
+    clone.classList.remove("hidden"); // Убедитесь, что новая строка становится видимой
+    clone.id = ""; // Убираем id у клона, чтобы избежать дублирования
 
     // Очищаем значения инпутов и селектов
-    const inputs = clone.querySelectorAll('input, select');
-    inputs.forEach(input => {
-        if (input.tagName === 'INPUT') {
-            input.value = ''; // Очищаем текстовые поля
-        } else if (input.tagName === 'SELECT') {
+    const inputs = clone.querySelectorAll("input, select");
+    inputs.forEach((input) => {
+        if (input.tagName === "INPUT") {
+            input.value = ""; // Очищаем текстовые поля
+        } else if (input.tagName === "SELECT") {
             input.selectedIndex = 0; // Сбрасываем селекты на первый элемент
+        }
+
+        // Обновляем атрибуты name и id
+        if (input.name) {
+            input.name = input.name.replace(/events-\d+-/, `events-${formIndex}-`);
+        }
+        if (input.id) {
+            input.id = input.id.replace(/id_events-\d+-/, `id_events-${formIndex}-`);
         }
     });
 
-    // Добавляем клон в контейнер
+    // Создаём скрытое поле для ID
+    const hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = `events-${formIndex}-id`;
+    hiddenInput.id = `id_events-${formIndex}-id`;
+    hiddenInput.value = ""; // Новая форма, ID пустое
+
+    // Добавляем скрытое поле и клон в контейнер
+    container.appendChild(hiddenInput);
     container.appendChild(clone);
-    }
-    }
+
+    // Увеличиваем значение TOTAL_FORMS
+    totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
+}
 </script>
 {% endblock %}

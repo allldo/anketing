@@ -157,13 +157,13 @@ class CompanyAwardsForm(forms.ModelForm):
 class CompanyEventForm(forms.ModelForm):
     class Meta:
         model = CompanyEvent
-        fields = ['event_count', 'audience', 'participant_count', 'event_format', 'event_type', 'participation_type']
+        fields = ['event_name', 'audience', 'participant_count', 'event_format', 'event_type', 'participation_type']
         widgets = {
-            'event_count': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Количество мероприятий','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),
+            'event_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название мероприятия'}),
             'audience': forms.Select(choices=[('students', 'Студенты'),('prof', 'Проф. Сообщества')],attrs={'class': 'form-control', 'placeholder': 'Аудитория'}),
             'participant_count': forms.NumberInput(attrs={'class': 'form-control','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),
             'event_format': forms.Select(attrs={'class': 'form-control'}),
-            'event_type': forms.Select(choices=[('solo', 'Единичное'),('complex', 'Комплекснная программа')],attrs={'class': 'form-control', 'placeholder': 'Формат мероприятия'}),
+            'event_type': forms.Select(choices=[('solo', 'Единичное'),('complex', 'Комплексная программа')],attrs={'class': 'form-control', 'placeholder': 'Формат мероприятия'}),
             'participation_type': forms.Select(attrs={'class': 'form-control'}),
         }
 

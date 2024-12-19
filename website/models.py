@@ -178,6 +178,7 @@ class CompanyEvent(models.Model):
         related_name='events',
         verbose_name="Анкета"
     )
+    event_name = models.CharField(max_length=255, verbose_name="Название мероприятия", null=True, blank=True)
     event_count = models.PositiveIntegerField(verbose_name="Количество мероприятий",null=True,blank=True)
     audience = models.CharField(max_length=255, verbose_name="Аудитория",null=True,blank=True)
     participant_count = models.PositiveIntegerField(verbose_name="Количество участников",null=True,blank=True)

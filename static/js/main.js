@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   if (urlPath.includes('register') || urlPath.includes('dashboard')) {
     chooseImg();
+    toggleForms()
   }
 
   if (urlPath.includes('dashboard')) {
@@ -22,9 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     makeSubAccordeon('participans')
 
     chooseImgModerator()
-    chooseDocument()
-
-    validateCheckboxes()
+    toggleFormsModerator()
   }
 })
 
@@ -34,11 +33,8 @@ function chooseImg() {
   const inputImgBtnDelete =  document.querySelector('.register-img__btn--delete')
   const imgText = document.querySelector('.register-img__text-title')
 
-  console.log('inputImgBtnzxc', inputImgBtn);
-
   if (inputImgBtn && inputImg) {
     inputImgBtn.addEventListener('click', (e) => {
-      console.log('inputImg', inputImg);
       e.preventDefault()
       inputImg.click()
     })
@@ -56,15 +52,12 @@ function chooseImg() {
           imgText.textContent = ''
           inputImgBtnDelete.classList.add('hidden')
         }
-        console.log('e', e);
       })
     
       inputImgBtnDelete.addEventListener('click', () => {
-        console.log('inputImg', inputImg.value);
         inputImg.value = ''
         imgText.textContent = ''
         inputImgBtnDelete.classList.add('hidden')
-        console.log('files', inputImg.value);
       })
   }
 }
@@ -72,12 +65,10 @@ function chooseImg() {
 function chooseImgModerator() {
   const generalList = document.querySelector('.general-list')
   const generalItems = generalList.querySelectorAll('.general-list__item')
-  console.log('generalItems', generalItems);
   for (const item of generalItems) {
     const input = item.querySelector('input')
     const btn = item.querySelector('button')
     const imgText = item.querySelector('.general-list__item-link')
-    console.log('imgText', imgText);
 
     btn.addEventListener('click', () => {
       input.click()
@@ -91,7 +82,6 @@ function chooseImgModerator() {
       } else {
         imgText.textContent = ''
       }
-      console.log('e', e);
     })
   }
 }
@@ -124,7 +114,6 @@ function chooseFileDocument() {
   const filesList = document.querySelector('.form-files-list')
   const filesListItems = filesList.querySelectorAll('.files-list__item')
   const btnDeleteList = filesList.querySelectorAll('button')
-  console.log('filesList', filesList);
 
   chooseFileBtn.addEventListener('click', () => {
     input.click()
@@ -172,9 +161,6 @@ function makeAccordeon() {
   const accordeonItems = accordeon.querySelectorAll('.accordeon-item')
   for (const item of accordeonItems) {
     item.addEventListener('click', async (e) => {
-      console.group('Accordeon')
-      console.log('accordeon', accordeon);
-      console.groupEnd()
       for (const item of accordeonItems) {
         const accordeonBody = item.querySelector('.accordeon-body')
         const accordeonPlus = item.querySelector('.accordeon-item__open-symbol--plus')
@@ -219,16 +205,10 @@ function makeAccordeon() {
 function makeSubAccordeon(id) {
   const accordeon = document.querySelector(`.subaccordeon#${id}`)
   const accordeonItems = accordeon.querySelectorAll('.subaccordeon-item')
-  console.log('id', id);
-  console.log('subaccordeonItems', accordeonItems);
   
   for (const item of accordeonItems) {
     item.addEventListener('click', (e) => {
       e.stopPropagation()
-      console.group('Subaccordeon')
-      console.log('id', id);
-      console.log('accordeon', accordeon);
-      console.groupEnd()
       for (const item of accordeonItems) {
         const accordeonBody = item.querySelector('.subaccordeon-body')
         const accordeonPlus = item.querySelector('.subaccordeon-item__open-symbol--plus')
@@ -254,12 +234,11 @@ function makeSubAccordeon(id) {
 }
 
 function toggleForms() {
-  const changeBtn = document.querySelector('#btn-change-form')
-  const submitBtn = document.querySelector('#btn-submit-form')
   const profile = document.querySelector('.accordeon-body.profile')
+  const changeBtn = profile.querySelector('#btn-change-form')
+  const submitBtn = profile.querySelector('#btn-submit-form')
+  const downloadFile = profile.querySelector('.register-img__btn.btn-primary--disabled')
   const inputs = profile.querySelectorAll('input')
-
-  console.log('inputs', inputs);
 
   for (const input of inputs) {
     input.disabled = true
@@ -270,6 +249,9 @@ function toggleForms() {
       input.disabled = false
     }
 
+    downloadFile.classList.remove('btn-primary--disabled')
+    downloadFile.classList.add('btn-primary')
+
     changeBtn.disabled = true
     changeBtn.classList.add('btn-primary--disabled')
     changeBtn.classList.remove('btn-primary')
@@ -278,8 +260,61 @@ function toggleForms() {
     submitBtn.classList.remove('btn-primary--disabled')
     submitBtn.classList.add('btn-primary')
   })
+
+  submitBtn.addEventListener('click', () => {
+    for (const input of inputs) {
+      input.disabled = true
+    }
+  })
 }
 
-function validateCheckboxes() {
+function toggleFormsModerator() {
+  const list =  document.querySelectorAll('.subaccordeon-body.profile')
+  const headers = document.querySelectorAll('.subaccordeon-header__company')
 
+  for (const header of headers) {
+    header.addEventListener('click', () => {
+      for (const item of list) {
+        const inputs = item.querySelectorAll('input')
+
+        for (const input of inputs) {
+          input.disabled = true
+        } 
+      }
+    })
+  }
+
+  for (const item of list) {
+    const changeBtn = item.querySelector('#btn-change-form')
+    const submitBtn = item.querySelector('#btn-submit-form')
+    const downloadFile = item.querySelector('.register-img__btn.btn-primary--disabled')
+    const inputs = item.querySelectorAll('input')
+
+    for (const input of inputs) {
+      input.disabled = true
+    }
+
+    changeBtn.addEventListener('click', () => {
+      for (const input of inputs) {
+        input.disabled = false
+      }
+
+      downloadFile.classList.remove('btn-primary--disabled')
+      downloadFile.classList.add('btn-primary')
+  
+      changeBtn.disabled = true
+      changeBtn.classList.add('btn-primary--disabled')
+      changeBtn.classList.remove('btn-primary')
+  
+      submitBtn.disabled = false
+      submitBtn.classList.remove('btn-primary--disabled')
+      submitBtn.classList.add('btn-primary')
+    })
+
+    submitBtn.addEventListener('click', () => {
+      for (const input of inputs) {
+        input.disabled = true
+      }
+    })
+  }
 }

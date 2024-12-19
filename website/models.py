@@ -104,6 +104,8 @@ class CompanySurvey(models.Model):
     )
 
     survey_file = models.FileField(upload_to='survey_docs/', null=True, blank=True, verbose_name="File")
+    doc = models.FileField(upload_to='survey_docs/', null=True, blank=True, verbose_name="Заверенный документ")
+    logo = models.FileField(upload_to='survey_docs/', null=True, blank=True, verbose_name="Логотип")
     def __str__(self):
         return f"Анкета {self.company_name} - {self.submission_date}"
     

@@ -81,7 +81,7 @@ class CompanySurveyForm(forms.ModelForm):
             'company_name', 'company_address', 'specialization', 'revenue', 
             'geography_activity', 'company_age', 'num_expert_employees', 
             'num_employees_over_3_years', 'num_employees_in_communications', 
-            'num_government_awards', 'num_certificates','user_comment', 'survey_file'
+            'num_government_awards', 'num_certificates','user_comment', 'survey_file', 'doc', 'logo'
         ]
         widgets = {
             'company_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите название компании'}),
@@ -133,8 +133,8 @@ class CompanyEmployeesForm(forms.ModelForm):
 
     def clean_employee_count(self):
         employee_count = self.cleaned_data.get('employee_count')
-        if employee_count <= 0:
-            raise forms.ValidationError("Количество сотрудников должно быть положительным числом.")
+        # if employee_count <= 0:
+        #     raise forms.ValidationError("Количество сотрудников должно быть положительным числом.")
         return employee_count
 
 class CompanyAwardsForm(forms.ModelForm):

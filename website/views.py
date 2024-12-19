@@ -1,7 +1,9 @@
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import update_session_auth_hash
-from django.db.models import OuterRef, Subquery
+from django.contrib.auth import update_session_auth_hash, get_user_model
+
+from django.db.models import OuterRef, Subquery, Count
+from django.http import JsonResponse
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login,authenticate
@@ -16,6 +18,8 @@ from .forms import (UserRegistrationForm, CompanyProfileForm, GeneralInfoForm, C
 from django.forms import modelformset_factory
 from datetime import datetime
 import json
+
+User = get_user_model()
 
 def login_view(request):
     if request.method == 'POST':
@@ -134,10 +138,17 @@ def moderator_dashboard(request):
         {'profile': profile, 'form': CompanyProfileForm(instance=profile)}
         for profile in company_profiles
     ]
+    active_users = User.objects.filter(company_profile__isnull=False)
+
+    companies_with_surveys = CompanyProfile.objects.annotate(
+        survey_count=Count('user__surveys')
+    ).filter(survey_count__gt=0)
+
 
     context = {
         'general_info_form': form,
         'company_surveys': company_surveys,
+        'companies': companies_with_surveys,
         'profile_forms': profile_forms,  # Профили с формами
     }
 
@@ -553,7 +564,6 @@ def user_dashboard(request):
             print("Employees:", employees_formset.is_valid())
             print("Awards:", awards_formset.is_valid())
             print("Events:", events_formset.is_valid())
-
             # Сохранение анкеты
             if survey_form.is_valid():
                 survey = survey_form.save(commit=False)

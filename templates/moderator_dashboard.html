@@ -100,29 +100,22 @@
             <ul class="subaccordeon ankets" id="ankets">
                 <li class="subaccordeon-item">
                     <div class="subaccordeon-header">
+                        {% if companies %}
+                        {% for company in companies %}
                         <div class="subaccordeon-header__company">
                             <img src="{% static 'images/plus.svg' %}" class="subaccordeon-item__open-symbol--plus" />
                             <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
-                            <span class="subaccordeon-header__company-title">Михайлова</span>
+                            <span class="subaccordeon-header__company-title">{{ company.company_name_short }}</span>
                         </div>
+                        {% endfor %}
                     </div>
                     <div class="subaccordeon-body hidden" style="margin-left: 20px;">
                         <a class="archive-list__link">Анкета.pdf</a>
                     </div>
                 </li>
-                <li class="subaccordeon-item">
-                    <div class="subaccordeon-header">
-                        <div class="subaccordeon-header__company">
-                            <img src="{% static 'images/plus.svg' %}" class="subaccordeon-item__open-symbol--plus" />
-                            <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
-                            <span class="subaccordeon-header__company-title">Михайлова</span>
-                        </div>
-                    </div>
-                    <div class="subaccordeon-body hidden" style="margin-left: 20px;">
-                        <a class="archive-list__link">Анкета.pdf</a>
-                    </div>
-                </li>
+                {% else %}
                 <p class="archive-list__no-items">Анкет пока нет.</p>
+                {% endif %}
             </ul>
         </div>
     </li>
@@ -306,7 +299,6 @@
                         </form>
                     </div>
                 </li>
-                <p class="archive-list__no-items">Анкет пока нет.</p>
             </ul>
         </div>
     </li>

@@ -251,14 +251,6 @@
             }
         }
 
-        /* select {
-            border: 1px solid var(--blue);
-            padding: 24px;
-            height: 67px;
-            width: 100%;
-            position: relative;
-        } */
-
         i {
             font-size: 12px;
             font-style: italic;
@@ -372,3 +364,110 @@
     }
 }
 
+.ankets {
+    background-color: #D9D9D980;
+    padding: 10px 110px 10px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .anket_form {
+        display: flex;
+        flex-direction: column;
+        text-align: start;
+        align-items: start;
+        gap: 20px;
+    }
+
+    .form-group {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+            
+        label {
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 14.52px;
+            color: var(--grey);
+        }
+
+        .form-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            min-height: 67px;
+            width: 100%;
+            padding: 12px;
+            background: white;
+        }
+
+        .form-text__title {
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 14.52px;
+            color: var(--grey);
+        }
+    }
+
+    .revenue {
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, max-content);
+            column-gap: 80px;
+        }
+    }
+
+    .position {
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, max-content);
+            column-gap: 80px;
+        }
+    }
+
+    .premia {
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, max-content);
+            column-gap: 80px;
+        }
+        
+        .sub-grid {
+            gap: 70px;
+            display: grid;
+            grid-template-columns: repeat(2, max-content);
+        }
+
+        .sub-grid-premia {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    .mero {
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+}
+
+.comment {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+
+    .comment-textarea {
+        flex-grow: 1;
+        border: 1px solid #000;
+        padding: 20px;
+    }
+
+    .btns {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}

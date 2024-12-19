@@ -82,7 +82,7 @@
             <p class="accordeon-title__text">Анкеты 2025</p>
         </div>
         <div class="accordeon-body">
-            <ul class="subaccordeon current-archive">
+            <ul class="subaccordeon ankets">
                 <li class="subaccordeon-item">
                     <div class="subaccordeon-header">
                         <div class="subaccordeon-header__company">
@@ -90,630 +90,206 @@
                             <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
                             <span class="subaccordeon-header__company-title">EMG</span>
                         </div>
-                        <p class="subaccordeon-header__status success">Заполняется</p>
-                        <p class="subaccordeon-header__date">23.03.2024</p>
                     </div>
                     <div class="subaccordeon-body">
-                        <form class="survey_form" method="post" enctype="multipart/form-data">
+                        <form class="anket_form" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
+
                             {{ survey_form.management_form }}
-                            <div class="form-group comment">
-                                <span class="comment__title">- Комментарий</span>
-                                <p class="comment__text">Текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария текст комментария</p>
-                                <!-- <label for="{{ survey_form.user_comment.id_for_label }}">Комментарий</label>
-                                {{ survey_form.user_comment }} -->
-                            </div>
+                            {{ positioning_formset.management_form }}
+                            {{ revenue_formset.management_form }}
+                            {{ employees_formset.management_form }}
+                            {{ awards_formset.management_form }}
+                            {{ events_formset.management_form }}
                             <div class="form-group">
                                 <label for="{{ survey_form.company_name.id_for_label }}">1. Фирменное название компании, под которым компания или группа компаний позиционирует себя на рынке</label>
-                                {{ survey_form.company_name }}
+                                <div class="form-text">
+                                    <p class="form-text__title">fff</p>
+                                    <p class="form-text__title">fff</p>
+                                    <p class="form-text__title">fff</p>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="{{ survey_form.company_address.id_for_label }}">2. Адрес головного офиса компании (представительства и головной компании для международных сетевыхх компаний)</label>
-                                {{ survey_form.company_address }}
-                            </div>
-                            <div class="form-group specialization">
-                                <label for="{{ survey_form.specialization.id_for_label }}">3. Основная специализация компании</label>
-                                <i>Укажите ОДНУ основную специализацию, если специализаций несколько, указывайте п.1 - "Полного цикла" </i>
-                                <!-- {{ survey_form.specialization }} -->
-                                <div class="custom-select">
-                                    <select>
-                                        <option value="option1">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                        <option value="option4">Option 4</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group position">
-                                <label>4. Приоритетное позиционирование компании</label>
-                                <i>В рамках изучения особенностей позиционирования компаний Наблюдательным советом принято решение дать возможность компаниям
-                                        указать свое приоритетное позиционирование, а также предоставить возможность подкрепить эту информацию данными о распределении 
-                                        выручки по видам коммуникационной деятельности. В 2024 году информация собирается справочно и будет использована в рамках дальнейших работ по развитию рейтинга.
-                                        На позиции компаний в рейтинге этого года предоставленная информация не влияет. </i>
-                                        <!-- <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Услуга</th>
-                                                <th>Доля в выручке (%)</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="positioning-section">
-                                            {{ positioning_formset.management_form }}
-                                            {% for form in positioning_formset %}
-                                            <tr>
-                                                <td>{{ form.service }}</td>
-                                                <td>{{ form.revenue_share }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                        </table> -->
-                                <div class="position-inputs">
-                                    <div class="position-inputs__left">
-                                        <p class="position-inputs__left-title">Позиционирование</p>
-                                        <div class="positions-content">
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                                    <option value="option4">Option 4</option>
-                                                </select>
-                                            </div>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                                    <option value="option4">Option 4</option>
-                                                </select>
-                                            </div>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Маркетинговые коммуникации / Маркетинговые услуги</option>
-                                                    <option value="option4">Option 4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="position-inputs__right">
-                                        <p class="position-inputs__right-title">Распределение выручки (%)</p>
-                                        <div class="positions-content">
-                                            <input class="input" type="number">
-                                            <input class="input" type="number">
-                                            <input class="input" type="number">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="addRow('positioning-section')">+ Добавить строку</button>
+                                <div class="form-text">
+                                    <p class="form-text__title">asd</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="{{ survey_form.geography_activity.id_for_label }}">5. Укажите Географию активности компании</label>
-                                <i>Возможные варианты:
-                                    "Федеральный уровень": более 50% проектов агентства в течение годе реализованы в 2-х и более ФО РФ, либо же на федеральном уровне. Агентства, работающие в столице, не являются "федеральными" по умолчанию.
-                                    "Региональный уровень, регион": проекты реализуются в рамках одного региона.Указывается регион активности агентства.</i>
-                                <!-- {{ survey_form.geography_activity }} -->
-                                <div class="custom-select">
-                                    <select>
-                                        <option value="option1">Федеральный уровень</option>
-                                        <option value="option4">Option 4</option>
-                                    </select>
+                                <label for="{{ survey_form.specialization.id_for_label }}">3. Основная специализация компании</label>
+                                <div class="form-text">
+                                    <p class="form-text__title"></p>
                                 </div>
                             </div>
-                            <div class="form-group revenue">
-                                <label>6. Совокупная выручка от осуществления коммуникационной деятельности Вашей компанией или группой компаний, полученная:</label>
-                                <i>С 2022 года оператор сверяет выручку компании с данными ФНС России, согласно представленным в анкете ИНН. Для сверки используется сервис https:// bo.nalog.ru/. Перед подачей анкеты вы можете проверить какие именно данные есть у ФНС по вашим юридическим лицам. Если вы не согласны с данными ФНС, либо же часть вашей выручки по той или иной причине не учитывается сервисом (ИП, гранты, НКО и пр.), приложите к анкете документы, подтверждающие предоставляемые вами данные. В случае отсутствия документов приоритетными считаются данные ФНС, либо же проставляется 0 в выручке, если компании нет на https://bo.nalog.ru/ и дополнительные документы не предоставлены.<br>
-                                    Компании - заявители предоставляют данные о выручке: сведения по строке «Выручка» из Отчёта о финансовых результатах (форма по ОКУД 0710002), предоставленного в ФНС России по итогам 2023 года.<br>
-                                    Под выручкой понимаются полученные компанией / группой компаний от клиентов средства за вычетом НДС.<br>
-                                    Для группы компаний, при доле владения бизнесом 50 % +1 акция и более, выручка консолидируется в размере 100 %. Если доля владения меньше - в качестве показателя выручки для Рейтинга интегрируется доля, соответствующая доле владения.<br>
-                                    Для группы компаний данные о выручке представляются по форме ОКУД 0710002 по итогам 2023 года отдельно для каждого из юридических лиц, а затем суммируются.</i>
-                                    <!-- <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Название компании</th>
-                                                <th>ИНН</th>
-                                                <th>Доля владения (%)</th>
-                                                <th>Доля баинга в выручке (%)</th>
-                                                <th>Доля выручки (тыс. рублей)</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                
-                                        <tbody id="revenue-section">
-                                            {{ revenue_formset.management_form }} 
-                                            {% for form in revenue_formset %}
-                                            <tr>
-                                                <td>{{ form.company_name }}</td>
-                                                <td>{{ form.inn }}</td>
-                                                <td>{{ form.ownership_share }}</td>
-                                                <td>{{ form.buying_share }}</td>
-                                                <td>{{ form.revenue_amount }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table> -->
-                                <b class="revenue-price">230 000 000 руб.</b>
-                                <div class="revenue-inputs">
-                                    <div class="revenue-inputs__item">
-                                        <span class="revenue-inputs__item-title">Компания</span>
-                                        <input type="text" class="input">
-                                    </div>
-                                    <div class="revenue-inputs__item">
-                                        <span class="revenue-inputs__item-title">ИНН</span>
-                                        <input type="text" class="input">
-                                    </div>
-                                    <div class="revenue-inputs__item">
-                                        <span class="revenue-inputs__item-title">доля владения %</span>
-                                        <input type="number" class="input">
-                                    </div>
-                                    <div class="revenue-inputs__item">
-                                        <span class="revenue-inputs__item-title">доля баинга в выручке %</span>
-                                        <input type="number" class="input">
-                                    </div>
-                                    <div class="revenue-inputs__item">
-                                        <span class="revenue-inputs__item-title">доля выручки, тыс. руб.*</span>
-                                        <input type="number" class="input">
+                            <div class="form-group position">
+                                <label for="{{ positioning_formset.service.id_for_label }}">4. Приоритетное позиционирование компании</label>
+                                <div class="form-text">
+                                    <p class="form-text__title">60% - Маркетинговые коммуникации / Маркетинговые услуги 
+                                    </p>
+                                    <p class="form-text__title">20% - Политические коммуникации / Политическое консультирование 
+ 
+                                    </p>
+                                    <div class="form-text__title">
+                                        10% - Рекламные коммуникации / Реклама 
                                     </div>
                                 </div>
-                
-                                <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="addRow('revenue-section')">+ Добавить строку</button>
+                            </div>
+                            <div class="form-group geography">
+                                <label for="{{ survey_form.geography_activity.id_for_label }}">5. Укажите Географию активности компании</label>
+                                <div class="form-text">
+                                    <div class="form-text__title">
+                                        "Федеральный уровень": более 50% проектов агентства в течение годе реализованы в 2-х и более ФО РФ, либо же на федеральном уровне. Агентства, работающие в столице, не являются "федеральными" по умолчанию.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group revenue" >
+                                <label >6. Совокупная выручка от осуществления коммуникационной деятельности Вашей компанией или группой компаний, полученная:</label>
+                                <div class="form-text">
+                                    <div class="form-text__title">
+                                        Совокупная выручка: 230 000 000
+                                    </div>
+                                    <div class="form-text__title grid">
+                                        <span class="grid-item">
+                                            EMG -1
+                                        </span>
+                                        <div class="grid-item">12345678901</div>
+                                        <div class="grid-item">10%</div>
+                                        <div class="grid-item">20%</div>
+                                        <div class="grid-item">46 000 000</div>
+                                    </div>
+                                    <div class="form-text__title grid">
+                                        <span class="grid-item">
+                                            EMG -1
+                                        </span>
+                                        <div class="grid-item">12345678901</div>
+                                        <div class="grid-item">10%</div>
+                                        <div class="grid-item">20%</div>
+                                        <div class="grid-item">46 000 000</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group position">
                                 <label>7. Количество сотрудников компании (группы компаний) на конец года:</label>
-                                <i>Под «сотрудником компании» понимается сотрудник, с которым заключён бессрочный либо срочный трудовой договор, и сотрудник включён в штатное расписание компании. 
-                                    При заполнении анкеты компания - заявитель не учитывает исполнителей по договорам ГПХ, индивидуальных предпринимателей, а также физических лиц, применяющих специальный налоговый режим «Налог на профессиональный доход» (самозанятых). 
-                                    Для ГК указывается сумма данных на конец 2023 года для каждого из юр.лиц.</i>
-                                
-                                <div class="position-inputs">
-                                    <div class="position-inputs__left">
-                                        <p class="position-inputs__left-title">Компания</p>
-                                        <div class="positions-content">
-                                            <input class="input" type="text">
-                                            <input class="input" type="text">
-                                            <input class="input" type="text">
-                                        </div>
+                                <div class="form-text">
+                                    <div class="form-text__title">
+                                        Совокупная выручка: 230 000 000
                                     </div>
-                                    <div class="position-inputs__right">
-                                        <p class="position-inputs__right-title">Количество сотрудников</p>
-                                        <div class="positions-content">
-                                            <input class="input" type="number">
-                                            <input class="input" type="number">
-                                            <input class="input" type="number">
-                                        </div>
+                                    <div class="form-text__title grid">
+                                        <span class="grid-item">
+                                            EMG -1
+                                        </span>
+                                        <div class="grid-item">12345678901</div>
                                     </div>
-                                </div>
-                                <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="addRow('employees-section')">+ Добавить строку</button>
+                                    <div class="form-text__title grid">
+                                        <span class="grid-item">
+                                            EMG -1
+                                        </span>
+                                        <div class="grid-item">46 000 000</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="{{ survey_form.company_age.id_for_label }}">8. Возраст компании</label>
-                                <i>Учитывается возраст бренда либо команды - если компания меняла название в течение своей деятельности,
-                                        учитывается возраст с момента основания первой компании.</i>
-                                <div class="row"> 
-                                {{ survey_form.company_age }}
+                                <div class="form-text">
+                                    <div class="form-text__title">
+                                        50
+                                    </div>
+                                </div>
                             </div>
-                            </div>
-                            <div class="form-group revenue">
+                            <div class="form-group premia">
                                 <label>9. Премии, полученные компанией в течение 2024 года</label>
-                                <i>Каждая награда указывается отдельной строкой. Если вы получили 10 'Cannes Lions' за год проведения рейтинга, они должны быть вписаны в 10 строк. Необходимо указывать статус награды (шорт лист/награда/гран при), а не только название номинации (необязательно).<br>
-                                    Если компания вошла в шорт лист, а потом получила награду в номинации, то учитывается ТОЛЬКО более весомая награда. Если компания подет данные о 3 шорт листах и 5 победах, это значит, что в 3 случаях она была упомянута в шорт листе и награды не получила, а в 5 получила и то, и другое.<br>
-                                    
-                                    Профессиональные премии, учитываемые в рамках рейтинга, сегментированы по Категориям – весу для репутации российских коммуникационных компаний, устанавливаемому Наблюдательным советом в результате консультаций с участниками рынка и опросов членов профессиональных организаций. Данные о распределении Премий по Категориям приведены во вкладке Категории данной анкеты.<br>
-                                    В рейтинг учитываются все премии, полученные компанией в течение года, без ограничений на то, за какой год были выданы премии. Т.е., например, "Серебряный лучник", полученный в 2024 году за работу в 2023, учитывается в рейтинге 2024 года.<br>
-                                    В случае, если участник - сетевое агентство, учитываются только те премии, которые выданы за проекты, активными участниками которых выступило российское представительство. Не надо указывать все премии, которые получила сеть за год.<br>
-                                    В рейтинге не учитываются благодарности клиентов, сертификаты, а также места в рейтингах (в том числе в НР2К) - в зачет идут профессиональные премии, проводимые отраслевыми проф.организациями и объединениями.<br>
-                                    Индивидуальные награды, получаемые лично сотрудниками, могут учитываться в списке, предоставляемом компанией, если сотрудник продолжал работу в компании на конец года, за который подаются данные.</i>
-                                    <div class="categs">
-                                        <b class="categs-item">Категория А: 12 наград, 15 шорт листов</b>
-                                        <b class="categs-item">Категория Б: 12 наград, 15 шорт листов</b>
-                                        <b class="categs-item">Категория В: 12 наград, 15 шорт листов</b>
-                                    </div>
-                                    <div class="revenue-inputs">
-                                        <div class="revenue-inputs__item">
-                                            <span class="revenue-inputs__item-title">Премия</span>
-                                            <input type="text" class="input">
-                                        </div>
-                                        <div class="revenue-inputs__item">
-                                            <span class="revenue-inputs__item-title">Категория премии</span>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">B</option>
-                                                    <option value="option4">Option 4</option>
-                                                </select>
+                                <div class="form-text">
+                                    <div class="form-text__title grid">
+                                        <span class="grid-item">
+                                            Категория А: 12 наград, 15 шорт листов
+                                            <div class="sub-grid">
+                                                <span class="sub-grid-item">Премия 1</span>
+                                                <span class="sub-grid-item">A</span>
+                                            </div>
+                                        </span>
+                                        <div class="grid-item">
+                                            Категория Б: 12 наград, 15 шорт листов
+                                            <div class="sub-grid-premia">
+                                                <span class="sub-grid-item">Награды: 2</span>
+                                                <span class="sub-grid-item">Награды: 2</span>
                                             </div>
                                         </div>
-                                        <div class="revenue-inputs__item">
-                                            <span class="revenue-inputs__item-title">Тип награды</span>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Шорт лист</option>
-                                                    <option value="option4">Option 4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    
+                                        <span class="grid-item">
+                                            Категория В: 12 наград, 15 шорт листов
+                                        </span>
                                     </div>
-
-                
-                                <div class="button-container">
-                                    <button class="btn-str" type="button" onclick="addRow('awards-section', 'awards')">+ Добавить строку</button>
                                 </div>
                             </div>
-                            <div class="form-group revenue">
-                                <label>10. Количество профессиональных мероприятий, организованных в течение года </label>
-                                <i>В параметре учитываются мероприятия, ориентированные на специалистов по коммуникациям, предполагающие равные возможности 
-                                    доступа для всех желающих участвовать. При этом учитываются обучающие программы в ВУЗах, но не учитываются клиентские 
-                                    обучающие программы и тренинги. Наибольший вес при подсчете имеют крупные отраслевые мероприятия (Дни PR, Baltic Weekend et c.), обучающие программы в ВУЗах учитываются как одно мероприятие при условии, что это комплексные программы. Единичные мастер классы для студентов не учитываются. НЕ УЧИТЫВАЮТСЯ КЛИЕНТСКИЕ МЕРОПРИЯТИЯ.Онлайн, а также студенческие мероприятия учитываются на 1 градацию ниже, чем оффлайн или мероприятия, ориентированные на специалистов. Т.е. курс онлайн лекций для студентов будет учитываться как небольшое мероприятие, даже если участников были "тысячи". </i>
-                                
-                                    <div class="revenue-inputs">
-                                        <div class="revenue-inputs__item">
-                                            <span class="revenue-inputs__item-title">Мероприятие</span>
-                                            <input type="text" class="input">
-                                        </div>
-                                        <div class="revenue-inputs__item">
-                                            <span class="revenue-inputs__item-title">Аудитория</span>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Студенты</option>
-                                                    <option value="option4">Option 4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="revenue-inputs__item">
-                                            <span class="revenue-inputs__item-title">Количество участников</span>
-                                            <input type="number" class="input">
-                                        </div>
-                                        <div class="revenue-inputs__item">
-                                            <span class="revenue-inputs__item-title">Формат проведения</span>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Оффлайн</option>
-                                                    <option value="option4">Option 4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="revenue-inputs__item">
-                                            <span class="revenue-inputs__item-title">Формат мероприятия</span>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Единичное</option>
-                                                    <option value="option4">Option 4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="revenue-inputs__item">
-                                            <span class="revenue-inputs__item-title">Формат мероприятия</span>
-                                            <div class="custom-select">
-                                                <select>
-                                                    <option value="option1">Организатор</option>
-                                                    <option value="option4">Option 4</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                            <div class="form-group mero">
+                                <label>10. Количество профессиональных мероприятий, организованных в течение года:</label>
+                                <div class="form-text">
+                                    <div class="form-text__title">
+                                        Совокупная выручка: 230 000 000
                                     </div>
-                            
-                                <div class="button-container">
-                                    <button type="button" onclick="addRow('events-section')">+ Добавить строку</button>
+                                    <div class="form-text__title grid">
+                                        <span class="grid-item">
+                                            EMG -1
+                                        </span>
+                                        <div class="grid-item">12345678901</div>
+                                    </div>
+                                    <div class="form-text__title grid">
+                                        <span class="grid-item">
+                                            EMG -1
+                                        </span>
+                                        <div class="grid-item">46 000 000</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ survey_form.company_age.id_for_label }}">11. Количество сотрудников, входящих в экспертные/наблюдательные советы профессиональных организаций/мероприятий, выступающих с профильными докладами на отраслевых мероприятиях</label>
+                                <div class="form-text">
+                                    <div class="form-text__title">
+                                        50
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="{{ survey_form.num_expert_employees.id_for_label }}">11. Количество сотрудников, входящих в экспертные/наблюдательные советы профессиональных
-                                        организаций/мероприятий, выступающих с профильными докладами на отраслевых мероприятиях</label>
-                                <i>В случае, если сотрудник отвечает сразу нескольким критериям, указывается суммарное значение.
-                                        Например, входит в жюри трех премий и наблюдательный совет 2-х проф.организаций, а также 6 раз выступил в рамках отраслевых конференций,
-                                        указывается 3+2+6=11. Если таких сотрудников несколько, то их показатели суммируются. Детали (расшифровки по сотрудникам, участиям и мероприятиям) 
-                                        не предоставляются в рамках анкеты.</i>
-                                {{ survey_form.num_expert_employees }}
+                                <label for="{{ survey_form.company_age.id_for_label }}">12. Количество сотрудников компании, работающих в ней более 3 лет </label>
+                                <div class="form-text">
+                                    <div class="form-text__title">
+                                        50
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="{{ survey_form.num_employees_over_3_years.id_for_label }}">12. Количество сотрудников компании, работающих в ней более 3 лет </label>
-                                <i>В случае, если сотрудник отвечает сразу нескольким критериям, указывается суммарное значение. 
-                                    Например, входит в жюри трех премий и наблюдательный совет 2-х проф.организаций, а также 6 раз выступил в рамках отраслевых конференций,
-                                        указывается 3+2+6=11. Если таких сотрудников несколько, то их показатели суммируются. Детали (расшифровки по сотрудникам, участиям и мероприятиям) не предоставляются в рамках анкеты.</i>
-                                {{ survey_form.num_employees_over_3_years }}
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.num_employees_in_communications.id_for_label }}">13. Количество сотрудников компании, работающих в коммуникациях более 3 лет</label>
-                                {{ survey_form.num_employees_in_communications }}
+                                <label for="{{ survey_form.company_age.id_for_label }}">13. Количество сотрудников компании, работающих в коммуникациях более 3 лет</label>
+                                <div class="form-text">
+                                    <div class="form-text__title">
+                                        50
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group position">
-                                <label class="section-label">
-                                    14. Количество профессиональных сертификатов, а также государственных наград, полученных сотрудниками компании за профессиональную деятельность
-                                </label>
-                                <br>
-                                <i>
-                                    Оцениваются сертификаты и награды, которыми обладают сотрудники, работающие в компании по ситуации на конец 2023 года. 
-                                    Время получения сертификата/награды и сроки работ, за которые получена награда, не учитываются. 
-                                    Учитываются официальные государственные награды и благодарности, подписанные первым лицом и главами федеральных министерств.
-                                </i>
-                                </p>
-                                <div class="position-inputs">
-                                    <div class="position-inputs__left">
-                                        <p class="position-inputs__left-title">Госнаграды РФ</p>
-                                        <div class="positions-content">
-                                            <input class="input" type="number">
-                                        </div>
+                                <label>14. Количество профессиональных сертификатов, а также государственных наград, полученных сотрудниками компании за профессиональную деятельность</label>
+                                <div class="form-text">
+                                    <div class="form-text__title grid">
+                                        <span class="grid-item">
+                                            Госнаграды РФ
+                                        </span>
+                                        <div class="grid-item">11</div>
                                     </div>
-                                    <div class="position-inputs__right">
-                                        <p class="position-inputs__right-title">Профильные сертификаты РАСО, IABC, АКОС</p>
-                                        <div class="positions-content">
-                                            <input class="input" type="number">
-                                        </div>
+                                    <div class="form-text__title grid">
+                                        <span class="grid-item">
+                                            Профильные сертификаты РАСО, IABC, АКОС
+                                        </span>
+                                        <div class="grid-item">10</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="survey_form__btns">
-                                <button type="button" name="create_survey" value="1" class="btn-primary--disabled" disabled>Загрузить файл</button>
-                                <button type="button" name="create_survey" value="1" class="btn-primary--disabled" disabled>Прикрепить заверенный документ</button>
-                                <button type="button" name="create_survey" value="1" class="btn-primary--disabled" disabled>Прикрепить логотип</button>
-                                <button type="button" name="create_survey" value="1" class="btn-primary">Редактировать</button>
-                                <button type="submit" name="create_survey" value="1" class="btn-primary--disabled" disabled>Сохранить</button>
-                                <button type="submit" name="action" value="submit_for_review" class="btn-primary--disabled" disabled>Отправить на модерацию</button>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-                <li class="subaccordeon-item">
-                    <div class="subaccordeon-header">
-                        <div class="subaccordeon-header__company">
-                            <img src="{% static 'images/plus.svg' %}" class="subaccordeon-item__open-symbol--plus" />
-                            <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
-                            <span class="subaccordeon-header__company-title">EMG</span>
-                        </div>
-                        <p class="subaccordeon-header__status success">Заполняется</p>
-                        <p class="subaccordeon-header__date">23.03.2024</p>
-                    </div>
-                    <div class="subaccordeon-body hidden">
-                        <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ survey_form.management_form }}
-                            <div class="form-group">
-                                <label for="{{ survey_form.company_name.id_for_label }}">1. Фирменное название компании, под которым компания или группа компаний позиционирует себя на рынке</label>
-                                {{ survey_form.company_name }}
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.company_address.id_for_label }}">2. Адрес головного офиса компании (представительства и головной компании для международных сетевыхх компаний)</label>
-                                {{ survey_form.company_address }}
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.specialization.id_for_label }}">3. Основная специализация компании</label>
-                                <i>Укажите ОДНУ основную специализацию, если специализаций несколько, указывайте п.1 - "Полного цикла" </i>
-                                {{ survey_form.specialization }}
-                            </div>
-                            <div class="form-group">
-                                <label>4. Приоритетное позиционирование компании</label>
-                                <i>В рамках изучения особенностей позиционирования компаний Наблюдательным советом принято решение дать возможность компаниям
-                                        указать свое приоритетное позиционирование, а также предоставить возможность подкрепить эту информацию данными о распределении 
-                                        выручки по видам коммуникационной деятельности. В 2024 году информация собирается справочно и будет использована в рамках дальнейших работ по развитию рейтинга.
-                                        На позиции компаний в рейтинге этого года предоставленная информация не влияет. </i>
-                                        <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Услуга</th>
-                                                <th>Доля в выручке (%)</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="positioning-section">
-                                            {{ positioning_formset.management_form }}
-                                            {% for form in positioning_formset %}
-                                            <tr>
-                                                <td>{{ form.service }}</td>
-                                                <td>{{ form.revenue_share }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                
-                                <div class="button-container">
-                                    <button type="button" onclick="addRow('positioning-section')">Добавить строку</button>
+                            <div class="comment">
+                                <textarea class="comment-textarea"></textarea>
+                                <div class="btns">
+                                    <div class="btn-primary--disabled">На доработку</div>
+                                    <div class="btn-primary--disabled">Одобрено</div>
+                                    <div class="btn-primary--disabled">Принято</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.geography_activity.id_for_label }}">5. Укажите Географию активности компании</label>
-                                <i>Возможные варианты:
-                                    "Федеральный уровень": более 50% проектов агентства в течение годе реализованы в 2-х и более ФО РФ, либо же на федеральном уровне. Агентства, работающие в столице, не являются "федеральными" по умолчанию.
-                                    "Региональный уровень, регион": проекты реализуются в рамках одного региона.Указывается регион активности агентства.</i>
-                                {{ survey_form.geography_activity }}
-                            </div>
-                            <div class="form-group">
-                                <label>6. Совокупная выручка от осуществления коммуникационной деятельности Вашей компанией или группой компаний, полученная:</label>
-                                <i>С 2022 года оператор сверяет выручку компании с данными ФНС России, согласно представленным в анкете ИНН. Для сверки используется сервис https:// bo.nalog.ru/. Перед подачей анкеты вы можете проверить какие именно данные есть у ФНС по вашим юридическим лицам. Если вы не согласны с данными ФНС, либо же часть вашей выручки по той или иной причине не учитывается сервисом (ИП, гранты, НКО и пр.), приложите к анкете документы, подтверждающие предоставляемые вами данные. В случае отсутствия документов приоритетными считаются данные ФНС, либо же проставляется 0 в выручке, если компании нет на https://bo.nalog.ru/ и дополнительные документы не предоставлены.
-                                    Компании - заявители предоставляют данные о выручке: сведения по строке «Выручка» из Отчёта о финансовых результатах (форма по ОКУД 0710002), предоставленного в ФНС России по итогам 2023 года.
-                                    Под выручкой понимаются полученные компанией / группой компаний от клиентов средства за вычетом НДС.
-                                    Для группы компаний, при доле владения бизнесом 50 % +1 акция и более, выручка консолидируется в размере 100 %. Если доля владения меньше - в качестве показателя выручки для Рейтинга интегрируется доля, соответствующая доле владения.
-                                    Для группы компаний данные о выручке представляются по форме ОКУД 0710002 по итогам 2023 года отдельно для каждого из юридических лиц, а затем суммируются.</i>
-                                    <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Название компании</th>
-                                                <th>ИНН</th>
-                                                <th>Доля владения (%)</th>
-                                                <th>Доля баинга в выручке (%)</th>
-                                                <th>Доля выручки (тыс. рублей)</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                
-                                        <tbody id="revenue-section">
-                                            {{ revenue_formset.management_form }} 
-                                            {% for form in revenue_formset %}
-                                            <tr>
-                                                <td>{{ form.company_name }}</td>
-                                                <td>{{ form.inn }}</td>
-                                                <td>{{ form.ownership_share }}</td>
-                                                <td>{{ form.buying_share }}</td>
-                                                <td>{{ form.revenue_amount }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                
-                
-                                <div class="button-container">
-                                    <button type="button" onclick="addRow('revenue-section')">+ Добавить строку</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>7. Количество сотрудников компании (группы компаний) на конец года:</label>
-                                <i>Под «сотрудником компании» понимается сотрудник, с которым заключён бессрочный либо срочный трудовой договор, и сотрудник включён в штатное расписание компании. 
-                                    При заполнении анкеты компания - заявитель не учитывает исполнителей по договорам ГПХ, индивидуальных предпринимателей, а также физических лиц, применяющих специальный налоговый режим «Налог на профессиональный доход» (самозанятых). 
-                                    Для ГК указывается сумма данных на конец 2023 года для каждого из юр.лиц.</i>
-                                
-                                    <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Название компании</th>
-                                                <th>Кол-во сотрудников</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                
-                                        <tbody id="employees-section">
-                                            {{ employees_formset.management_form }} 
-                                            {% for form in employees_formset %}
-                                            <tr>
-                                                <td>{{ form.employee_count }}</td>
-                                                <td>{{ form.department }}</td>  
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                <div class="button-container">
-                                    <button type="button" onclick="addRow('employees-section')">+ Добавить строку</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.company_age.id_for_label }}">8. Возраст компании</label>
-                                <i>Учитывается возраст бренда либо команды - если компания меняла название в течение своей деятельности,
-                                        учитывается возраст с момента основания первой компании.</i>
-                                <div class="row"> 
-                                {{ survey_form.company_age }}
-                            </div>
-                            </div>
-                            <div class="form-group">
-                                <label>9. Премии, полученные компанией в течение 2024 года</label>
-                                <i>Каждая награда указывается отдельной строкой. Если вы получили 10 'Cannes Lions' за год проведения рейтинга, они должны быть вписаны в 10 строк. Необходимо указывать статус награды (шорт лист/награда/гран при), а не только название номинации (необязательно).
-                                    Если компания вошла в шорт лист, а потом получила награду в номинации, то учитывается ТОЛЬКО более весомая награда. Если компания подет данные о 3 шорт листах и 5 победах, это значит, что в 3 случаях она была упомянута в шорт листе и награды не получила, а в 5 получила и то, и другое.
-                                    
-                                    Профессиональные премии, учитываемые в рамках рейтинга, сегментированы по Категориям – весу для репутации российских коммуникационных компаний, устанавливаемому Наблюдательным советом в результате консультаций с участниками рынка и опросов членов профессиональных организаций. Данные о распределении Премий по Категориям приведены во вкладке Категории данной анкеты.
-                                    В рейтинг учитываются все премии, полученные компанией в течение года, без ограничений на то, за какой год были выданы премии. Т.е., например, "Серебряный лучник", полученный в 2024 году за работу в 2023, учитывается в рейтинге 2024 года.
-                                    В случае, если участник - сетевое агентство, учитываются только те премии, которые выданы за проекты, активными участниками которых выступило российское представительство. Не надо указывать все премии, которые получила сеть за год.
-                                    В рейтинге не учитываются благодарности клиентов, сертификаты, а также места в рейтингах (в том числе в НР2К) - в зачет идут профессиональные премии, проводимые отраслевыми проф.организациями и объединениями.
-                                    Индивидуальные награды, получаемые лично сотрудниками, могут учитываться в списке, предоставляемом компанией, если сотрудник продолжал работу в компании на конец года, за который подаются данные.</i>
-                                    
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Название премии</th>
-                                            <th>Категория премии</th>
-                                            <th>Тип награды</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                            
-                                    <tbody id="awards-section">
-                                        {{ awards_formset.management_form }} 
-                                        {% for form in awards_formset %}
-                                        <tr>
-                                            <td>{{ form.award_name }}</td>
-                                            <td>{{ form.award_category }}</td>
-                                            <td>{{ form.award_type }}</td>  
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                
-                                <div class="button-container">
-                                    <button type="button" onclick="addRow('awards-section', 'awards')">+ Добавить строку</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>10. Количество профессиональных мероприятий, организованных в течение года </label>
-                                <i>В параметре учитываются мероприятия, ориентированные на специалистов по коммуникациям, предполагающие равные возможности 
-                                    доступа для всех желающих участвовать. При этом учитываются обучающие программы в ВУЗах, но не учитываются клиентские 
-                                    обучающие программы и тренинги. Наибольший вес при подсчете имеют крупные отраслевые мероприятия (Дни PR, Baltic Weekend et c.), обучающие программы в ВУЗах учитываются как одно мероприятие при условии, что это комплексные программы. Единичные мастер классы для студентов не учитываются. НЕ УЧИТЫВАЮТСЯ КЛИЕНТСКИЕ МЕРОПРИЯТИЯ.Онлайн, а также студенческие мероприятия учитываются на 1 градацию ниже, чем оффлайн или мероприятия, ориентированные на специалистов. Т.е. курс онлайн лекций для студентов будет учитываться как небольшое мероприятие, даже если участников были "тысячи". </i>
-                                
-                                    <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Количество мероприятий</th>
-                                                <th>Аудитория</th>
-                                                <th>Количество участников</th>
-                                                <th>Формат проведения</th>
-                                                <th>Формат мероприятия</th>
-                                                <th>Тип участия</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                
-                                        <tbody id="events-section">
-                                            {{ events_formset.management_form }} 
-                                            {% for form in events_formset %}
-                                            <tr>
-                                                <td>{{ form.event_count }}</td>
-                                                <td>{{ form.audience }}</td>
-                                                <td>{{ form.participant_count }}</td>
-                                                <td>{{ form.event_format }}</td>
-                                                <td>{{ form.event_type }}</td>
-                                                <td>{{ form.participation_type }}</td>  
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                            
-                                <div class="button-container">
-                                    <button type="button" onclick="addRow('events-section')">+ Добавить строку</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.num_expert_employees.id_for_label }}">11. Количество сотрудников, входящих в экспертные/наблюдательные советы профессиональных
-                                        организаций/мероприятий, выступающих с профильными докладами на отраслевых мероприятиях</label>
-                                <i>В случае, если сотрудник отвечает сразу нескольким критериям, указывается суммарное значение.
-                                        Например, входит в жюри трех премий и наблюдательный совет 2-х проф.организаций, а также 6 раз выступил в рамках отраслевых конференций,
-                                        указывается 3+2+6=11. Если таких сотрудников несколько, то их показатели суммируются. Детали (расшифровки по сотрудникам, участиям и мероприятиям) 
-                                        не предоставляются в рамках анкеты.</i>
-                                {{ survey_form.num_expert_employees }}
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.num_employees_over_3_years.id_for_label }}">12. Количество сотрудников компании, работающих в ней более 3 лет </label>
-                                <i>В случае, если сотрудник отвечает сразу нескольким критериям, указывается суммарное значение. 
-                                    Например, входит в жюри трех премий и наблюдательный совет 2-х проф.организаций, а также 6 раз выступил в рамках отраслевых конференций,
-                                        указывается 3+2+6=11. Если таких сотрудников несколько, то их показатели суммируются. Детали (расшифровки по сотрудникам, участиям и мероприятиям) не предоставляются в рамках анкеты.</i>
-                                {{ survey_form.num_employees_over_3_years }}
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.num_employees_in_communications.id_for_label }}">13. Количество сотрудников компании, работающих в коммуникациях более 3 лет</label>
-                                {{ survey_form.num_employees_in_communications }}
-                            </div>
-                            <div class="form-group">
-                                <label class="section-label">
-                                    14. Количество профессиональных сертификатов, а также государственных наград, полученных сотрудниками компании за профессиональную деятельность
-                                </label>
-                                <br>
-                                <i>
-                                    Оцениваются сертификаты и награды, которыми обладают сотрудники, работающие в компании по ситуации на конец 2023 года. 
-                                    Время получения сертификата/награды и сроки работ, за которые получена награда, не учитываются. 
-                                    Учитываются официальные государственные награды и благодарности, подписанные первым лицом и главами федеральных министерств.
-                                </i>
-                                </p>
-                                <div class="form-row">
-                                    <div class="form-field">
-                                        <label for="id_num_government_awards">Госнаграды РФ</label>
-                                        {{ survey_form.num_government_awards }}
-                                    </div>
-                                    <div class="form-field">
-                                        <label for="id_num_certificates">Профильные сертификаты РАСО, IABC, АКОС</label>
-                                        {{ survey_form.num_certificates }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ survey_form.user_comment.id_for_label }}">Комментарий</label>
-                                {{ survey_form.user_comment }}
-                            </div>
-                            <button type="submit" name="create_survey" value="1" class="btn-primary">Сохранить</button>
-                            <button type="submit" name="action" value="submit_for_review" class="btn-primary">Отправить на модерацию</button>
                         </form>
                     </div>
                 </li>

@@ -34,19 +34,22 @@
                     <p class="general-right__title">Справочная информация</p>
                     <ul class="general-list">
                         <li class="general-list__item">
+                            <input type="file" style="display: none;">
                             <p class="general-list__item-text">Методология</p>
                             <a class="general-list__item-link" href="">Методоasdfasdfdocx</a>
-                            <button class="btn-primary">Заменить файл</button>
+                            <button type="button" class="btn-primary">Заменить файл</button>
                         </li>
                         <li class="general-list__item">
+                            <input type="file" style="display: none;">
                             <p class="general-list__item-text">Уставные документы рейтинга</p>
                             <a class="general-list__item-link" href="">Методоasdfasdfdocx</a>
-                            <button class="btn-primary">Заменить файл</button>
+                            <button type="button" class="btn-primary">Заменить файл</button>
                         </li>
                         <li class="general-list__item">
+                            <input type="file" style="display: none;">
                             <p class="general-list__item-text">Результаты «для участников» старых рейтингов</p>
                             <a class="general-list__item-link" href="">Методоasdfasdfdocx</a>
-                            <button class="btn-primary">Заменить файл</button>
+                            <button type="button" class="btn-primary">Заменить файл</button>
                         </li>
                     </ul>
                 </div>
@@ -282,12 +285,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group comment-client">
+                                <label>+ Коментарий<label>
+                                <div class="form-text">
+                                    <div class="form-text__title">
+                                        50
+                                    </div>
+                                </div>
+                            </div>
                             <div class="comment">
                                 <textarea class="comment-textarea"></textarea>
                                 <div class="btns">
-                                    <div class="btn-primary--disabled">На доработку</div>
-                                    <div class="btn-primary--disabled">Одобрено</div>
-                                    <div class="btn-primary--disabled">Принято</div>
+                                    <button type="submit" class="btn-primary">На доработку</button>
+                                    <button type="submit" class="btn-primary">Одобрено</button>
+                                    <button type="submit" class="btn-primary">Принято</button>
                                 </div>
                             </div>
                         </form>

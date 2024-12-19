@@ -60,18 +60,33 @@
             <img src="{% static 'images/minus.svg' %}" class="accordeon-item__open-symbol--minus hidden" />
             <p class="accordeon-title__text">Анкеты 2024</p>
         </div>
-        <div class="accordeon-body archive hidden">
-            <ul class="archive-list">
-                <li class="archive-list__item">
-                    <a class="archive-list__link" href="">Архив 2024.pdf</a>
+        <div class="accordeon-body mod-archive hidden">
+            <ul class="subaccordeon">
+                <li class="subaccordeon-item">
+                    <div class="subaccordeon-header">
+                        <div class="subaccordeon-header__company">
+                            <img src="{% static 'images/plus.svg' %}" class="subaccordeon-item__open-symbol--plus" />
+                            <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
+                            <span class="subaccordeon-header__company-title">Михайлова</span>
+                        </div>
+                    </div>
+                    <div class="subaccordeon-body hidden" style="margin-left: 20px;">
+                        <a class="archive-list__link">Анкета.pdf</a>
+                    </div>
                 </li>
-                {% for survey in old_surveys %}
-                <li class="archive-list__item">
-                    <a class="archive-list__link" href="{% url 'view_survey' survey.id %}">{{ survey.submission_date|date:"d.m.Y" }}</a>
+                <li class="subaccordeon-item">
+                    <div class="subaccordeon-header">
+                        <div class="subaccordeon-header__company">
+                            <img src="{% static 'images/plus.svg' %}" class="subaccordeon-item__open-symbol--plus" />
+                            <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
+                            <span class="subaccordeon-header__company-title">Михайлова</span>
+                        </div>
+                    </div>
+                    <div class="subaccordeon-body hidden" style="margin-left: 20px;">
+                        <a class="archive-list__link">Анкета.pdf</a>
+                    </div>
                 </li>
-                {% empty %}
                 <p class="archive-list__no-items">Анкет пока нет.</p>
-                {% endfor %}
             </ul>
         </div>
     </li>
@@ -81,7 +96,7 @@
             <img src="{% static 'images/minus.svg' %}" class="accordeon-item__open-symbol--minus hidden" />
             <p class="accordeon-title__text">Анкеты 2025</p>
         </div>
-        <div class="accordeon-body">
+        <div class="accordeon-body hidden">
             <ul class="subaccordeon ankets">
                 <li class="subaccordeon-item">
                     <div class="subaccordeon-header">
@@ -298,11 +313,86 @@
     </li>
     <li class="accordeon-item">
         <div class="accordeon-title">
-            <img src="{% static 'images/plus.svg' %}" class="subaccordeon-item__open-symbol--plus" />
-            <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
+            <img src="{% static 'images/plus.svg' %}" class="accordeon-item__open-symbol--plus" />
+            <img src="{% static 'images/minus.svg' %}" class="accordeon-item__open-symbol--minus hidden" />
             <p class="accordeon-title__text">Участники</p>
         </div>
-        <div class="accordeon-body hidden">
+        <div class="accordeon-body profile hidden" style="margin-left: 100px;">
+            <form class="register-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ profile_form.management_form }}
+                {{ user_form.management_form }}
+                {{ password_form.management_form }}
+                <div class="form-group">
+                    <label for="{{ user_form.username.id_for_label }}">Логин (email)</label>
+                    {{ user_form.username }}
+                </div>
+                <div class="form-group">
+
+                    <label for="{{ password_form.password.id_for_label }}">Пароль</label>
+                    {{ password_form }} <!-- на бэке не работает -->
+                </div>
+            
+                <div class="form-group">
+                    <label for="{{ company_form.email_for_newsletters.id_for_label }}">Email для новостей/рассылок НР2К</label>
+                    {{ profile_form.email_for_newsletters }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ company_form.company_name_full.id_for_label }}">Название компании (полное)</label>
+                    {{ profile_form.company_name_full }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ company_form.company_name_short.id_for_label }}">Название компании (краткое)</label>
+                    {{ profile_form.company_name_short }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ company_form.postal_code.id_for_label }}">Почтовый индекс</label>
+                    {{ profile_form.postal_code }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ company_form.postal_address.id_for_label }}">Почтовый адрес (для корреспонденции)</label>
+                    {{ profile_form.postal_address }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ company_form.responsible_email.id_for_label }}">Email ответственного</label>
+                    {{ profile_form.responsible_email }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ company_form.responsible_name.id_for_label }}">Имя и фамилия ответственного</label>
+                    {{ profile_form.responsible_name }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ company_form.responsible_phone.id_for_label }}">Телефон ответственного</label>
+                    {{ profile_form.responsible_phone }}
+                </div>
+                <div class="form-group register-img">
+                    <label for="{{ company_form.company_logo.id_for_label }}">Логотип компании (png или svg)</label>
+                    <input type="file" name="company_logo" accept="image/*" required="" id="id_company_logo">
+
+                    {% if profile_form.company_logo %}
+                        <img width="25%" height="25%" src="{{ profile.company_logo.url }}" alt="Company Logo">
+                    {% else %}
+                        <p>No logo available</p>
+                    {% endif %}
+                    <div class="register-img__body">
+                        <button type="button" class="register-img__btn btn-primary">Загрузить файл</button>
+                        <div class="register-img__text">
+                            <span class="register-img__text-title"></span>
+                            <button type="button" class="register-img__btn--delete hidden">
+                                <img src="{% static 'images/chrest.svg' %}" alt="delete img">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <!-- {{ company_form.consent_data_processing }} -->
+                </div>
+            
+                <div class="form-btns">
+                    <button type="button" class="btn-primary" id="btn-change-form">Редактировать</button>
+                    <button class="btn-primary--disabled" disabled type="submit" id="btn-submit-form">Сохранить</button>
+                </div>
+            </form>
         </div>
     </li>
 </ul>

@@ -242,6 +242,7 @@
             border: 1px solid var(--blue);
             height: 67px;
             width: 100%;
+            padding: 12px;
 
             &::placeholder {
                 font-size: 12px;
@@ -283,7 +284,8 @@
     }
 
 
-    .position {
+    .position,
+    .workers {
         .position-inputs {
             display: flex;
             gap: 32px;
@@ -347,6 +349,7 @@
     .categs {
         display: flex;
         justify-content: space-between;
+        gap: 20px;
 
         .categs-item {
             font-size: 14px;

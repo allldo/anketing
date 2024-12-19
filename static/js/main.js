@@ -121,6 +121,7 @@ function makeAccordeon() {
       const accordeonBody = item.querySelector('.accordeon-body')
       const accordeonPlus = item.querySelector('.accordeon-item__open-symbol--plus')
       const accordeonminus = item.querySelector('.accordeon-item__open-symbol--minus')
+      console.log('accordeonPlus', accordeonPlus);
 
       accordeonBody.classList.remove('hidden')
       accordeonPlus.classList.add('hidden')

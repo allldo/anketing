@@ -96,3 +96,28 @@
     border-radius: 50px;
   }
 }
+
+.mod-archive {
+  .subaccordeon {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .subaccordeon-item {
+      gap: 10px;
+    }
+
+    .subaccordeon-body {
+      /* display: flex;
+      flex-direction: column; */
+      align-items: start;
+      text-align: start;
+    }
+
+    .archive-list__link {
+      text-decoration: underline;
+      color: #000;
+    }
+  }
+}

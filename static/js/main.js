@@ -9,12 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (urlPath.includes('dashboard')) {
     makeAccordeon()
     toggleForms()
-    makeSubAccordeon()
+    makeSubAccordeon('current-archive')
   }
 
   if (urlPath.includes('moderator')) {
     makeAccordeon()
-    makeSubAccordeon()
+    makeSubAccordeon('mod-archive')
+    makeSubAccordeon('ankets')
   }
 })
 
@@ -105,15 +106,18 @@ function makeAccordeon() {
   const accordeonItems = accordeon.querySelectorAll('.accordeon-item')
   for (const item of accordeonItems) {
     item.addEventListener('click', async (e) => {
+      console.group('Accordeon')
+      console.log('accordeon', accordeon);
+      console.groupEnd()
       for (const item of accordeonItems) {
         const accordeonBody = item.querySelector('.accordeon-body')
         const accordeonPlus = item.querySelector('.accordeon-item__open-symbol--plus')
-        const accordeonminus = item.querySelector('.accordeon-item__open-symbol--minus')
+        const accordeonMinus = item.querySelector('.accordeon-item__open-symbol--minus')
 
         if (!accordeonBody.classList.contains('hidden')) {
           accordeonBody.classList.add('hidden')
           accordeonPlus.classList.remove('hidden')
-          accordeonminus.classList.add('hidden')
+          accordeonMinus.classList.add('hidden')
         }
       }
       
@@ -121,7 +125,6 @@ function makeAccordeon() {
       const accordeonBody = item.querySelector('.accordeon-body')
       const accordeonPlus = item.querySelector('.accordeon-item__open-symbol--plus')
       const accordeonminus = item.querySelector('.accordeon-item__open-symbol--minus')
-      console.log('accordeonPlus', accordeonPlus);
 
       accordeonBody.classList.remove('hidden')
       accordeonPlus.classList.add('hidden')
@@ -130,12 +133,19 @@ function makeAccordeon() {
   }
 }
 
-function makeSubAccordeon() {
-  const accordeon = document.querySelector('.subaccordeon')
+function makeSubAccordeon(id) {
+  
+  const accordeon = document.querySelector(`.subaccordeon#${id}`)
   const accordeonItems = accordeon.querySelectorAll('.subaccordeon-item')
-
+  
   for (const item of accordeonItems) {
     item.addEventListener('click', async (e) => {
+      e.stopPropagation()
+      e.stopImmediatePropagation()
+      console.group('Subaccordeon')
+      console.log('id', id);
+      console.log('accordeon', accordeon);
+      console.groupEnd()
       for (const item of accordeonItems) {
         const accordeonBody = item.querySelector('.subaccordeon-body')
         const accordeonPlus = item.querySelector('.subaccordeon-item__open-symbol--plus')
@@ -158,7 +168,6 @@ function makeSubAccordeon() {
       accordeonminus.classList.remove('hidden')
     })
   }
-
 }
 
 function toggleForms() {

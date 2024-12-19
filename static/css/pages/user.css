@@ -500,3 +500,8 @@
         cursor: pointer;
     }
 }
+
+input[type=checkbox] {
+    height: auto !important;
+    width: 15px !important;
+}

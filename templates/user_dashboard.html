@@ -52,9 +52,10 @@
       <form method="post" enctype="multipart/form-data">
         {{ user_message_form.as_p }}
         <button
-          class="callback-form__btn btn-primary"
+          class="callback-form__btn btn-primary--disabled"
           type="submit"
           name="save_all"
+          disabled
         >
           Отправить
         </button>
@@ -625,7 +626,8 @@ function calculateRevenue() {
     document.getElementById("total-revenue").innerText =
         new Intl.NumberFormat("ru-RU").format(totalRevenue * 1000) + " руб.";
 }
-    function updateCategoryCounts() {
+
+function updateCategoryCounts() {
     const categoryCounts = {
         A: { awards: 0, shortlist: 0, grandprix: 0 },
         B: { awards: 0, shortlist: 0, grandprix: 0 },
@@ -673,10 +675,6 @@ function calculateRevenue() {
         categoryCounts.C.grandprix;
 
 }
-
-
-
-
 
 function addRevenueRow(deleteStr) {
     const container = document.getElementById("revenue-container");
@@ -770,10 +768,7 @@ function addRevenueRow(deleteStr) {
     // Добавляем новую строку в контейнер
     container.appendChild(newRow);
 }
-
-
-
-
+}
 
 function add_emp_number_row(deleteStr, text_class, number_class, input_text, input_number) {
     const totalFormsInput = document.getElementById("id_employees-TOTAL_FORMS");
@@ -877,10 +872,6 @@ function add_emp_number_row(deleteStr, text_class, number_class, input_text, inp
         totalFormsInput.value = parseInt(totalFormsInput.value, 10) + 1;
     }
 }
-
-
-
-
 
 function add_awards_row(deleteStr) {
     const totalFormsInput = document.getElementById("id_awards-TOTAL_FORMS");
@@ -987,10 +978,6 @@ function add_awards_row(deleteStr) {
     totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
 }
 
-
-
-
-
 function add_row_pos_update() {
     // Получаем все элементы с id, содержащими 'positioning-'
     const existingIds = document.querySelectorAll('[id^="id_positioning-"]');
@@ -1069,7 +1056,6 @@ function add_row_pos_update() {
     totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
 }
 
-
 function remove_row_update() {
     const totalFormsInput = document.getElementById('id_positioning-TOTAL_FORMS');
 
@@ -1143,10 +1129,6 @@ function remove_row_update() {
         totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
 
 }
-
-
-
-
 
 function add_mero_row(deleteStr) {
     const totalFormsInput = document.getElementById("id_events-TOTAL_FORMS");

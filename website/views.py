@@ -84,6 +84,7 @@ def moderator_dashboard(request):
 
     # Обработка формы общей информации
     if request.method == 'POST' and 'general_info_form' in request.POST:
+
         form = GeneralInfoForm(request.POST, request.FILES, instance=general_info)
         if form.is_valid():
             form.save()
@@ -535,9 +536,9 @@ def user_dashboard(request):
 
     if request.method == 'POST':
         print("POST request received.")
-        if 'create_survey' in request.POST or 'update_survey' in request.POST:
+        if 'create_survey' in request.POST or 'update_survey' in request.POST or 'submit_for_review' in request.POST:
             # Попытка получить или создать анкету
-            survey_form = CompanySurveyForm(request.POST, instance=survey)
+            survey_form = CompanySurveyForm(request.POST, request.FILES,instance=survey)
 
             # Формсеты
             positioning_formset = modelformset_factory(
@@ -590,6 +591,21 @@ def user_dashboard(request):
                         user=request.user
                     )
 
+                print('submit_for_review')
+                if 'submit_for_review' in request.POST:
+                    if ':' in request.POST:
+                        try:
+                            action = request.POST.get('action', '')
+                            survey = CompanySurvey.objects.get(id=action.split(':')[1])
+                            messages.success(request, f'Анкета "{survey.company_name}" отправлена на модерацию.')
+                        except CompanySurvey.DoesNotExist:
+                            messages.error(request, 'Анкета не найдена.')
+                    SurveyStatus.objects.create(
+                        survey=survey,
+                        status='moderate',
+                        user=request.user
+                    )
+
                 return redirect('user_dashboard')
 
         # Профиль, пользователь, пароль и сообщения
@@ -614,6 +630,7 @@ def user_dashboard(request):
 
         if user_message_form.is_valid():
             user_message_form.save()
+
     else:
         # Инициализация форм
         profile_form = CompanyProfileForm(instance=profile)

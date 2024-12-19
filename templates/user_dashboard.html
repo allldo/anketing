@@ -312,32 +312,18 @@
                                     {% endfor %}
 <!--                                        <input type="number" class="input revenue-input" oninput="calculateRevenue()">-->
                                 </div>
-                                <div class="revenue-inputs__item" style="align-self: flex-start;">
+                                <div class="revenue-inputs__item" style="align-self: flex-start;" id="revenue-delete-checkboxes">
                                     <span class="revenue-inputs__item-title">Удалить</span>
                                     {% for form in revenue_formset %}
+                                    <div style="margin-top:32px;">
                                         {{ form.DELETE }}
                                     {% endfor %}
+                                        </div>
 <!--                                        <input type="number" class="input revenue-input" oninput="calculateRevenue()">-->
                                 </div>
                             </div>
                             </div>
-                            <div id="revenue_template" class="revenue-inputs hidden" style="display:none;">
-<div class="revenue-inputs__item">
-    <input type="text" class="form-control" name="revenue-__prefix__-company_name" id="id_revenue-__prefix__-company_name" placeholder="Название компании" maxlength="255">
-</div>
-<div class="revenue-inputs__item">
-    <input type="text" class="form-control" name="revenue-__prefix__-inn" id="id_revenue-__prefix__-inn" placeholder="ИНН" maxlength="12">
-</div>
-<div class="revenue-inputs__item">
-    <input type="number" class="form-control" name="revenue-__prefix__-ownership_share" id="id_revenue-__prefix__-ownership_share"  min="0" max="100">
-</div>
-                                <div class="revenue-inputs__item">
-    <input type="number" class="form-control" name="revenue-__prefix__-buying_share" id="id_revenue-__prefix__-buying_share"  min="0" max="100">
-</div>
-                                <div class="revenue-inputs__item">
-    <input type="number" class="form-control" name="revenue-__prefix__-revenue_amount" id="id_revenue-__prefix__-revenue_amount" min="0" max="100">
-</div>
-</div>
+
                             <div class="button-container">
                                 <button class="btn-str" type="button" onclick="addRevenueRow()">+ Добавить строку</button>
 <!--                                    <button class="btn-str" type="button" onclick="addRevenueRow('delete')">- Удалить строку</button>-->
@@ -372,10 +358,12 @@
                             </div>
                                 <div class="position-inputs__right" id="employee_delete_buttons">
                                     <p class="position-inputs__right-title">Удалить</p>
-                                    <div class="positions-content emp_for_copy_number">
+                                    <div class="positions-content emp_for_copy_number" style="">
                                         {% for form in employees_formset %}
+                                        <div style="margin-top: 35px">
                                         {{ form.DELETE  }}
-                                        {% endfor %}
+                                        </div>
+                                            {% endfor %}
 <!--                                            <input class="input input_to_copy_number" type="number">-->
                                     </div>
                             </div>
@@ -565,12 +553,30 @@
                         <div class="form-group files">
                             <label>15. Прикрепленные файлы</label>
                             <ul class="form-files-list">
+                                    {% if survey_form.instance.survey_file %}
                                 <li class="files-list__item">
-                                    <p class="files-list__item-text">asdfasf</p>
+                                    <p class="files-list__item-text">{{ survey_form.instance.survey_file.name }}</p>
                                     <button type="button" class="files-list__item-delete">
                                         <img src="{% static 'images/chrest.svg' %}" alt="delete img">
                                     </button>
                                 </li>
+                                    {% endif %}
+                                 {% if survey_form.instance.doc %}
+                                <li class="files-list__item">
+                                    <p class="files-list__item-text">{{ survey_form.instance.doc.name }}</p>
+                                    <button type="button" class="files-list__item-delete">
+                                        <img src="{% static 'images/chrest.svg' %}" alt="delete img">
+                                    </button>
+                                </li>
+                                    {% endif %}
+                                 {% if survey_form.instance.logo %}
+                                <li class="files-list__item">
+                                    <p class="files-list__item-text">{{ survey_form.instance.logo.name }}</p>
+                                    <button type="button" class="files-list__item-delete">
+                                        <img src="{% static 'images/chrest.svg' %}" alt="delete img">
+                                    </button>
+                                </li>
+                                    {% endif %}
                                 <!-- <div class="register-img__text" style="display: flex;">
                                     <span class="register-img__text-title">sdfsdfsdfsdfsd</span>
                                     <div class="register-img__btn--delete">
@@ -580,16 +586,16 @@
                             </ul>
                         </div>
                         <div class="survey_form__btns">
-                            <input id="choose-file-input" type="file" style="display: none;">
-                            <input id="choose-doc-input" multiple type="file" style="display: none;">
-                            <input id="choose-logo-input" type="file" style="display: none;">
+                            <input id="choose-file-input" name="survey_file" type="file" style="display: none;">
+                            <input id="choose-doc-input" name="doc" multiple type="file" style="display: none;">
+                            <input id="choose-logo-input" name="logo" type="file" style="display: none;">
 
                             <button id="choose-file-doc" type="button" class="btn-primary">Загрузить файл</button>
                             <button id="choose-doc" type="button" name="create_survey" value="1" class="btn-primary">Прикрепить заверенный документ</button>
                             <button id="choose-logo" type="button" name="create_survey" value="1" class="btn-primary">Прикрепить логотип</button>
                             <button type="button" name="create_survey" value="1" class="btn-primary">Редактировать</button>
                             <button type="submit" name="create_survey" value="1" class="btn-primary">Сохранить</button>
-                            <button type="submit" name="action" value="submit_for_review" class="btn-primary">Отправить на модерацию</button>
+                            <button type="submit" name="submit_for_review" value="submit_for_review" class="btn-primary">Отправить на модерацию</button>
                         </div>
                     </form>
                     <div class="subaccordeon"  style="display: none;">
@@ -715,19 +721,20 @@ function addRevenueRow(deleteStr) {
         console.error("Row with ID 'revenue_row' not found.");
         return;
     }
- const template = document.getElementById("revenue_template");
+
     // Клонируем первую строку
-    const newRow = template.cloneNode(true);
+    const newRow = firstRow.cloneNode(true);
     newRow.style = "";
     // Очищаем значения в полях и обновляем атрибуты
     const inputs = newRow.querySelectorAll("input, select, textarea");
+    console.log(inputs, formIndex);
     inputs.forEach(input => {
         // Очищаем значения в полях
         input.value = '';
         // Обновляем атрибуты name и id с новым индексом
-        const regex = /\d+/;
-        input.name = input.name.replace("__prefix__", formIndex);
-        input.id = input.id.replace("__prefix__", formIndex);
+       const regex = /-\d+-/; // Регулярное выражение
+    input.name = input.name.replace(regex, `-${formIndex}-`);
+    input.id = input.id.replace(regex, `-${formIndex}-`);
     });
 
     // Создаем новый скрытый инпут для ID
@@ -737,6 +744,25 @@ function addRevenueRow(deleteStr) {
     hiddenInput.id = `id_revenue-${formIndex}-id`;
     hiddenInput.value = '';  // Очищаем значение
     container.appendChild(hiddenInput);
+
+      const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = `revenue-${formIndex}-DELETE`;
+        checkbox.id = `id_revenue-${formIndex}-DELETE`;
+
+        // Оборачиваем чекбокс в div
+        const checkboxWrapper = document.createElement("div");
+        checkboxWrapper.classList.add("checkbox-wrapper");
+        checkboxWrapper.style.marginTop = "10px";
+        checkboxWrapper.appendChild(checkbox);
+
+        // Добавляем чекбокс в контейнер чекбоксов
+        const deleteCheckboxContainer = document.getElementById("revenue-delete-checkboxes");
+        if (deleteCheckboxContainer) {
+
+        } else {
+            console.error("Container for delete checkboxes not found.");
+        }
 
     // Увеличиваем общее количество форм
     totalFormsInput.value = parseInt(totalFormsInput.value) + 1;

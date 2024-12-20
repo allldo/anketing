@@ -74,12 +74,22 @@
             <form class="register-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label>Логин (email)</label>
+                    <label for="{{ user_form.username.id_for_label }}">Логин</label>
                     {{ user_form.username }}
+                    {% for error in user_form.username.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="{{ user_form.email.id_for_label }}">email</label>
+                    {{ user_form.email }}{% for error in user_form.email.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+
                 </div>
                 <div class="form-group">
 
-                    <label>Пароль</label>
+<!--                    <label>Пароль</label>-->
                     {{ password_form }} <!-- на бэке не работает -->
                 </div>
             
@@ -140,7 +150,7 @@
             
                 <div class="form-btns">
                     <button type="button" class="btn-primary" id="btn-change-form">Редактировать</button>
-                    <button class="btn-primary--disabled" name="edit_profile" disabled type="submit" id="btn-submit-form">Сохранить</button>
+                    <button class="btn-primary--disabled" name="edit_profile" id="btn-submit-form" type="submit" >Сохранить</button>
                 </div>
             </form>
         </div>
@@ -660,18 +670,10 @@ function addRevenueRow(deleteStr) {
         return;
     }
 
+console.log("zxc");
     // Удаление последней строки
-    if (deleteStr === "delete") {
-        const lastRow = container.lastElementChild;
-        if (lastRow) {
-            container.removeChild(lastRow);
-            //document.getElementById("id_revenue-8-id");
-            totalFormsInput.value = parseInt(totalFormsInput.value) - 1; // Уменьшаем количество форм
 
-
-        return;
-    }
-
+console.log("zxc");
     // Получаем все элементы с id, содержащими 'revenue-'
     const existingIds = document.querySelectorAll('[id^="id_revenue-"]');
     let maxIndex = 0;
@@ -697,6 +699,8 @@ function addRevenueRow(deleteStr) {
 
     // Клонируем первую строку
     const newRow = firstRow.cloneNode(true);
+    console.log(firstRow);
+    console.log(newRow);
     newRow.style = "";
     // Очищаем значения в полях и обновляем атрибуты
     const inputs = newRow.querySelectorAll("input, select, textarea");
@@ -718,32 +722,13 @@ function addRevenueRow(deleteStr) {
     hiddenInput.value = '';  // Очищаем значение
     container.appendChild(hiddenInput);
 
-      const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.name = `revenue-${formIndex}-DELETE`;
-        checkbox.id = `id_revenue-${formIndex}-DELETE`;
-
-        // Оборачиваем чекбокс в div
-        const checkboxWrapper = document.createElement("div");
-        checkboxWrapper.classList.add("checkbox-wrapper");
-        checkboxWrapper.style.marginTop = "10px";
-        checkboxWrapper.appendChild(checkbox);
-
-        // Добавляем чекбокс в контейнер чекбоксов
-        const deleteCheckboxContainer = document.getElementById("revenue-delete-checkboxes");
-        if (deleteCheckboxContainer) {
-
-        } else {
-            console.error("Container for delete checkboxes not found.");
-        }
 
     // Увеличиваем общее количество форм
     totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
-
     // Добавляем новую строку в контейнер
     container.appendChild(newRow);
 }
-}
+
 
 function add_emp_number_row(deleteStr, text_class, number_class, input_text, input_number) {
     const totalFormsInput = document.getElementById("id_employees-TOTAL_FORMS");

@@ -31,6 +31,8 @@ function chooseImg() {
   const inputImgBtn =  document.querySelector('.register-img__btn')
   const inputImgBtnDelete =  document.querySelector('.register-img__btn--delete')
   const imgText = document.querySelector('.register-img__text-title')
+  const img = document.querySelector('.register-img__img')
+  const startImgSrc = img.src
 
   if (inputImgBtn && inputImg) {
     inputImgBtn.addEventListener('click', (e) => {
@@ -45,6 +47,7 @@ function chooseImg() {
         const files = e.target.files
     
         if (files.length) {
+          img.src = URL.createObjectURL(files[0])
           imgText.textContent = files[0].name
           inputImgBtnDelete.classList.remove('hidden')
         } else {
@@ -54,6 +57,7 @@ function chooseImg() {
       })
     
       inputImgBtnDelete.addEventListener('click', () => {
+        img.src = startImgSrc
         inputImg.value = ''
         imgText.textContent = ''
         inputImgBtnDelete.classList.add('hidden')

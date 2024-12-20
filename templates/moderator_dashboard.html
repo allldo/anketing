@@ -392,7 +392,7 @@
                                 <input type="file" name="company_logo" accept="image/*" id="id_company_logo">
             
                                 {% if item.form.company_logo %}
-                                    <img width="25%" height="25%" src="{{ item.form.instance.company_logo.url }}" alt="Company Logo">
+                                    <img class="register-img__img" width="25%" height="25%" src="{{ item.form.instance.company_logo.url }}" alt="Company Logo">
                                 {% else %}
                                     <p>No logo available</p>
                                 {% endif %}

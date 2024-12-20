@@ -221,23 +221,13 @@
                     <div class="input-row">
                         <div class="input-row__item">
                             <span class="input-row__item-title">Позиционирование</span>
+                            {% for form in positioning_formset %}{{ form.DELETE }}{{ form.service }}{% endfor %}
                             <div class="custom-select">
-                                {% for form in positioning_formset %}{{ form.id }}{{ form.service }} {% endfor %}
+                                {% for form in positioning_formset %}{{ form.id }}{{ form.service }}{% endfor %}
                             </div>
                         </div>
                         <div class="input-row__item">
                             <span class="input-row__item-title">Распределение выручки (%)</span>
-                            {% for form in positioning_formset %}{{ form.revenue_share }}{% endfor %}
-                        </div>
-                        <button class="input-row__btn-delete">Удалить</button>
-                    </div>
-                    <div class="input-row">
-                        <div class="input-row__item">
-                            <div class="custom-select">
-                                {% for form in positioning_formset %}{{ form.id }}{{ form.service }} {% endfor %}
-                            </div>
-                        </div>
-                        <div class="input-row__item">
                             {% for form in positioning_formset %}{{ form.revenue_share }}{% endfor %}
                         </div>
                         <button class="input-row__btn-delete">Удалить</button>
@@ -269,6 +259,7 @@
                     <div class="input-row">
                         <div class="input-row__item">
                             <span class="input-row__item-title">Компания</span>
+                            {% for form in revenue_formset %}{{ form.DELETE }}{{ form.company_name }}{% endfor %}
                             {% for form in revenue_formset %}{{ form.id }}{{ form.company_name }}{% endfor %}
                         </div>
                         <div class="input-row__item">
@@ -280,12 +271,12 @@
                             {% for form in revenue_formset %}{{ form.ownership_share }}{% endfor %}
                         </div>
                         <div class="input-row__item">
-                            <span class="input-row__item-title">доля владения %</span>
+                            <span class="input-row__item-title">доля баинга в выручке %</span>
                             {% for form in revenue_formset %}{{ form.buying_share }}{% endfor %}
                         </div>
                         <div class="input-row__item">
-                            <span class="input-row__item-title">доля баинга в выручке %</span>
-                            {% for form in revenue_formset %}{{ form.buying_share }}{% endfor %}
+                            <span class="input-row__item-title">доля выручки, тыс. руб.*</span>
+                            {% for form in revenue_formset %}{{ form.revenue_amount }}{% endfor %}
                         </div>
                         <button class="input-row__btn-delete">Удалить</button>
                     </div>
@@ -302,37 +293,23 @@
                     <div class="input-row">
                         <div class="input-row__item">
                             <span class="input-row__item-title">Компания</span>
+                            {% for form in employees_formset %}
+                                {{ form.DELETE }}
+                                {% endfor %}
                             <div class="custom-select">
                                 {% for form in employees_formset %}
                                 {{ form.id }}
                                 {{ form.department  }}
                                 {% endfor %}
                             </div>
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Распределение выручки (%)</span>
-                            {% for form in employees_formset %}
-                            {{ form.id }}
-                            {{ form.employee_count  }}
-                            {% endfor %}
-                        </div>
-                        <button class="input-row__btn-delete">Удалить</button>
-                    </div>
 
-                    <div class="input-row">
-                        <div class="input-row__item">
-                            <div class="custom-select">
-                                {% for form in employees_formset %}
-                                {{ form.id }}
-                                {{ form.department  }}
-                                {% endfor %}
-                            </div>
                         </div>
                         <div class="input-row__item">
-                            {% for form in employees_formset %}
-                            {{ form.id }}
-                            {{ form.employee_count  }}
-                            {% endfor %}
+                            <span class="input-row__item-title">Количество сотрудников</span>
+                                {% for form in employees_formset %}
+                                {{ form.employee_count  }}
+                                {% endfor %}
+
                         </div>
                         <button class="input-row__btn-delete">Удалить</button>
                     </div>
@@ -367,6 +344,7 @@
                     <div class="input-row">
                         <div class="input-row__item">
                             <span class="input-row__item-title">Премия</span>
+                            {% for form in awards_formset %}{{ form.DELETE }}{% endfor %}
                             {% for form in awards_formset %}{{ form.id }}{{ form.award_name }} {% endfor %}
                         </div>
                         <div class="input-row__item">
@@ -396,6 +374,7 @@
                     <div class="input-row">
                         <div class="input-row__item">
                             <span class="input-row__item-title">Мероприятие</span>
+                            {% for form in events_formset %} {{ form.DELETE}} {% endfor %}
                             {% for form in events_formset %} {{ form.id }}{{ form.event_name }} {% endfor %}
 
                         </div>
@@ -419,7 +398,7 @@
                         <div class="input-row__item">
                             <span class="input-row__item-title">Формат мероприятия</span>
                             <div class="custom-select">
-                                {% for form in events_formset %} {{ form.id }}{{ form.event_format }} {% endfor %}
+                                {% for form in events_formset %} {{ form.id }}{{ form.event_type }} {% endfor %}
                             </div>
                         </div>
                         <div class="input-row__item">

@@ -613,6 +613,7 @@ def user_dashboard(request):
                 for formset in [positioning_formset, revenue_formset, employees_formset, awards_formset, events_formset]:
                     if formset.is_valid():
                         instances = formset.save(commit=False)
+                        print('alot', instances)
                         for instance in instances:
                             instance.survey = survey
                             instance.save()
@@ -621,6 +622,27 @@ def user_dashboard(request):
                     else:
                         print(f"Errors in {formset.prefix} formset: {formset.errors}")
                         print(f"Non-form errors in {formset.prefix}: {formset.non_form_errors()}")
+
+                try:
+                    CompanyPositioning.objects.filter(survey=survey)[0]
+                except IndexError:
+                    CompanyPositioning.objects.create(survey=survey)
+                try:
+                    CompanyRevenue.objects.filter(survey=survey)[0]
+                except IndexError:
+                    CompanyRevenue.objects.create(survey=survey)
+                try:
+                    CompanyEmployees.objects.filter(survey=survey)[0]
+                except IndexError:
+                    CompanyEmployees.objects.create(survey=survey)
+                try:
+                    CompanyAwards.objects.filter(survey=survey)[0]
+                except IndexError:
+                    CompanyAwards.objects.create(survey=survey)
+                try:
+                    CompanyEvent.objects.filter(survey=survey)[0]
+                except IndexError:
+                    CompanyEvent.objects.create(survey=survey)
 
                 # Создание статуса анкеты
                 if 'create_survey' in request.POST:

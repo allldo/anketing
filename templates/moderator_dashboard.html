@@ -110,7 +110,15 @@
                             <img src="{% static 'images/minus.svg' %}" class="subaccordeon-item__open-symbol--minus hidden" />
                             <span class="subaccordeon-header__company-title">{{ company_name }}</span>
                         </div>
-                        <p class="subaccordeon-header__status error">На модерации</p>
+                        {% for surv in surveys %}
+                        {% if surv.latest_status == 'На модерации' %}
+                        <p class="subaccordeon-header__status error">{{ surv.latest_status }}</p>
+                        {% elif surv.latest_status == 'Принят' %}
+                    <p class="subaccordeon-header__status success">{{ surv.latest_status }}</p>
+                        {% else %}
+                        <p class="subaccordeon-header__status process">{{ surv.latest_status }}</p>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                     <div class="subaccordeon-body hidden" style="margin-left: 20px;">
 <!--                      {{ surveys }}-->

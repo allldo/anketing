@@ -88,9 +88,8 @@
 
                 </div>
                 <div class="form-group">
-
-<!--                    <label>Пароль</label>-->
-                    {{ password_form }} <!-- на бэке не работает -->
+                    <label for="id_new_password">Пароль</label>
+                    {{ password_form }}
                 </div>
             
                 <div class="form-group">
@@ -150,7 +149,7 @@
             
                 <div class="form-btns">
                     <button type="button" class="btn-primary" id="btn-change-form">Редактировать</button>
-                    <button class="btn-primary--disabled" name="edit_profile" id="btn-submit-form" type="submit" >Сохранить</button>
+                    <button class="btn-primary--disabled" disabled name="edit_profile" id="btn-submit-form" type="submit" >Сохранить</button>
                 </div>
             </form>
         </div>

@@ -1,14 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   const urlPath = window.location.pathname
   
-  if (urlPath.includes('register') || urlPath.includes('dashboard')) {
+  if (urlPath.includes('register')) {
     chooseImg();
-    toggleForms()
   }
 
   if (urlPath.includes('dashboard')) {
-    makeAccordeon()
     toggleForms()
+    makeAccordeon()
     chooseFileDocument('choose-file-doc', 'choose-file-doc-input')
     chooseFileDocument('choose-doc', 'choose-file-input')
     chooseFileDocument('choose-logo', 'choose-logo-input')
@@ -258,12 +257,6 @@ function toggleForms() {
     submitBtn.classList.remove('btn-primary--disabled')
     submitBtn.classList.add('btn-primary')
   })
-
-  submitBtn.addEventListener('click', () => {
-    for (const input of inputs) {
-      input.disabled = true
-    }
-  })
 }
 
 function toggleFormsModerator() {
@@ -307,12 +300,6 @@ function toggleFormsModerator() {
       submitBtn.disabled = false
       submitBtn.classList.remove('btn-primary--disabled')
       submitBtn.classList.add('btn-primary')
-    })
-
-    submitBtn.addEventListener('click', () => {
-      for (const input of inputs) {
-        input.disabled = true
-      }
     })
   }
 }

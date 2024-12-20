@@ -352,8 +352,8 @@
                             {{ user_form.management_form }}
                             {{ password_form.management_form }}
                             <div class="form-group">
-                                <label>Логин (email)</label>
-                                    <input type="email" disabled value="{% if item.profile.user.email %}{{ item.profile.user.email }}{% else %}{{ item.profile.user.username }}{% endif %}" maxlength="254" required="">
+                                <label>Логин</label>
+                            {{ item.user_form.username }}
                             </div>
                             <div class="form-group">
                                 <label>Email для новостей/рассылок НР2К</label>
@@ -406,10 +406,11 @@
                                     </div>
                                 </div>
                             </div>
-                        
+                                <input type="hidden" name="profile_id_rec" value="{{ item.form.instance.id }}">
                             <div class="form-btns">
+
                                 <button type="button" class="btn-primary" id="btn-change-form">Редактировать</button>
-                                <button class="btn-primary--disabled" type="submit" id="btn-submit-form">Сохранить</button>
+                                <button class="btn-primary--disabled" name="edit_participant" type="submit" id="btn-submit-form">Сохранить</button>
                             </div>
                         </form>
                     </div>

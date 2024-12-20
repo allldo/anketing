@@ -1,3 +1,4 @@
+from cProfile import Profile
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash, get_user_model
@@ -73,6 +74,7 @@ def register(request):
         'company_form': company_form
     })
 
+@csrf_exempt
 @login_required
 def moderator_dashboard(request):
     general_info, created = GeneralInfo.objects.get_or_create(
@@ -110,6 +112,19 @@ def moderator_dashboard(request):
                 survey.save()
         except CompanySurvey.DoesNotExist:
             print('Анкета не найдена')
+    if request.method == 'POST' and 'edit_participant' in request.POST:
+        try:
+            profile = CompanyProfile.objects.get(id=request.POST.get('profile_id_rec'))
+        except CompanyProfile.DoesNotExist:
+            redirect('moderator_dashboard')
+        company_profile_form = CompanyProfileForm(request.POST, request.FILES, instance=profile)
+        user_form = UserUpdateForm(request.POST, instance=profile.user)
+
+        if company_profile_form.is_valid():
+            company_profile_form.save()
+
+        if user_form.is_valid():
+            user_form.save()
 
     # Сбор данных об анкетах
     companies = CompanySurvey.objects.values('company_name').distinct()
@@ -143,7 +158,7 @@ def moderator_dashboard(request):
 
     company_profiles = CompanyProfile.objects.all()
     profile_forms = [
-        {'profile': profile, 'form': CompanyProfileForm(instance=profile)}
+        {'profile': profile, 'form': CompanyProfileForm(instance=profile), 'user_form': UserUpdateForm(instance=profile.user)}
         for profile in company_profiles
     ]
     active_users = User.objects.filter(company_profile__isnull=False)
@@ -151,7 +166,7 @@ def moderator_dashboard(request):
     companies_with_surveys = CompanyProfile.objects.annotate(
         survey_count=Count('user__surveys')
     ).filter(survey_count__gt=0)
-
+    #  {{ item.user_form.username }}
     context = {
         'general_info_form': form,
         'company_surveys': company_surveys,

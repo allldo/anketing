@@ -13,7 +13,7 @@ class CompanyProfile(models.Model):
     postal_address = models.CharField(max_length=255,verbose_name="Почтовый адрес")
     responsible_email = models.EmailField(verbose_name="Email ответственного")
     responsible_name = models.CharField(max_length=255, verbose_name="Имя и фамилия ответственного")
-    responsible_phone = models.CharField(max_length=15, verbose_name="Телефон ответственного")
+    responsible_phone = models.CharField(max_length=30, verbose_name="Телефон ответственного")
     consent_data_processing = models.BooleanField(default=False, verbose_name="Согласие на обработку данных")
     confirmation = models.BooleanField(default=False, verbose_name="Подтверждение условий")
 

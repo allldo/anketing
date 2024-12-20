@@ -109,7 +109,7 @@ function chooseDocument() {
 function chooseFileDocument() {
   const btnsList = document.querySelector('.survey_form__btns')
   const chooseFileBtn = btnsList.querySelector('#choose-file-doc')
-  const input = btnsList.querySelector('#choose-doc-input')
+  const input = btnsList.querySelector('#choose-file-input')
 
   const filesList = document.querySelector('.form-files-list')
   const filesListItems = filesList.querySelectorAll('.files-list__item')

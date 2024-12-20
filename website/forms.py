@@ -86,7 +86,16 @@ class CompanySurveyForm(forms.ModelForm):
         widgets = {
             'company_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите название компании'}),
             'company_address': forms.TextInput(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Введите адрес компании'}),
-            'specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите специализацию'}),
+            'specialization': forms.Select(choices=[('full cycle', 'Агентство полного цикла'),
+                                             ('service', 'Маркетинговые коммуникации / Маркетинговые услуги'),
+                                             ('explore', 'Коммуникационные исследования и аналитика / Исследования и аналитика'),
+                                             ('commune', 'Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью'),
+                                             ('consult', 'Политические коммуникации / Политическое консультирование'),
+                                             ('ads', 'Рекламные коммуникации / Реклама'),
+                                             ('event', 'Событийные коммуникации / Мероприятия / Event'),
+                                             ('digital', 'Цифровые коммуникации / Digital'),
+
+                                             ],attrs={'class': 'form-control', 'placeholder': 'Введите специализацию'}),
             'revenue': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Введите совокупную выручку','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),
             'geography_activity': forms.Select(attrs={'class': 'form-control'}),
             'company_age': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Введите возраст компании','min' :0,  'step' : 1, 'onkeypress' : only_digit,}),
@@ -99,22 +108,14 @@ class CompanySurveyForm(forms.ModelForm):
             'user_comment': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Комментарий'}),
 
         }
-    
+
+
 class CompanyPositioningForm(forms.ModelForm):
     class Meta:
         model = CompanyPositioning
         fields = ['service', 'revenue_share']
         widgets = {
-            'service': forms.Select(choices=[('students', 'Агентство полного цикла'),
-                                             ('service', 'Маркетинговые коммуникации / Маркетинговые услуги'),
-                                             ('explore', 'Коммуникационные исследования и аналитика / Исследования и аналитика'),
-                                             ('commune', 'Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью'),
-                                             ('consult', 'Политические коммуникации / Политическое консультирование'),
-                                             ('ads', 'Рекламные коммуникации / Реклама'),
-                                             ('event', 'Событийные коммуникации / Мероприятия / Event'),
-                                             ('digital', 'Цифровые коммуникации / Digital'),
-
-                                             ]),
+            'service': forms.Select(),
             'revenue_share': forms.NumberInput(attrs={'class': 'form-control',
                                                       'min' :0, 'max' : 100, 'step' : 1, 'onkeypress' : only_digit, 'oninput': only_procent }),
         }
@@ -163,7 +164,7 @@ class CompanyEventForm(forms.ModelForm):
             'audience': forms.Select(choices=[('students', 'Студенты'),('prof', 'Проф. Сообщества')],attrs={'class': 'form-control', 'placeholder': 'Аудитория'}),
             'participant_count': forms.NumberInput(attrs={'class': 'form-control','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),
             'event_format': forms.Select(attrs={'class': 'form-control'}),
-            'event_type': forms.Select(choices=[('solo', 'Единичное'),('complex', 'Комплексная программа')],attrs={'class': 'form-control', 'placeholder': 'Формат мероприятия'}),
+            'event_type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Формат мероприятия'}),
             'participation_type': forms.Select(attrs={'class': 'form-control'}),
         }
 

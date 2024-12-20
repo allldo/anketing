@@ -48,11 +48,21 @@ class CompanySurvey(models.Model):
         ('federal', 'Федеральный уровень'),
         ('regional', 'Региональный уровень'),
     ]
-
+    SPECIALIZATION_CHOICES = [
+        ('full cycle', 'Агентство полного цикла'),
+        ('service', 'Маркетинговые коммуникации / Маркетинговые услуги'),
+        ('explore', 'Коммуникационные исследования и аналитика / Исследования и аналитика'),
+        ('commune',
+         'Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью'),
+        ('consult', 'Политические коммуникации / Политическое консультирование'),
+        ('ads', 'Рекламные коммуникации / Реклама'),
+        ('event', 'Событийные коммуникации / Мероприятия / Event'),
+        ('digital', 'Цифровые коммуникации / Digital'),
+    ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surveys',blank=True, null=True)
     company_name = models.CharField(max_length=255, verbose_name="Фирменное наименование",blank=True,null=True)
     company_address = models.CharField(max_length=255,verbose_name="Адрес головного офиса",blank=True,null=True)
-    specialization = models.CharField(max_length=255, verbose_name="Основная специализация",blank=True,null=True)
+    specialization = models.CharField(choices=SPECIALIZATION_CHOICES, max_length=255, verbose_name="Основная специализация",blank=True,null=True)
     revenue = models.DecimalField(max_digits=12, decimal_places=2, verbose_name="Совокупная выручка", null=True, blank=True)
     geography_activity = models.CharField(
         max_length=20,
@@ -111,8 +121,19 @@ class CompanySurvey(models.Model):
     
     
 class CompanyPositioning(models.Model):
+    SERVICE_CHOICES = [
+        ('full cycle', 'Агентство полного цикла'),
+        ('service', 'Маркетинговые коммуникации / Маркетинговые услуги'),
+        ('explore', 'Коммуникационные исследования и аналитика / Исследования и аналитика'),
+        ('commune',
+         'Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью'),
+        ('consult', 'Политические коммуникации / Политическое консультирование'),
+        ('ads', 'Рекламные коммуникации / Реклама'),
+        ('event', 'Событийные коммуникации / Мероприятия / Event'),
+        ('digital', 'Цифровые коммуникации / Digital'),
+    ]
     survey = models.ForeignKey(CompanySurvey, on_delete=models.CASCADE, related_name='positionings')
-    service = models.CharField(max_length=255, verbose_name="Позиционирование",null=True,blank=True)
+    service = models.CharField(max_length=255, choices=SERVICE_CHOICES, default='full cycle', verbose_name="Позиционирование",null=True,blank=True)
     revenue_share = models.PositiveIntegerField(verbose_name="Распределение выручки (%)",null=True,blank=True)
 
 class CompanyEmployees(models.Model):
@@ -185,7 +206,8 @@ class CompanyEvent(models.Model):
         ('organizer', 'Организатор'),
         ('sooorganizer', 'Со-организатор'),
     ]
-
+    EVENT_TYPE_CHOICES = [('solo', 'Единичное'), ('complex', 'Комплексная программа')]
+    AUDIENCE_TYPE_CHOICES = [('students', 'Студенты'), ('prof', 'Проф. Сообщества')]
     survey = models.ForeignKey(
         'CompanySurvey',
         on_delete=models.CASCADE,
@@ -194,17 +216,17 @@ class CompanyEvent(models.Model):
     )
     event_name = models.CharField(max_length=255, verbose_name="Название мероприятия", null=True, blank=True)
     event_count = models.PositiveIntegerField(verbose_name="Количество мероприятий",null=True,blank=True)
-    audience = models.CharField(max_length=255, verbose_name="Аудитория",null=True,blank=True)
+    audience = models.CharField(max_length=255, choices=AUDIENCE_TYPE_CHOICES, default='students',verbose_name="Аудитория",null=True,blank=True)
     participant_count = models.PositiveIntegerField(verbose_name="Количество участников",null=True,blank=True)
     event_format = models.CharField(
         max_length=10,
-        choices=EVENT_FORMAT_CHOICES,
+        choices=EVENT_FORMAT_CHOICES, default='offline',
         verbose_name="Формат проведения",null=True
     )
-    event_type = models.CharField(max_length=255, verbose_name="Формат мероприятия",null=True,blank=True)
+    event_type = models.CharField(max_length=255,choices=EVENT_TYPE_CHOICES,default= 'solo', verbose_name="Формат мероприятия",null=True,blank=True)
     participation_type = models.CharField(
         max_length=15,
-        choices=PARTICIPATION_TYPE_CHOICES,
+        choices=PARTICIPATION_TYPE_CHOICES,default='organizer',
         verbose_name="Тип участия",null=True
     )
 

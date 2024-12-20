@@ -144,9 +144,10 @@
                             </div>
                             <div class="form-group position">
                                 <label for="{{ survey_data.survey.service.id_for_label }}">4. Приоритетное позиционирование компании</label>
-                                <div class="form-text">
-                                    <p class="form-text__title">{{ survey_data.survey.service }}
-                                    </p>
+                                <div class="form-text">{% for position in survey_data.positionings  %}
+                                    <p class="form-text__title">{{ position.get_service_display }}</p>
+                                    <p class="form-text__title">{{ position.revenue_share }}</p>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="form-group geography">
@@ -223,32 +224,23 @@
                                 <label>10. Количество профессиональных мероприятий, организованных в течение года:</label>
                                 <div class="form-text">
                                     {%  for event in survey_data.events %}
-
-
-
-
-
-
-                                    <div class="form-text__title">
-                                        {{ event.event_name }}
-                                    </div>
                                     <div class="form-text__title grid">
                                         <span class="grid-item">
-                                         {{ event.event_count }}
+                                         {{ event.event_name }}
                                         </span>
                                         <span class="grid-item">
-                                         {{ event.audience }}
+                                         {{ event.get_audience_display }}
                                         </span>
                                         <span class="grid-item">
                                          {{ event.participant_count }}
                                         </span><span class="grid-item">
-                                         {{ event.event_format }}
+                                         {{ event.get_event_format_display }}
                                         </span>
                                         <span class="grid-item">
-                                         {{ event.event_type }}
+                                         {{ event.get_event_type_display }}
                                         </span>
                                         <span class="grid-item">
-                                         {{ event.participation_type }}
+                                         {{ event.get_participation_type_display }}
                                         </span>
                                     </div>
 
@@ -306,9 +298,11 @@
                                 </div>
                             </div>
                             <div class="comment">
-                                <textarea class="comment-textarea"></textarea>
+                                <div class="form-group">
+                                {{ survey_data.comment_form }}
+                                    </div>
                                 <input type="hidden" name="survey_id" value="{{ survey_data.survey.id }}">
-                                <div class="btns">
+                                <div class="btns"> {{ survey_data.latest_status }}
                                     <button type="submit" name="edit_status" value="return" class="btn-primary">На доработку</button>
                                     <button type="submit" name="edit_status" value="approved" class="btn-primary">Одобрено</button>
                                     <button type="submit" name="edit_status" class="btn-primary">Принято</button>

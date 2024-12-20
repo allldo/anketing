@@ -83,7 +83,7 @@ def moderator_dashboard(request):
             'results_file': '',
         }
     )
-
+    print(request.POST)
     # Обработка формы общей информации
     if request.method == 'POST' and 'general_info_form' in request.POST:
 
@@ -97,12 +97,17 @@ def moderator_dashboard(request):
     if request.method == 'POST' and 'edit_status' in request.POST:
         survey_id = request.POST.get('survey_id')
         new_status = request.POST.get('edit_status')
+        moderator_comment = request.POST.get('moderator_comment')
         try:
             survey = CompanySurvey.objects.get(id=survey_id)
             SurveyStatus.objects.create(
                 survey=survey,
                 status=new_status, user=request.user
             )
+
+            if moderator_comment:
+                survey.moderator_comment = moderator_comment
+                survey.save()
         except CompanySurvey.DoesNotExist:
             print('Анкета не найдена')
 
@@ -549,26 +554,7 @@ def user_dashboard(request):
     results_file = general_info.results_file.name.split('/')[-1] if general_info.results_file else 'No File'
     if request.method == 'POST':
         print("POST request received.")
-        profile_form = CompanyProfileForm(request.POST, instance=profile)
-        user_form = UserUpdateForm(request.POST, instance=request.user)
-        password_form = SinglePasswordChangeForm(request.POST)
-        user_message_form = UserMessageForm(request.POST)
-        print(request.POST)
-        if profile_form.is_valid():
-            profile_form.save()
 
-        print(profile_form.errors)
-
-        if user_form.is_valid():
-            user_form.save()
-
-        if password_form.is_valid():
-            new_password = password_form.cleaned_data['new_password']
-            user = request.user
-            user.set_password(new_password)
-            user.save()
-            update_session_auth_hash(request, user)
-            return redirect('user_dashboard')
         if 'create_survey' in request.POST or 'update_survey' in request.POST or 'submit_for_review' in request.POST:
             # Попытка получить или создать анкету
             survey_form = CompanySurveyForm(request.POST, request.FILES,instance=survey)
@@ -641,6 +627,28 @@ def user_dashboard(request):
 
                 return redirect('user_dashboard')
 
+        profile_form = CompanyProfileForm(request.POST, instance=profile)
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        password_form = SinglePasswordChangeForm(request.POST)
+        user_message_form = UserMessageForm(request.POST)
+        # print(request.POST)
+        if profile_form.is_valid():
+            profile_form.save()
+
+        # print(profile_form.errors)
+
+        if user_form.is_valid():
+            user_form.save()
+        print(user_form.errors)
+        if password_form.is_valid():
+            new_password = password_form.cleaned_data['new_password']
+            if len(new_password) < 2:
+                return redirect('user_dashboard')
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)
+            return redirect('user_dashboard')
         # Профиль, пользователь, пароль и сообщения
 
 
@@ -653,7 +661,7 @@ def user_dashboard(request):
         user_form = UserUpdateForm(instance=request.user)
         password_form = SinglePasswordChangeForm()
         user_message_form = UserMessageForm()
-        survey_form = CompanySurveyForm(instance=survey) if survey else CompanySurveyForm()
+        survey_form = CompanySurveyForm(instance=survey) if survey else CompanySurveyForm(initial={'specialization': 'full cycle'})
 
         # Формсеты для анкеты
         if survey:

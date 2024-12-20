@@ -221,7 +221,7 @@
                     <div class="input-row">
                         <div class="input-row__item">
                             <span class="input-row__item-title">Позиционирование</span>
-                            {% for form in positioning_formset %}{{ form.DELETE }}{{ form.service }}{% endfor %}
+                            {% for form in positioning_formset %}{{ form.DELETE }}{% endfor %}
                             <div class="custom-select">
                                 {% for form in positioning_formset %}{{ form.id }}{{ form.service }}{% endfor %}
                             </div>

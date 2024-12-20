@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (urlPath.includes('dashboard')) {
+    chooseImg();
     toggleForms()
     makeAccordeon()
     chooseFileDocument('choose-file-doc', 'choose-file-doc-input')
@@ -260,6 +261,7 @@ function toggleForms() {
 }
 
 function toggleFormsModerator() {
+  console.log('toggle');
   const list =  document.querySelectorAll('.subaccordeon-body.profile')
   const headers = document.querySelectorAll('.subaccordeon-header__company')
 

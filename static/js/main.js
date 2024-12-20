@@ -9,10 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (urlPath.includes('dashboard')) {
     makeAccordeon()
     toggleForms()
-    makeSubAccordeon('current-archive')
-    chooseImgLogo()
-    chooseDocument()
-    chooseFileDocument()
+    chooseFileDocument('choose-file-doc', 'choose-file-doc-input')
+    chooseFileDocument('choose-doc', 'choose-file-input')
+    chooseFileDocument('choose-logo', 'choose-logo-input')
   }
 
   if (urlPath.includes('moderator')) {
@@ -106,14 +105,18 @@ function chooseDocument() {
   })
 }
 
-function chooseFileDocument() {
+function chooseFileDocument(btnId, inputId) {
   const btnsList = document.querySelector('.survey_form__btns')
+<<<<<<< HEAD
   const chooseFileBtn = btnsList.querySelector('#choose-file-doc')
   const input = btnsList.querySelector('#choose-file-input')
+=======
+  const chooseFileBtn = btnsList.querySelector(`#${btnId}`)
+  const input = btnsList.querySelector(`#${inputId}`)
+>>>>>>> b4ed597a6589f57ce6e3aa147bf740399e23ed82
 
   const filesList = document.querySelector('.form-files-list')
   const filesListItems = filesList.querySelectorAll('.files-list__item')
-  const btnDeleteList = filesList.querySelectorAll('button')
 
   chooseFileBtn.addEventListener('click', () => {
     input.click()

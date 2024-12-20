@@ -188,7 +188,7 @@
                 {{ employees_formset.management_form }}
                 {{ awards_formset.management_form }}
                 {{ events_formset.management_form }}
-                <div class="form-group ">
+                <div class="form-group status">
                 {% if latest_status  %}
                     <span class="comment__title">- Текущий статус: {{ latest_status.get_status_display }}</span>
                 {% endif %}
@@ -216,34 +216,34 @@
                     <i>В рамках изучения особенностей позиционирования компаний Наблюдательным советом принято решение дать возможность компаниям
                             указать свое приоритетное позиционирование, а также предоставить возможность подкрепить эту информацию данными о распределении 
                             выручки по видам коммуникационной деятельности. В 2024 году информация собирается справочно и будет использована в рамках дальнейших работ по развитию рейтинга.
-                            На позиции компаний в рейтинге этого года предоставленная информация не влияет. </i>
-                    <div class="position-inputs">
-                        <div class="position-inputs__left">
-                            <p class="position-inputs__left-title">Позиционирование</p>
-                            <div class="positions-content" id="position-selects-container">
-                                <div class="custom-select positioning" >
-                                    {% for form in positioning_formset %}{{ form.id }}{{ form.service }} {% endfor %}
-                                </div>
+                            На позиции компаний в рейтинге этого года предоставленная информация не влияет.
+                    </i>
+                    <div class="input-row">
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Позиционирование</span>
+                            <div class="custom-select">
+                                {% for form in positioning_formset %}{{ form.id }}{{ form.service }} {% endfor %}
                             </div>
                         </div>
-                        <div class="position-inputs__right" style="display: flex;">
-                            <p class="position-inputs__right-title">Распределение выручки (%)</p>
-                            <div class="positions-content" id="position-inputs-container">
-                                {% for form in positioning_formset %}{{ form.revenue_share }}{% endfor %}
-<!--                                            <input class="input input_to_copy_number" type="number">-->
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Распределение выручки (%)</span>
+                            {% for form in positioning_formset %}{{ form.revenue_share }}{% endfor %}
+                        </div>
+                        <button class="input-row__btn-delete">Удалить</button>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-row__item">
+                            <div class="custom-select">
+                                {% for form in positioning_formset %}{{ form.id }}{{ form.service }} {% endfor %}
                             </div>
                         </div>
-                        <div class="position-inputs__right" id="position-checkboxes-container" style="display: flex;">
-                            <p class="position-inputs__right-title">Удалить</p>
-                            <div class="positions-content">
-                                {% for form in positioning_formset %}{{ form.DELETE }}{% endfor %}
-<!--                                            <input class="input input_to_copy_number" type="number">-->
-                            </div>
+                        <div class="input-row__item">
+                            {% for form in positioning_formset %}{{ form.revenue_share }}{% endfor %}
                         </div>
+                        <button class="input-row__btn-delete">Удалить</button>
                     </div>
                     <div class="button-container">
                         <button class="btn-str" type="button" onclick="add_row_pos_update()">+ Добавить строку</button>
-<!--                                    <button class="btn-str" type="button" onclick="remove_row_update('')">- Удалить строку</button>-->
                     </div>
                 </div>
                 <div class="form-group geography">
@@ -266,107 +266,79 @@
                         Для группы компаний, при доле владения бизнесом 50 % +1 акция и более, выручка консолидируется в размере 100 %. Если доля владения меньше - в качестве показателя выручки для Рейтинга интегрируется доля, соответствующая доле владения.<br>
                         Для группы компаний данные о выручке представляются по форме ОКУД 0710002 по итогам 2023 года отдельно для каждого из юридических лиц, а затем суммируются.</i>
                     <b class="revenue-price" id="total-revenue"></b>
-                    <div id="revenue-container">
-                    <div class="revenue-inputs revenue_copy" id="revenue_row">
-                        <div class="revenue-inputs__item" style="max-width: 296px;">
-                            <span class="revenue-inputs__item-title">Компания</span>
-<!--                                        <input type="text" class="input">-->
-                            {% for form in revenue_formset %}
-                            {{ form.id }}
-                                {{ form.company_name }}
-                            {% endfor %}
+                    <div class="input-row">
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Компания</span>
+                            {% for form in revenue_formset %}{{ form.id }}{{ form.company_name }}{% endfor %}
                         </div>
-                        <div class="revenue-inputs__item" >
-                            <span class="revenue-inputs__item-title">ИНН</span>
-                            {% for form in revenue_formset %}
-<!--                                        {{ form.id }}-->
-                                {{ form.inn }}
-                            {% endfor %}
-<!--                                        <input type="text" class="input">-->
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">ИНН</span>
+                            {% for form in revenue_formset %}{{ form.inn }}{% endfor %}
                         </div>
-                        <div class="revenue-inputs__item">
-                            <span class="revenue-inputs__item-title">доля владения %</span>
-                            {% for form in revenue_formset %}
-<!--                                        {{ form.id }}-->
-                                {{ form.ownership_share }}
-                            {% endfor %}
-<!--                                        <input type="number" class="input">-->
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">доля владения %</span>
+                            {% for form in revenue_formset %}{{ form.ownership_share }}{% endfor %}
                         </div>
-                        <div class="revenue-inputs__item" >
-                            <span class="revenue-inputs__item-title">доля баинга в выручке %</span>
-                            {% for form in revenue_formset %}
-<!--                                        {{ form.id }}-->
-                                {{ form.buying_share }}
-                            {% endfor %}
-<!--                                        <input type="number" class="input">-->
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">доля владения %</span>
+                            {% for form in revenue_formset %}{{ form.buying_share }}{% endfor %}
                         </div>
-                        <div class="revenue-inputs__item">
-                            <span class="revenue-inputs__item-title">доля выручки, тыс. руб.*</span>
-                            {% for form in revenue_formset %}
-<!--                                        {{ form.id }}-->
-                                {{ form.revenue_amount }}
-                            {% endfor %}
-<!--                                        <input type="number" class="input revenue-input" oninput="calculateRevenue()">-->
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">доля баинга в выручке %</span>
+                            {% for form in revenue_formset %}{{ form.buying_share }}{% endfor %}
                         </div>
-                        <div class="revenue-inputs__item" style="align-self: flex-start;" id="revenue-delete-checkboxes">
-                            <span class="revenue-inputs__item-title">Удалить</span>
-                            {% for form in revenue_formset %}
-                            <div style="margin-top:32px;">
-                                {{ form.DELETE }}
-                            {% endfor %}
-                                </div>
-<!--                                        <input type="number" class="input revenue-input" oninput="calculateRevenue()">-->
-                        </div>
+                        <button class="input-row__btn-delete">Удалить</button>
                     </div>
-                    </div>
-
                     <div class="button-container">
                         <button class="btn-str" type="button" onclick="addRevenueRow()">+ Добавить строку</button>
-<!--                                    <button class="btn-str" type="button" onclick="addRevenueRow('delete')">- Удалить строку</button>-->
                     </div>
                 </div>
-                <div class="form-group position">
+                <div class="form-group">
                     <label>7. Количество сотрудников компании (группы компаний) на конец года:</label>
                     <i>Под «сотрудником компании» понимается сотрудник, с которым заключён бессрочный либо срочный трудовой договор, и сотрудник включён в штатное расписание компании. 
                         При заполнении анкеты компания - заявитель не учитывает исполнителей по договорам ГПХ, индивидуальных предпринимателей, а также физических лиц, применяющих специальный налоговый режим «Налог на профессиональный доход» (самозанятых). 
                         Для ГК указывается сумма данных на конец 2023 года для каждого из юр.лиц.</i>
 
-                    <div class="position-inputs emp_number">
-                        <div class="position-inputs__left">
-                            <p class="position-inputs__left-title">Компания</p>
-                            <div class="positions-content emp_for_copy_text">
+                    <div class="input-row">
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Компания</span>
+                            <div class="custom-select">
                                 {% for form in employees_formset %}
                                 {{ form.id }}
                                 {{ form.department  }}
                                 {% endfor %}
-<!--                                            <input class="input input_to_copy_text" type="text">-->
                             </div>
                         </div>
-                        <div class="position-inputs__right">
-                            <p class="position-inputs__right-title">Количество сотрудников</p>
-                            <div class="positions-content emp_for_copy_number">
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Распределение выручки (%)</span>
+                            {% for form in employees_formset %}
+                            {{ form.id }}
+                            {{ form.employee_count  }}
+                            {% endfor %}
+                        </div>
+                        <button class="input-row__btn-delete">Удалить</button>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-row__item">
+                            <div class="custom-select">
                                 {% for form in employees_formset %}
                                 {{ form.id }}
-                                {{ form.employee_count  }}
+                                {{ form.department  }}
                                 {% endfor %}
-<!--                                            <input class="input input_to_copy_number" type="number">-->
                             </div>
+                        </div>
+                        <div class="input-row__item">
+                            {% for form in employees_formset %}
+                            {{ form.id }}
+                            {{ form.employee_count  }}
+                            {% endfor %}
+                        </div>
+                        <button class="input-row__btn-delete">Удалить</button>
                     </div>
-                        <div class="position-inputs__right" id="employee_delete_buttons">
-                            <p class="position-inputs__right-title">Удалить</p>
-                            <div class="positions-content emp_for_copy_number" style="">
-                                {% for form in employees_formset %}
-                                <div style="margin-top: 35px">
-                                {{ form.DELETE  }}
-                                </div>
-                                    {% endfor %}
-<!--                                            <input class="input input_to_copy_number" type="number">-->
-                            </div>
-                    </div>
-                    </div>
-                        <div class="button-container">
+
+                    <div class="button-container">
                         <button class="btn-str" type="button" onclick="add_emp_number_row('non_delete', 'emp_for_copy_text', 'emp_for_copy_number', 'input_to_copy_text', 'input_to_copy_number')">+ Добавить строку</button>
-<!--                                    <button class="btn-str" type="button" onclick="add_emp_number_row('delete', 'emp_for_copy_text', 'emp_for_copy_number', 'input_to_copy_text', 'input_to_copy_number')">- Удалить строку</button>-->
                     </div>
                 </div>
                 <div class="form-group">
@@ -377,7 +349,7 @@
                     {{ survey_form.company_age }}
                 </div>
                 </div>
-                <div class="form-group revenue">
+                <div class="form-group">
                     <label>9. Премии, полученные компанией в течение 2024 года</label>
                     <i>Каждая награда указывается отдельной строкой. Если вы получили 10 'Cannes Lions' за год проведения рейтинга, они должны быть вписаны в 10 строк. Необходимо указывать статус награды (шорт лист/награда/гран при), а не только название номинации (необязательно).<br>
                         Если компания вошла в шорт лист, а потом получила награду в номинации, то учитывается ТОЛЬКО более весомая награда. Если компания подет данные о 3 шорт листах и 5 победах, это значит, что в 3 случаях она была упомянута в шорт листе и награды не получила, а в 5 получила и то, и другое.<br>
@@ -387,115 +359,79 @@
                         В случае, если участник - сетевое агентство, учитываются только те премии, которые выданы за проекты, активными участниками которых выступило российское представительство. Не надо указывать все премии, которые получила сеть за год.<br>
                         В рейтинге не учитываются благодарности клиентов, сертификаты, а также места в рейтингах (в том числе в НР2К) - в зачет идут профессиональные премии, проводимые отраслевыми проф.организациями и объединениями.<br>
                         Индивидуальные награды, получаемые лично сотрудниками, могут учитываться в списке, предоставляемом компанией, если сотрудник продолжал работу в компании на конец года, за который подаются данные.</i>
-                        <div class="categs">
-                            <b class="categs-item">Категория А: <span id="category-a-awards">0</span> наград, <span id="category-a-shortlist">0</span> шорт листов, <span id="category-a-grandprix">0</span> гранд приксов</b>
-                            <b class="categs-item">Категория Б: <span id="category-b-awards">0</span> наград, <span id="category-b-shortlist">0</span> шорт листов , <span id="category-b-grandprix">0</span> гранд приксов</b>
-                            <b class="categs-item">Категория В: <span id="category-c-awards">0</span> наград, <span id="category-c-shortlist">0</span> шорт листов , <span id="category-c-grandprix">0</span> гранд приксов</b>
+                    <div class="categs">
+                        <b class="categs-item">Категория А: <span id="category-a-awards">0</span> наград, <span id="category-a-shortlist">0</span> шорт листов, <span id="category-a-grandprix">0</span> гранд приксов</b>
+                        <b class="categs-item">Категория Б: <span id="category-b-awards">0</span> наград, <span id="category-b-shortlist">0</span> шорт листов , <span id="category-b-grandprix">0</span> гранд приксов</b>
+                        <b class="categs-item">Категория В: <span id="category-c-awards">0</span> наград, <span id="category-c-shortlist">0</span> шорт листов , <span id="category-c-grandprix">0</span> гранд приксов</b>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Премия</span>
+                            {% for form in awards_formset %}{{ form.id }}{{ form.award_name }} {% endfor %}
                         </div>
-                    <div id="awards_wrapper">
-                        <div class="revenue-inputs awards_section" id="award_template">
-                            <div class="revenue-inputs__item">
-                                <span class="revenue-inputs__item-title">Премия</span>
-                                {% for form in awards_formset %}{{ form.id }}{{ form.award_name }} {% endfor %}
-<!--                                            <input type="text" class="input">-->
-                            </div>
-                            <div class="revenue-inputs__item">
-                                <span class="revenue-inputs__item-title">Категория премии</span>
-                                <div class="custom-select">{% for form in awards_formset %}{{ form.id }}{{ form.award_category }} {% endfor %}
-<!--                                                <select class="category-select" onchange="updateCategoryCounts()">-->
-<!--                                                    <option value="A">А</option>-->
-<!--                                                    <option value="B">Б</option>-->
-<!--                                                    <option value="C">В</option>-->
-<!--                                                </select>-->
-                                </div>
-                            </div>
-                            <div class="revenue-inputs__item">
-                                <span class="revenue-inputs__item-title">Тип награды</span>
-                                <div class="custom-select">
-                                    {% for form in awards_formset %}
-                                    {{ form.id }}<div>{{ form.award_type }}</div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        <div class="revenue-inputs__item" id="award_delete_buttons" style="align-self:flex-start">
-                                <div><span class="revenue-inputs__item-title">Удалить</span>
-                                {% for form in awards_formset %}{{ form.DELETE }} {% endfor %}
-<!--                                            <input type="text" class="input">-->
-                                    </div>
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Категория премии</span>
+                            <div class="custom-select">{% for form in awards_formset %}{{ form.id }}{{ form.award_category }} {% endfor %}</div>
+                        </div>
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Тип награды</span>
+                            <div class="custom-select">
+                                {% for form in awards_formset %}
+                                {{ form.id }}{{ form.award_type }}
+                                {% endfor %}
                             </div>
                         </div>
-</div>
-    
+                        <button class="input-row__btn-delete">Удалить</button>
+                    </div>
                     <div class="button-container">
                         <button class="btn-str" type="button" onclick="add_awards_row()">+ Добавить строку</button>
-<!--                                    <button class="btn-str" type="button" onclick="add_awards_row('delete')">- Удалить строку</button>-->
                     </div>
                 </div>
-                <div class="form-group revenue">
+                <div class="form-group">
                     <label>10. Количество профессиональных мероприятий, организованных в течение года </label>
                     <i>В параметре учитываются мероприятия, ориентированные на специалистов по коммуникациям, предполагающие равные возможности 
                         доступа для всех желающих участвовать. При этом учитываются обучающие программы в ВУЗах, но не учитываются клиентские 
                         обучающие программы и тренинги. Наибольший вес при подсчете имеют крупные отраслевые мероприятия (Дни PR, Baltic Weekend et c.), обучающие программы в ВУЗах учитываются как одно мероприятие при условии, что это комплексные программы. Единичные мастер классы для студентов не учитываются. НЕ УЧИТЫВАЮТСЯ КЛИЕНТСКИЕ МЕРОПРИЯТИЯ.Онлайн, а также студенческие мероприятия учитываются на 1 градацию ниже, чем оффлайн или мероприятия, ориентированные на специалистов. Т.е. курс онлайн лекций для студентов будет учитываться как небольшое мероприятие, даже если участников были "тысячи". </i>
-                        <div id="mero_wrapper">
-                        <div class="revenue-inputs" id="mero_template">
-                            <div class="revenue-inputs__item" style="width: 208px;">
-                                <span class="revenue-inputs__item-title">Мероприятие</span>
-                                {% for form in events_formset %} {{ form.id }}{{ form.event_name }} {% endfor %}
-<!--                                            <input type="text" class="input">-->
-                            </div>
-                            <div class="revenue-inputs__item" style="width: 130px;">
-                                <span class="revenue-inputs__item-title">Аудитория</span>
-                                <div class="custom-select">
-                                    {% for form in events_formset %}{{ form.id }} {{ form.audience }} {% endfor %}
-<!--                                                <select>-->
-<!--                                                    <option value="option1">Студенты</option>-->
-<!--                                                    <option value="option4">Проф. сообщества</option>-->
-<!--                                                </select>-->
-                                </div>
-                            </div>
+                        
+                    <div class="input-row">
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Мероприятие</span>
+                            {% for form in events_formset %} {{ form.id }}{{ form.event_name }} {% endfor %}
 
-                            <div class="revenue-inputs__item" style="width: 70px;">
-                                <span class="revenue-inputs__item-title">Количество участников</span>
-                                {% for form in events_formset %}{{ form.id }} {{ form.participant_count }} {% endfor %}
-<!--                                            <input type="number" class="input">-->
-                            </div>
-                            <div class="revenue-inputs__item" style="width: 180px;">
-                                <span class="revenue-inputs__item-title">Формат проведения</span>
-                                <div class="custom-select">
-                                    {% for form in events_formset %}{{ form.id }} {{ form.event_format }} {% endfor %}
-<!--                                                <select>-->
-<!--                                                    <option value="option1">Оффлайн</option>-->
-<!--                                                    <option value="option4">Онлайн</option>-->
-<!--                                                </select>-->
-                                </div>
-                            </div>
-                            <div class="revenue-inputs__item" style="width: 230px;">
-                                <span class="revenue-inputs__item-title">Формат мероприятия</span>
-                                <div class="custom-select">
-                                    {% for form in events_formset %} {{ form.id }}{{ form.event_type }} {% endfor %}
-<!--                                                <select>-->
-<!--                                                    <option value="option1">Единичное</option>-->
-<!--                                                    <option value="option4">Комплекснная программа</option>-->
-<!--                                                </select>-->
-                                </div>
-                            </div>
-                            <div class="revenue-inputs__item" style="width: 163px;">
-                                <span class="revenue-inputs__item-title">Статус участия</span>
-                                <div class="custom-select">
-                                    {% for form in events_formset %} {{ form.id }}<div style="">{{ form.participation_type }} </div> {% endfor %}
-                                </div>
-                            </div>
-                            <div class="revenue-inputs__item">
-                                <span class="revenue-inputs__item-title">Удалить</span>
-                                {% for form in events_formset %}{{form.DELETE}} {% endfor %}
-<!--                                            <input type="text" class="input">-->
+                        </div>
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Аудитория</span>
+                            <div class="custom-select">
+                                {% for form in events_formset %}{{ form.id }} {{ form.audience }} {% endfor %}
                             </div>
                         </div>
-                </div>
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Количество участников</span>
+                            {% for form in events_formset %}{{ form.id }} {{ form.participant_count }} {% endfor %}
+
+                        </div>
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Формат проведения</span>
+                            <div class="custom-select">
+                                {% for form in events_formset %} {{ form.id }}{{ form.event_format }} {% endfor %}
+                            </div>
+                        </div>
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Формат мероприятия</span>
+                            <div class="custom-select">
+                                {% for form in events_formset %} {{ form.id }}{{ form.event_format }} {% endfor %}
+                            </div>
+                        </div>
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Статус участия</span>
+                            <div class="custom-select">
+                                {% for form in events_formset %} {{ form.id }}{{ form.participation_type }} {% endfor %}
+                            </div>
+                        </div>
+                        <button class="input-row__btn-delete">Удалить</button>
+                    </div>
                     <div class="button-container">
                         <button class="btn-str" type="button" onclick="add_mero_row()">+ Добавить строку</button>
-<!--                                    <button class="btn-str" type="button" onclick="add_mero_row('delete')">- Удалить строку</button>-->
-
                     </div>
                 </div>
                 <div class="form-group">
@@ -518,32 +454,29 @@
                     <label for="{{ survey_form.num_employees_in_communications.id_for_label }}">13. Количество сотрудников компании, работающих в коммуникациях более 3 лет</label>
                     {{ survey_form.num_employees_in_communications }}
                 </div>
-                <div class="form-group position">
-                    <label class="section-label">
+                <div class="form-group">
+                    <label for="{{ survey_form.num_employees_in_communications.id_for_label }}">
                         14. Количество профессиональных сертификатов, а также государственных наград, полученных сотрудниками компании за профессиональную деятельность
                     </label>
-                    <br>
                     <i>
                         Оцениваются сертификаты и награды, которыми обладают сотрудники, работающие в компании по ситуации на конец 2023 года. 
                         Время получения сертификата/награды и сроки работ, за которые получена награда, не учитываются. 
                         Учитываются официальные государственные награды и благодарности, подписанные первым лицом и главами федеральных министерств.
                     </i>
-                    </p>
-                    <div class="position-inputs">
-                        <div class="position-inputs__left">
-                            <p class="position-inputs__left-title">Госнаграды РФ</p>
-                            <div class="positions-content">
-                                {{ survey_form.num_government_awards }}
-<!--                                            <input class="input" type="number">-->
-                            </div>
+                    <div class="input-row">
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Госнаграды РФ</span>
+                            {{ survey_form.num_government_awards }}
                         </div>
-                        <div class="position-inputs__right">
-                            <p class="position-inputs__right-title">Профильные сертификаты РАСО, IABC, АКОС</p>
-                            <div class="positions-content">
-                                {{ survey_form.num_certificates }}
-<!--                                            <input class="input" type="number">-->
-                            </div>
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Категория премии</span>
+                            <div class="custom-select">{% for form in awards_formset %}{{ form.id }}{{ form.award_category }} {% endfor %}</div>
                         </div>
+                        <div class="input-row__item">
+                            <span class="input-row__item-title">Профильные сертификаты РАСО, IABC, АКОС</span>
+                            {{ survey_form.num_certificates }}
+                        </div>
+                        <button class="input-row__btn-delete">Удалить</button>
                     </div>
                 </div>
                 <div class="form-group files">

@@ -262,87 +262,39 @@
         }
     }
 
-    .comment {
-        .comment__title {
-            font-size: 12px;
-            font-weight: 700;
-            line-height: 15px;
-            color: var(--red);
-        }
-    
-        .comment__text {
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 15px;
-            color: var(--grey);
-            margin-left: 40px;
-        }
-    }
+    .input-row {
+        display: flex;
+        width: 100%;
+        gap: 32px;
 
-    .specialization {
-
-    }
-
-
-    .position,
-    .workers {
-        .position-inputs {
-            display: flex;
-            gap: 32px;
-        }
-
-        .position-inputs__left,
-        .position-inputs__right {
-            width: 100%;
+        .input-row__item {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            justify-content: end;
+            flex: 1;
+            gap: 15px;
+
         }
 
-        .position-inputs__left-title,
-        .position-inputs__right-title {
-            font-family: Inter;
+        .input-row__item-title {
             font-size: 12px;
             font-weight: 400;
             line-height: 14.52px;
             color: var(--grey);
         }
 
-        .positions-content {
+        .input-row__btn-delete {
+            border: none;
+            outline: none;
+            background-color: var(--red);
+            color: white;
             display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-    }
-
-    .revenue {
-        .revenue-price {
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 16.94px;
-            color: var(--grey);
-        }
-
-        .revenue-inputs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 32px;
-        }
-
-        .revenue-inputs__item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-top: 10px;
-            align-self: flex-end;
-        }
-
-        .revenue-inputs__item-title {
-            flex-grow: 1;
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 14.52px;
-            color: var(--grey);
+            justify-content: center;
+            align-items: center;
+            border-radius: 50px;
+            align-self: center;
+            padding: 12px;
+            justify-self: start;
         }
     }
 
@@ -501,7 +453,8 @@
     }
 }
 
-input[type=checkbox] {
-    height: auto !important;
-    width: 15px !important;
+@media (max-width: 1200px) {
+    .input-row {
+        flex-direction: column;
+    }
 }

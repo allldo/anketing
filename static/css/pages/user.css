@@ -219,6 +219,15 @@
     flex-direction: column;
     gap: 20px;
 
+
+    input[type="checkbox"] {
+        display: none;
+        visibility: hidden;
+        opacity: 0;
+        cursor: none;
+        user-select: none;
+    }
+
     .survey_form {
         display: flex;
         flex-direction: column;

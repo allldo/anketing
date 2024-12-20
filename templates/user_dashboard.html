@@ -218,20 +218,22 @@
                             выручки по видам коммуникационной деятельности. В 2024 году информация собирается справочно и будет использована в рамках дальнейших работ по развитию рейтинга.
                             На позиции компаний в рейтинге этого года предоставленная информация не влияет.
                     </i>
-                    <div class="input-row">
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Позиционирование</span>
-                            {% for form in positioning_formset %}{{ form.DELETE }}{% endfor %}
-                            <div class="custom-select">
-                                {% for form in positioning_formset %}{{ form.id }}{{ form.service }}{% endfor %}
+                    { for row in position_rows }
+                        <div class="input-row">
+                            <div class="input-row__item">
+                                <span class="input-row__item-title">Позиционирование</span>
+                                {% for form in positioning_formset %}{{ form.DELETE }}{% endfor %}
+                                <div class="custom-select">
+                                    {% for form in positioning_formset %}{{ form.id }}{{ form.service }}{% endfor %}
+                                </div>
                             </div>
+                            <div class="input-row__item">
+                                <span class="input-row__item-title">Распределение выручки (%)</span>
+                                {% for form in positioning_formset %}{{ form.revenue_share }}{% endfor %}
+                            </div>
+                            <button class="input-row__btn-delete">Удалить</button>
                         </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Распределение выручки (%)</span>
-                            {% for form in positioning_formset %}{{ form.revenue_share }}{% endfor %}
-                        </div>
-                        <button class="input-row__btn-delete">Удалить</button>
-                    </div>
+                    { endfor }
                     <div class="button-container">
                         <button class="btn-str" type="button" onclick="add_row_pos_update()">+ Добавить строку</button>
                     </div>
@@ -274,7 +276,7 @@
                             <span class="input-row__item-title">доля баинга в выручке %</span>
                             {% for form in revenue_formset %}{{ form.buying_share }}{% endfor %}
                         </div>
-                        <div class="input-row__item">
+                        <div class="input-row__item price">
                             <span class="input-row__item-title">доля выручки, тыс. руб.*</span>
                             {% for form in revenue_formset %}{{ form.revenue_amount }}{% endfor %}
                         </div>
@@ -509,69 +511,7 @@
         </div>
     </li>
 </ul>
-
 <script>
-function calculateRevenue() {
-    const revenueInputs = document.querySelectorAll(".revenue-input");
-    let totalRevenue = 0;
-
-    revenueInputs.forEach((input) => {
-        const value = parseFloat(input.value) || 0;
-        totalRevenue += value;
-    });
-    document.getElementById("total-revenue").innerText =
-        new Intl.NumberFormat("ru-RU").format(totalRevenue * 1000) + " руб.";
-}
-
-function updateCategoryCounts() {
-    const categoryCounts = {
-        A: { awards: 0, shortlist: 0, grandprix: 0 },
-        B: { awards: 0, shortlist: 0, grandprix: 0 },
-        C: { awards: 0, shortlist: 0, grandprix: 0 },
-    };
-    console.log("start");
-    document.querySelectorAll(".awards_section").forEach((row) => {
-        const category = row.querySelector(".category-select").value;
-        const type = row.querySelector(".type-select").value;
-        console.log("gogo");
-        console.log(category);
-        console.log(type);
-        if (type === "shortlist") {
-        console.log(categoryCounts[category].shortlist);
-            categoryCounts[category].shortlist += 1;
-        } else if (type === "award") {
-            categoryCounts[category].awards += 1;
-        }
-        else if (type === "grandprix"){
-            categoryCounts[category].grandprix += 1;
-        }
-    });
-
-    document.getElementById("category-a-awards").innerText =
-        categoryCounts.A.awards;
-    document.getElementById("category-a-shortlist").innerText =
-        categoryCounts.A.shortlist;
-
-    document.getElementById("category-a-grandprix").innerText =
-        categoryCounts.A.grandprix;
-
-    document.getElementById("category-b-awards").innerText =
-        categoryCounts.B.awards;
-    document.getElementById("category-b-shortlist").innerText =
-        categoryCounts.B.shortlist;
-
-    document.getElementById("category-b-grandprix").innerText =
-        categoryCounts.B.grandprix;
-
-    document.getElementById("category-c-awards").innerText =
-        categoryCounts.C.awards;
-    document.getElementById("category-c-shortlist").innerText =
-        categoryCounts.C.shortlist;
-    document.getElementById("category-c-grandprix").innerText =
-        categoryCounts.C.grandprix;
-
-}
-
 function addRevenueRow(deleteStr) {
     const container = document.getElementById("revenue-container");
     const totalFormsInput = document.getElementById("id_revenue-TOTAL_FORMS");
@@ -639,7 +579,6 @@ console.log("zxc");
     // Добавляем новую строку в контейнер
     container.appendChild(newRow);
 }
-
 
 function add_emp_number_row(deleteStr, text_class, number_class, input_text, input_number) {
     const totalFormsInput = document.getElementById("id_employees-TOTAL_FORMS");

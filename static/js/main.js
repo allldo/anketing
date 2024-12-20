@@ -1,22 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
+  chooseImg();
+
   const urlPath = window.location.pathname
   
   if (urlPath.includes('register')) {
-    chooseImg();
+  }
+
+  if (urlPath.includes('dashboard') || urlPath.includes('moderator')) {
+    makeAccordeon()
   }
 
   if (urlPath.includes('dashboard')) {
-    chooseImg();
     toggleForms()
-    makeAccordeon()
     chooseFileDocument('choose-file-doc', 'choose-file-doc-input')
     chooseFileDocument('choose-doc', 'choose-file-input')
     chooseFileDocument('choose-logo', 'choose-logo-input')
+    calculateRevenue()
   }
 
   if (urlPath.includes('moderator')) {
-    chooseImg()
-    makeAccordeon()
     makeSubAccordeon('mod-archive')
     makeSubAccordeon('ankets')
     makeSubAccordeon('participans')
@@ -308,4 +310,66 @@ function toggleFormsModerator() {
       submitBtn.classList.add('btn-primary')
     })
   }
+}
+
+function calculateRevenue() {
+  const revenue = document.querySelector(".form-group.revenue")
+  const revenueInputs = revenue.querySelectorAll(".input-row__item.price");
+  let totalRevenue = 0;
+
+  revenueInputs.forEach((input) => {
+      const value = parseFloat(input.value) || 0;
+      totalRevenue += value;
+  });
+  revenue.querySelector("#total-revenue").innerText =
+      new Intl.NumberFormat("ru-RU").format(totalRevenue * 1000) + " руб.";
+}
+
+function updateCategoryCounts() {
+  const categoryCounts = {
+      A: { awards: 0, shortlist: 0, grandprix: 0 },
+      B: { awards: 0, shortlist: 0, grandprix: 0 },
+      C: { awards: 0, shortlist: 0, grandprix: 0 },
+  };
+  console.log("start");
+  document.querySelectorAll(".awards_section").forEach((row) => {
+      const category = row.querySelector(".category-select").value;
+      const type = row.querySelector(".type-select").value;
+      console.log("gogo");
+      console.log(category);
+      console.log(type);
+      if (type === "shortlist") {
+      console.log(categoryCounts[category].shortlist);
+          categoryCounts[category].shortlist += 1;
+      } else if (type === "award") {
+          categoryCounts[category].awards += 1;
+      }
+      else if (type === "grandprix"){
+          categoryCounts[category].grandprix += 1;
+      }
+  });
+
+  document.getElementById("category-a-awards").innerText =
+      categoryCounts.A.awards;
+  document.getElementById("category-a-shortlist").innerText =
+      categoryCounts.A.shortlist;
+
+  document.getElementById("category-a-grandprix").innerText =
+      categoryCounts.A.grandprix;
+
+  document.getElementById("category-b-awards").innerText =
+      categoryCounts.B.awards;
+  document.getElementById("category-b-shortlist").innerText =
+      categoryCounts.B.shortlist;
+
+  document.getElementById("category-b-grandprix").innerText =
+      categoryCounts.B.grandprix;
+
+  document.getElementById("category-c-awards").innerText =
+      categoryCounts.C.awards;
+  document.getElementById("category-c-shortlist").innerText =
+      categoryCounts.C.shortlist;
+  document.getElementById("category-c-grandprix").innerText =
+      categoryCounts.C.grandprix;
+
 }

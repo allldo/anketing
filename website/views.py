@@ -575,6 +575,8 @@ def user_dashboard(request):
 
         if 'create_survey' in request.POST or 'update_survey' in request.POST or 'submit_for_review' in request.POST:
             # Попытка получить или создать анкету
+            # print(request.POST)
+
             survey_form = CompanySurveyForm(request.POST, request.FILES,instance=survey)
 
             # Формсеты
@@ -645,20 +647,15 @@ def user_dashboard(request):
 
                 return redirect('user_dashboard')
 
-        profile_form = CompanyProfileForm(request.POST, instance=profile)
-        user_form = UserUpdateForm(request.POST or None, instance=request.user)
+        profile_form = CompanyProfileForm(request.POST, request.FILES, instance=profile)
+        user_form = UserUpdateForm(request.POST, instance=request.user)
         password_form = SinglePasswordChangeForm(request.POST)
         user_message_form = UserMessageForm(request.POST)
-        print(request.POST)
         if profile_form.is_valid():
             profile_form.save()
 
-        print(user_form.initial)
-        # print(profile_form.errors)
-
         if user_form.is_valid():
             user_form.save()
-        print(user_form.errors)
         if password_form.is_valid():
             new_password = password_form.cleaned_data['new_password']
             if len(new_password) < 2:

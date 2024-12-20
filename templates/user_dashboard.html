@@ -179,6 +179,11 @@
                 {{ employees_formset.management_form }}
                 {{ awards_formset.management_form }}
                 {{ events_formset.management_form }}
+                <div class="form-group ">
+                {% if latest_status  %}
+                    <span class="comment__title">- Текущий статус: {{ latest_status.get_status_display }}</span>
+                {% endif %}
+                </div>
                 <div class="form-group comment">
 
                     {% if survey_form.instance.moderator_comment  %}<span class="comment__title">- Комментарий</span><p class="comment__text">{{ survey_form.instance.moderator_comment }}</p>{% endif %}

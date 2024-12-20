@@ -552,6 +552,9 @@ def user_dashboard(request):
     methodology_file = general_info.methodology_file.name.split('/')[-1] if general_info.methodology_file else 'No File'
     charter_file = general_info.charter_file.name.split('/')[-1] if general_info.charter_file else 'No File'
     results_file = general_info.results_file.name.split('/')[-1] if general_info.results_file else 'No File'
+    latest_status = SurveyStatus.objects.filter(
+        survey=survey
+    ).order_by('-created_at')[:1].first()
     if request.method == 'POST':
         print("POST request received.")
 
@@ -705,6 +708,7 @@ def user_dashboard(request):
         'password_form': password_form,
         'user_message_form': user_message_form,
         'survey_form': survey_form,
+        'latest_status': latest_status,
         'positioning_formset': PositioningFormSet,
         'revenue_formset': RevenueFormSet,
         'employees_formset': EmployeesFormSet,

@@ -554,6 +554,7 @@ def user_dashboardqqqq(request):
 @csrf_exempt
 @login_required
 def user_dashboard(request):
+    print(request.POST)
     profile, created = CompanyProfile.objects.get_or_create(user=request.user)
     survey = CompanySurvey.objects.filter(user=request.user).last()
     general_info, created = GeneralInfo.objects.get_or_create(
@@ -609,7 +610,6 @@ def user_dashboard(request):
                 survey.user = request.user
                 survey.save()
 
-                # Сохранение формсетов
                 for formset in [positioning_formset, revenue_formset, employees_formset, awards_formset, events_formset]:
                     if formset.is_valid():
                         instances = formset.save(commit=False)
@@ -617,8 +617,9 @@ def user_dashboard(request):
                         for instance in instances:
                             instance.survey = survey
                             instance.save()
-                        for obj in formset.deleted_objects:
-                            obj.delete()
+                        for form in formset:
+                            if form.cleaned_data.get('delete_marker') == "DELETE":
+                                form.instance.delete()
                     else:
                         print(f"Errors in {formset.prefix} formset: {formset.errors}")
                         print(f"Non-form errors in {formset.prefix}: {formset.non_form_errors()}")

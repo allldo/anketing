@@ -111,9 +111,14 @@ class CompanySurveyForm(forms.ModelForm):
 
 
 class CompanyPositioningForm(forms.ModelForm):
+    mask_for_deletion = forms.CharField(
+        required=False,
+        label="Пометка для удаления",
+        widget=forms.HiddenInput,
+    )
     class Meta:
         model = CompanyPositioning
-        fields = ['service', 'revenue_share']
+        fields = ['service', 'revenue_share', 'mask_for_deletion']
         widgets = {
             'service': forms.Select(),
             'revenue_share': forms.NumberInput(attrs={'class': 'form-control',

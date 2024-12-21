@@ -340,7 +340,6 @@ function calculateRevenue() {
     const revenue_inputs = document.querySelectorAll(".revenue-input")
     revenue_inputs.forEach((input) => {
     const value = parseFloat(input.value) || 0;
-    console.log(input.value)
     totalRevenue += value;
   });
   revenue.querySelector("#total-revenue").innerText =
@@ -358,7 +357,6 @@ function updateCategoryCounts() {
   document.querySelectorAll(".input-row").forEach((row) => {
     const categorySelect = row.querySelector(".category-select");
     const typeSelect = row.querySelector(".type-select");
-        console.log(categorySelect, typeSelect)
     if (categorySelect && typeSelect) {
       const category = categorySelect.value;
       const type = typeSelect.value;
@@ -458,6 +456,8 @@ function addRow(id) {
      const inputForDjango = document.querySelector(`input[name=${checkboxName}-TOTAL_FORMS]`)
      const inputForDjangoValue = Number(inputForDjango.getAttribute('value'))
      inputForDjango.setAttribute('value', inputForDjangoValue + 1)
+
+     deleteRow(id)
   })
 }
 
@@ -465,6 +465,7 @@ function deleteRow(id) {
   const formGroup = document.querySelector(`#${id}`)
   const inputRows = formGroup.querySelector('.input-rows')
   const rowList = inputRows.querySelectorAll('.input-row')
+  const addBtn = formGroup.querySelector('.input-row__btn-delete')
 
   const inputsList = formGroup.querySelector('.form-group-checkboxes')
   const inputListItems = inputsList.querySelectorAll('input[type="hidden"]')
@@ -476,14 +477,12 @@ function deleteRow(id) {
       const parent = btnDelete.parentElement
 
       if (inputRows.childElementCount < 2) {
-        console.log('many');
         return
       }
 
       const index = Array.from(inputRows.children).indexOf(parent)
       inputRows.removeChild(parent)
 
-      console.log('inputListItemsinputListItems', inputListItems);
       for (const input of inputListItems) {
         if (input.name.includes('mask_for_deletion')) {
           const inputId = Number(input.getAttribute('name').match(/-(\d+)-/)[1])

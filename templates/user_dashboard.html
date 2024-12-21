@@ -270,9 +270,11 @@
                     <b class="revenue-price" id="total-revenue"></b>
                     <div class="input-rows">
                         {% for form in revenue_formset %}
+                        {{ form.id }}
                         <div class="input-row">
                             <div class="input-row__item">
                                 <span class="input-row__item-title">Компания</span>
+
                                 {{ form.company_name }}
                             </div>
                             <div class="input-row__item">
@@ -309,14 +311,15 @@
                         Для ГК указывается сумма данных на конец 2023 года для каждого из юр.лиц.</i>
                         <div class="input-rows">
                             {% for form in employees_formset %}
+                            {{ form.id }}
                             <div class="input-row">
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Компания</span>
-                                    {{ form.id }}{{ form.department  }}
+                                    {{ form.department }}
                                 </div>
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Количество сотрудников</span>
-                                        {{ form.employee_count  }}
+                                        {{ form.employee_count }}
                                 </div>
                                 <button class="input-row__btn-delete">Удалить</button>
                             </div>
@@ -354,10 +357,11 @@
                     </div>
                     <div class="input-rows">
                         {% for form in awards_formset %}
+                        {{ form.id }}
                         <div class="input-row">
                             <div class="input-row__item">
                                 <span class="input-row__item-title">Премия</span>
-                                {{ form.id }}{{ form.award_name }}
+                                {{ form.award_name }}
                             </div>
                             <div class="input-row__item">
                                 <span class="input-row__item-title">Категория премии</span>
@@ -366,7 +370,7 @@
                             <div class="input-row__item">
                                 <span class="input-row__item-title">Тип награды</span>
                                 <div class="custom-select">
-                                    {{ form.id }}{{ form.award_type }}
+                                    {{ form.award_type }}
                                 </div>
                             </div>
                             <button class="input-row__btn-delete">Удалить</button>
@@ -387,37 +391,38 @@
                         обучающие программы и тренинги. Наибольший вес при подсчете имеют крупные отраслевые мероприятия (Дни PR, Baltic Weekend et c.), обучающие программы в ВУЗах учитываются как одно мероприятие при условии, что это комплексные программы. Единичные мастер классы для студентов не учитываются. НЕ УЧИТЫВАЮТСЯ КЛИЕНТСКИЕ МЕРОПРИЯТИЯ.Онлайн, а также студенческие мероприятия учитываются на 1 градацию ниже, чем оффлайн или мероприятия, ориентированные на специалистов. Т.е. курс онлайн лекций для студентов будет учитываться как небольшое мероприятие, даже если участников были "тысячи". </i>
                         <div class="input-rows">
                             {% for form in events_formset %}
+                            {{ form.id }}
                             <div class="input-row">
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Мероприятие</span>
-                                    {{ form.id }}{{ form.event_name }}
+                                    {{ form.event_name }}
                                 </div>
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Аудитория</span>
                                     <div class="custom-select">
-                                        {{ form.id }} {{ form.audience }}
+                                        {{ form.audience }}
                                     </div>
                                 </div>
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Количество участников</span>
-                                    {{ form.id }} {{ form.participant_count }}
+                                    {{ form.participant_count }}
                                 </div>
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Формат проведения</span>
                                     <div class="custom-select">
-                                        {{ form.id }}{{ form.event_format }}
+                                        {{ form.event_format }}
                                     </div>
                                 </div>
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Формат мероприятия</span>
                                     <div class="custom-select">
-                                        {{ form.id }}{{ form.event_type }}
+                                        {{ form.event_type }}
                                     </div>
                                 </div>
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Статус участия</span>
                                     <div class="custom-select">
-                                        {{ form.id }}{{ form.participation_type }}
+                                        {{ form.participation_type }}
                                     </div>
                                 </div>
                                 <button class="input-row__btn-delete">Удалить</button>

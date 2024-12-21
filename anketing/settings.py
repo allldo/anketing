@@ -31,7 +31,9 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ["95.140.159.254"]
 
-
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://127.0.0.1:3567'
+# ]
 # Application definition
 
 INSTALLED_APPS = [

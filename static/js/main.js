@@ -403,75 +403,61 @@ function updateCategoryCounts() {
 function addRow(id) {
   const formGroup = document.querySelector(`#${id}`)
 
-  const btnAdd = formGroup.querySelector('.btn-str')  
+  const btnAdd = formGroup.querySelector('.btn-str')
 
-  
+
   btnAdd.addEventListener('click', () => {
     const formGroup = document.querySelector(`#${id}`)
     const inputRows = formGroup.querySelector('.input-rows')
     const rowList = inputRows.querySelectorAll('.input-row')
 
     const lastRow = rowList[rowList.length - 1]
-    const lastRowItems = lastRow.querySelectorAll('.input-row__item')
-    const btnDelete = lastRow.querySelector('.input-row__btn-delete')
-    const cloneBtnDelete = btnDelete.cloneNode(true)
+    const newRow = lastRow.cloneNode(true);
 
-    const row = document.createElement('div')
-    row.classList.add('input-row')
+    const inputs = newRow.querySelectorAll('input, select');
+    const deleteButton = newRow.querySelector('.input-row__btn-delete');
 
-    for (const item of lastRowItems) {
-      const inputItem = document.createElement('div')
-      inputItem.classList.add('input-row__item')
-      console.log('children', item.children);
-      const cloneChild = item
-      console.log('cloneChild', cloneChild);
+       inputs.forEach(input => {
+        if (input.name) {
+            input.name = input.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`);
+        }
+        if (input.id) {
+            input.id = input.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`);
+        }
 
-      // if (typeof cloneChild.children[1]?.selectedIndex === 'number') {
-      //   cloneChild.children[0].removeAttribute('value')
-      //   cloneChild.children[0].name = cloneChild.children[0].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-      //   cloneChild.children[0].id = cloneChild.children[0].id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-      //   cloneChild.children[1].selectedIndex = 0
-      //   cloneChild.children[1].name = cloneChild.children[1].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-      //   cloneChild.children[1].id = cloneChild.children[1].id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-      // } else {
-      //   if (cloneChild.getAttribute('type') === 'number') {
-      //     cloneChild.setAttribute('value', '0')
-      //   } else {
-      //     cloneChild.setAttribute('value', '')
-      //   }
-      //   cloneChild.name = cloneChild.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-      //   cloneChild.id = cloneChild.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-      // }
+        if (input.tagName === 'SELECT') {
+            input.selectedIndex = 0;
+        } else if (input.type === 'number') {
+            input.value = 0;
+        } else {
+            input.value = '';
+        }
+    });
 
-      // inputItem.appendChild(cloneChild)     
-      // row.append(inputItem)
-    }
+    inputRows.appendChild(newRow);
 
-    // row.append(cloneBtnDelete)
-    
-    // inputRows.appendChild(row)
 
-    // const checkboxes = formGroup.querySelector('.form-group-checkboxes')
-    // const checkboxesItems = checkboxes.querySelectorAll('input[type="hidden"]')
+     const checkboxes = formGroup.querySelector('.form-group-checkboxes')
+     const checkboxesItems = checkboxes.querySelectorAll('input[type="hidden"]')
 
-    // const lastCheckbox = checkboxesItems[checkboxesItems.length - 2]
-    // const lastCheckboxDelete = checkboxesItems[checkboxesItems.length - 1]
-    // const cloneLastCheckbox = lastCheckbox.cloneNode(true)
-    // const clonelastCheckboxDelete = lastCheckboxDelete.cloneNode(true)
+     const lastCheckbox = checkboxesItems[checkboxesItems.length - 2]
+     const lastCheckboxDelete = checkboxesItems[checkboxesItems.length - 1]
+     const cloneLastCheckbox = lastCheckbox.cloneNode(true)
+     const clonelastCheckboxDelete = lastCheckboxDelete.cloneNode(true)
 
-    // cloneLastCheckbox.name = cloneLastCheckbox.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-    // cloneLastCheckbox.id = cloneLastCheckbox.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-    // cloneLastCheckbox.removeAttribute('value')
-    // clonelastCheckboxDelete.name = clonelastCheckboxDelete.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-    // clonelastCheckboxDelete.id = clonelastCheckboxDelete.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+     cloneLastCheckbox.name = cloneLastCheckbox.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+     cloneLastCheckbox.id = cloneLastCheckbox.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+     cloneLastCheckbox.removeAttribute('value')
+     clonelastCheckboxDelete.name = clonelastCheckboxDelete.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+     clonelastCheckboxDelete.id = clonelastCheckboxDelete.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
 
-    // checkboxes.appendChild(cloneLastCheckbox)
-    // checkboxes.appendChild(clonelastCheckboxDelete)
+     checkboxes.appendChild(cloneLastCheckbox)
+     checkboxes.appendChild(clonelastCheckboxDelete)
 
-    // const checkboxName = cloneLastCheckbox.name.split('-')[0]
-    // const inputForDjango = document.querySelector(`input[name=${checkboxName}-TOTAL_FORMS]`)
-    // const inputForDjangoValue = Number(inputForDjango.getAttribute('value'))
-    // inputForDjango.setAttribute('value', inputForDjangoValue + 1)
+     const checkboxName = cloneLastCheckbox.name.split('-')[0]
+     const inputForDjango = document.querySelector(`input[name=${checkboxName}-TOTAL_FORMS]`)
+     const inputForDjangoValue = Number(inputForDjango.getAttribute('value'))
+     inputForDjango.setAttribute('value', inputForDjangoValue + 1)
   })
 }
 

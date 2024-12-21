@@ -126,9 +126,14 @@ class CompanyPositioningForm(forms.ModelForm):
         }
 
 class CompanyEmployeesForm(forms.ModelForm):
+    mask_for_deletion = forms.CharField(
+        required=False,
+        label="Пометка для удаления",
+        widget=forms.HiddenInput,
+    )
     class Meta:
         model = CompanyEmployees
-        fields = ['department', 'employee_count']
+        fields = ['department', 'employee_count', 'mask_for_deletion']
         widgets = {
             'employee_count': forms.NumberInput(attrs={'min' :0,  'step' : 1, 'onkeypress' : only_digit,'class': 'input_to_copy_number'
             }),
@@ -144,9 +149,14 @@ class CompanyEmployeesForm(forms.ModelForm):
         return employee_count
 
 class CompanyAwardsForm(forms.ModelForm):
+    mask_for_deletion = forms.CharField(
+        required=False,
+        label="Пометка для удаления",
+        widget=forms.HiddenInput,
+    )
     class Meta:
         model = CompanyAwards
-        fields = ['award_name', 'award_category', 'award_type']
+        fields = ['award_name', 'award_category', 'award_type', 'mask_for_deletion']
         widgets = {
             'award_category': forms.Select(choices=[
             ('A', 'А'),
@@ -161,9 +171,14 @@ class CompanyAwardsForm(forms.ModelForm):
         }
 
 class CompanyEventForm(forms.ModelForm):
+    mask_for_deletion = forms.CharField(
+        required=False,
+        label="Пометка для удаления",
+        widget=forms.HiddenInput,
+    )
     class Meta:
         model = CompanyEvent
-        fields = ['event_name', 'audience', 'participant_count', 'event_format', 'event_type', 'participation_type']
+        fields = ['event_name', 'audience', 'participant_count', 'event_format', 'event_type', 'participation_type', 'mask_for_deletion']
         widgets = {
             'event_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название мероприятия'}),
             'audience': forms.Select(choices=[('students', 'Студенты'),('prof', 'Проф. Сообщества')],attrs={'class': 'form-control', 'placeholder': 'Аудитория'}),
@@ -174,9 +189,14 @@ class CompanyEventForm(forms.ModelForm):
         }
 
 class CompanyRevenueForm(forms.ModelForm):
+    mask_for_deletion = forms.CharField(
+        required=False,
+        label="Пометка для удаления",
+        widget=forms.HiddenInput,
+    )
     class Meta:
         model = CompanyRevenue
-        fields = ['company_name', 'inn', 'ownership_share', 'buying_share', 'revenue_amount']
+        fields = ['company_name', 'inn', 'ownership_share', 'buying_share', 'revenue_amount', 'mask_for_deletion']
         widgets = {
             'company_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название компании'}),
             'inn': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ИНН','min' :0, 'step' : 1, 'onkeypress' : only_digit,}),

@@ -365,12 +365,12 @@
                             </div>
                             <div class="input-row__item">
                                 <span class="input-row__item-title">Категория премии</span>
-                                <div class="custom-select">{{ form.award_category }}</div>
+                                <div class="custom-select">{{ form.id }}{{ form.award_category }}</div>
                             </div>
                             <div class="input-row__item">
                                 <span class="input-row__item-title">Тип награды</span>
                                 <div class="custom-select">
-                                    {{ form.award_type }}
+                                    {{ form.id }}{{ form.award_type }}
                                 </div>
                             </div>
                             <button class="input-row__btn-delete" type="button">Удалить</button>
@@ -400,7 +400,7 @@
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Аудитория</span>
                                     <div class="custom-select">
-                                        {{ form.audience }}
+                                        {{ form.id }}{{ form.audience }}
                                     </div>
                                 </div>
                                 <div class="input-row__item">
@@ -410,19 +410,19 @@
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Формат проведения</span>
                                     <div class="custom-select">
-                                        {{ form.event_format }}
+                                        {{ form.id }}{{ form.event_format }}
                                     </div>
                                 </div>
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Формат мероприятия</span>
                                     <div class="custom-select">
-                                        {{ form.event_type }}
+                                        {{ form.id }}{{ form.event_type }}
                                     </div>
                                 </div>
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Статус участия</span>
                                     <div class="custom-select">
-                                        {{ form.participation_type }}
+                                        {{ form.id }}{{ form.participation_type }}
                                     </div>
                                 </div>
                                 <button class="input-row__btn-delete" type="button">Удалить</button>

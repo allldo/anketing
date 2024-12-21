@@ -352,17 +352,24 @@ function updateCategoryCounts() {
   };
 
   // const categs
-  document.querySelectorAll(".awards_section").forEach((row) => {
-      const category = row.querySelector(".category-select").value;
-      const type = row.querySelector(".type-select").value;
-      if (type === "shortlist") {
+  document.querySelectorAll(".input-row").forEach((row) => {
+    const categorySelect = row.querySelector(".category-select");
+    const typeSelect = row.querySelector(".type-select");
+        console.log(categorySelect, typeSelect)
+    if (categorySelect && typeSelect) {
+      const category = categorySelect.value;
+      const type = typeSelect.value;
+
+      if (categoryCounts[category]) {
+        if (type === "shortlist") {
           categoryCounts[category].shortlist += 1;
-      } else if (type === "award") {
+        } else if (type === "award") {
           categoryCounts[category].awards += 1;
-      }
-      else if (type === "grandprix"){
+        } else if (type === "grandprix") {
           categoryCounts[category].grandprix += 1;
+        }
       }
+    }
   });
 
   document.getElementById("category-a-awards").innerText =

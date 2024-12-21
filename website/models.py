@@ -221,13 +221,13 @@ class CompanyEvent(models.Model):
     event_format = models.CharField(
         max_length=10,
         choices=EVENT_FORMAT_CHOICES, default='offline',
-        verbose_name="Формат проведения",null=True
+        verbose_name="Формат проведения",null=True,blank=True
     )
     event_type = models.CharField(max_length=255,choices=EVENT_TYPE_CHOICES,default= 'solo', verbose_name="Формат мероприятия",null=True,blank=True)
     participation_type = models.CharField(
         max_length=15,
         choices=PARTICIPATION_TYPE_CHOICES,default='organizer',
-        verbose_name="Тип участия",null=True
+        verbose_name="Тип участия",null=True,blank=True
     )
 
     def __str__(self):

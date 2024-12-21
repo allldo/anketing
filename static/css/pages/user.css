@@ -271,10 +271,22 @@
         }
     }
 
+    .input-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
     .input-row {
         display: flex;
         width: 100%;
         gap: 32px;
+
+        &:not(:first-child) {
+            .input-row__item-title {
+                display: none !important;
+            }
+        }
 
         .input-row__item {
             display: flex;
@@ -282,7 +294,6 @@
             justify-content: end;
             flex: 1;
             gap: 15px;
-
         }
 
         .input-row__item-title {

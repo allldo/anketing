@@ -16,6 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
     chooseFileDocument('choose-doc', 'choose-file-input')
     chooseFileDocument('choose-logo', 'choose-logo-input')
     calculateRevenue()
+
+    addRow('positioning')
+    addRow('revenue')
+    addRow('employees')
+    addRow('awards')
+    addRow('events')
+    addRow('positioning')
+
   }
 
   if (urlPath.includes('moderator')) {
@@ -34,7 +42,7 @@ function chooseImg() {
   const inputImgBtnDelete =  document.querySelector('.register-img__btn--delete')
   const imgText = document.querySelector('.register-img__text-title')
   const img = document.querySelector('.register-img__img')
-  const startImgSrc = img.src
+  const startImgSrc = img?.src
 
   if (inputImgBtn && inputImg) {
     inputImgBtn.addEventListener('click', (e) => {
@@ -49,17 +57,30 @@ function chooseImg() {
         const files = e.target.files
     
         if (files.length) {
+          console.log('files', files);
+
+          if (!startImgSrc.length) {
+            img.style.display="block"
+          }
+
           img.src = URL.createObjectURL(files[0])
+
           imgText.textContent = files[0].name
           inputImgBtnDelete.classList.remove('hidden')
         } else {
           imgText.textContent = ''
           inputImgBtnDelete.classList.add('hidden')
+          img.style.display="none"
         }
       })
     
       inputImgBtnDelete.addEventListener('click', () => {
         img.src = startImgSrc
+
+        if (!startImgSrc.length) {
+          img.style.display="none"
+        }
+
         inputImg.value = ''
         imgText.textContent = ''
         inputImgBtnDelete.classList.add('hidden')
@@ -331,6 +352,8 @@ function updateCategoryCounts() {
       B: { awards: 0, shortlist: 0, grandprix: 0 },
       C: { awards: 0, shortlist: 0, grandprix: 0 },
   };
+
+  // const categs
   console.log("start");
   document.querySelectorAll(".awards_section").forEach((row) => {
       const category = row.querySelector(".category-select").value;
@@ -372,4 +395,82 @@ function updateCategoryCounts() {
   document.getElementById("category-c-grandprix").innerText =
       categoryCounts.C.grandprix;
 
+}
+
+function addRow(id) {
+  const formGroup = document.querySelector(`#${id}`)
+  const inputRows = formGroup.querySelector('.input-rows')
+  const rowList = inputRows.querySelectorAll('.input-row')
+  const btnAdd = formGroup.querySelector('.btn-str')  
+
+  console.log('formGroup', formGroup);
+  console.log('rowList', rowList);
+  console.log('btnAdd', btnAdd);
+  
+  btnAdd.addEventListener('click', () => {
+    const lastRow = rowList[rowList.length - 1]
+    console.log('lastRow', lastRow);
+    const lastRowItems = lastRow.querySelectorAll('.input-row__item')
+    const btnDelete = lastRow.querySelector('.input-row__btn-delete')
+    const cloneBtnDelete = btnDelete.cloneNode(true)
+    
+    const row = document.createElement('div')
+    row.classList.add('input-row')
+
+    for (const item of lastRowItems) {
+      const inputItem = document.createElement('div')
+      inputItem.classList.add('input-row__item')
+
+      const cloneChild = item.children[1].cloneNode(true)
+      console.log('cloneChildcloneChild', cloneChild);
+      if (typeof cloneChild?.children[1]?.selectedIndex === 'number') {
+        console.log('cloneChild.children[0]', cloneChild.children[0]);
+        console.log('cloneChild.children[1]', cloneChild.children[1]);
+        cloneChild.children[0].value = ''
+        cloneChild.children[0].name = cloneChild.children[0].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+        cloneChild.children[0].id = cloneChild.children[0].id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+        cloneChild.children[1].selectedIndex = 0
+        cloneChild.children[1].name = cloneChild.children[1].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+        cloneChild.children[1].id = cloneChild.children[1].id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+      } else {
+        if (cloneChild.getAttribute('type') === 'number') {
+          cloneChild.setAttribute('value', '0')
+        } else {
+          cloneChild.setAttribute('value', '')
+        }
+        console.log('cloneChild', cloneChild);
+        console.log('cloneChild.name', cloneChild.name);
+        cloneChild.name = cloneChild.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+        cloneChild.id = cloneChild.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+      }
+      console.log('cloneChild', cloneChild);
+      inputItem.appendChild(cloneChild)
+      
+      row.append(inputItem)
+    }
+
+    row.append(cloneBtnDelete)
+    console.log('row', row);
+    
+    inputRows.appendChild(row)
+
+    const checkboxes = formGroup.querySelector('.form-group-checkboxes')
+    const checkboxesItems = checkboxes.querySelectorAll('input[type="checkbox"]')
+    const lastCheckbox = checkboxesItems[checkboxesItems.length - 1]
+    const cloneLastCheckobx = lastCheckbox.cloneNode(true)
+
+    console.log('cloneLastCheckobx', cloneLastCheckobx);
+    console.log('cloneLastCheckobx.id', cloneLastCheckobx.id);
+    cloneLastCheckobx.name = cloneLastCheckobx.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+    cloneLastCheckobx.id = cloneLastCheckobx.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+    checkboxes.appendChild(cloneLastCheckobx)
+    console.log('cloneLastCheckobx', cloneLastCheckobx)
+
+    const checkboxName = cloneLastCheckobx.name.split('-')[0]
+    console.log('checkboxName', cloneLastCheckobx.name.split('-')[0]);
+    const inputForDjango = document.querySelector(`input[name=${checkboxName}-TOTAL_FORMS]`)
+    const inputForDjangoValue = Number(inputForDjango.getAttribute('value'))
+    inputForDjango.setAttribute('value', inputForDjangoValue + 1)
+    console.log('inputForDjango', inputForDjango.getAttribute('value'));
+  })
 }

@@ -211,33 +211,37 @@
                     <div class="custom-select">{{ survey_form.specialization }}
                     </div>
                 </div>
-                <div class="form-group position">
+                <div class="form-group position" id="positioning">
                     <label for="{{ positioning_formset.service.id_for_label }}">4. Приоритетное позиционирование компании</label>
-                    {% for form in positioning_formset %}{{ form.DELETE }}{% endfor %}
+                    <div class="form-group-checkboxes hidden">
+                        {% for form in positioning_formset %}{{ form.DELETE }}{% endfor %}
+                    </div>
                     <i>В рамках изучения особенностей позиционирования компаний Наблюдательным советом принято решение дать возможность компаниям
                             указать свое приоритетное позиционирование, а также предоставить возможность подкрепить эту информацию данными о распределении 
                             выручки по видам коммуникационной деятельности. В 2024 году информация собирается справочно и будет использована в рамках дальнейших работ по развитию рейтинга.
                             На позиции компаний в рейтинге этого года предоставленная информация не влияет.
                     </i>
 
-                    {% for form in positioning_formset %}
-                        <div class="input-row">
-                            <div class="input-row__item">
-                                <span class="input-row__item-title">Позиционирование</span>
-
-                                <div class="custom-select">
-                                    {{ form.id }}{{ form.service }}
+                    <div class="input-rows">
+                        {% for form in positioning_formset %}
+                            <div class="input-row">
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Позиционирование</span>
+    
+                                    <div class="custom-select">
+                                        {{ form.id }}{{ form.service }}
+                                    </div>
                                 </div>
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Распределение выручки (%)</span>
+                                    {{ form.revenue_share }}
+                                </div>
+                                <button class="input-row__btn-delete">Удалить</button>
                             </div>
-                            <div class="input-row__item">
-                                <span class="input-row__item-title">Распределение выручки (%)</span>
-                                {{ form.revenue_share }}
-                            </div>
-                            <button class="input-row__btn-delete">Удалить</button>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                     <div class="button-container">
-                        <button class="btn-str" type="button" onclick="add_row_pos_update()">+ Добавить строку</button>
+                        <button class="btn-str" type="button">+ Добавить строку</button>
                     </div>
                 </div>
                 <div class="form-group geography">
@@ -252,9 +256,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group revenue" >
+                <div class="form-group revenue" id="revenue">
                     <label >6. Совокупная выручка от осуществления коммуникационной деятельности Вашей компанией или группой компаний, полученная:</label>
-                    {% for form in revenue_formset %}{{ form.DELETE }}{% endfor %}
+                    <div class="form-group-checkboxes hidden">
+                        {% for form in revenue_formset %}{{ form.DELETE }}{% endfor %}
+                    </div>
                     <i>С 2022 года оператор сверяет выручку компании с данными ФНС России, согласно представленным в анкете ИНН. Для сверки используется сервис https:// bo.nalog.ru/. Перед подачей анкеты вы можете проверить какие именно данные есть у ФНС по вашим юридическим лицам. Если вы не согласны с данными ФНС, либо же часть вашей выручки по той или иной причине не учитывается сервисом (ИП, гранты, НКО и пр.), приложите к анкете документы, подтверждающие предоставляемые вами данные. В случае отсутствия документов приоритетными считаются данные ФНС, либо же проставляется 0 в выручке, если компании нет на https://bo.nalog.ru/ и дополнительные документы не предоставлены.<br>
                         Компании - заявители предоставляют данные о выручке: сведения по строке «Выручка» из Отчёта о финансовых результатах (форма по ОКУД 0710002), предоставленного в ФНС России по итогам 2023 года.<br>
                         Под выручкой понимаются полученные компанией / группой компаний от клиентов средства за вычетом НДС.<br>
@@ -262,62 +268,62 @@
                         Для группы компаний данные о выручке представляются по форме ОКУД 0710002 по итогам 2023 года отдельно для каждого из юридических лиц, а затем суммируются.</i>
 
                     <b class="revenue-price" id="total-revenue"></b>
-                    {% for form in revenue_formset %}
-                    <div class="input-row">
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Компания</span>
-                            {{ form.company_name }}
+                    <div class="input-rows">
+                        {% for form in revenue_formset %}
+                        <div class="input-row">
+                            <div class="input-row__item">
+                                <span class="input-row__item-title">Компания</span>
+                                {{ form.company_name }}
+                            </div>
+                            <div class="input-row__item">
+                                <span class="input-row__item-title">ИНН</span>
+                                {{ form.inn }}
+                            </div>
+                            <div class="input-row__item">
+                                <span class="input-row__item-title">доля владения %</span>
+                                {{ form.ownership_share }}
+                            </div>
+                            <div class="input-row__item">
+                                <span class="input-row__item-title">доля баинга в выручке %</span>
+                                {{ form.buying_share }}
+                            </div>
+                            <div class="input-row__item price">
+                                <span class="input-row__item-title">доля выручки, тыс. руб.*</span>
+                                {{ form.revenue_amount }}
+                            </div>
+                            <button class="input-row__btn-delete">Удалить</button>
                         </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">ИНН</span>
-                            {{ form.inn }}
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">доля владения %</span>
-                            {{ form.ownership_share }}
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">доля баинга в выручке %</span>
-                            {{ form.buying_share }}
-                        </div>
-                        <div class="input-row__item price">
-                            <span class="input-row__item-title">доля выручки, тыс. руб.*</span>
-                            {{ form.revenue_amount }}
-                        </div>
-                        <button class="input-row__btn-delete">Удалить</button>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                     <div class="button-container">
-                        <button class="btn-str" type="button" onclick="addRevenueRow()">+ Добавить строку</button>
+                        <button class="btn-str" type="button">+ Добавить строку</button>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="employees">
                     <label>7. Количество сотрудников компании (группы компаний) на конец года:</label>
-                            {% for form in employees_formset %}{{ form.DELETE }}{% endfor %}
+                    <div class="form-group-checkboxes hidden">
+                        {% for form in employees_formset %}{{ form.DELETE }}{% endfor %}
+                    </div>
                     <i>Под «сотрудником компании» понимается сотрудник, с которым заключён бессрочный либо срочный трудовой договор, и сотрудник включён в штатное расписание компании.
                         При заполнении анкеты компания - заявитель не учитывает исполнителей по договорам ГПХ, индивидуальных предпринимателей, а также физических лиц, применяющих специальный налоговый режим «Налог на профессиональный доход» (самозанятых).
                         Для ГК указывается сумма данных на конец 2023 года для каждого из юр.лиц.</i>
-                    {% for form in employees_formset %}
-                    <div class="input-row">
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Компания</span>
-
-                            <div class="custom-select">
-
-                                {{ form.id }}
-                                {{ form.department  }}
+                        <div class="input-rows">
+                            {% for form in employees_formset %}
+                            <div class="input-row">
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Компания</span>
+                                    {{ form.id }}{{ form.department  }}
+                                </div>
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Количество сотрудников</span>
+                                        {{ form.employee_count  }}
+                                </div>
+                                <button class="input-row__btn-delete">Удалить</button>
                             </div>
-
+                            {% endfor %}
                         </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Количество сотрудников</span>
-                                {{ form.employee_count  }}
-                        </div>
-                        <button class="input-row__btn-delete">Удалить</button>
-                    </div>
-                    {% endfor %}
                     <div class="button-container">
-                        <button class="btn-str" type="button" onclick="add_emp_number_row('non_delete', 'emp_for_copy_text', 'emp_for_copy_number', 'input_to_copy_text', 'input_to_copy_number')">+ Добавить строку</button>
+                        <button class="btn-str" type="button">+ Добавить строку</button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -328,9 +334,11 @@
                     {{ survey_form.company_age }}
                 </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="awards">
                     <label>9. Премии, полученные компанией в течение 2024 года</label>
-                     {% for form in awards_formset %}{{ form.DELETE }}{% endfor %}
+                    <div class="form-group-checkboxes hidden">
+                        {% for form in awards_formset %}{{ form.DELETE }}{% endfor %}
+                    </div>
                     <i>Каждая награда указывается отдельной строкой. Если вы получили 10 'Cannes Lions' за год проведения рейтинга, они должны быть вписаны в 10 строк. Необходимо указывать статус награды (шорт лист/награда/гран при), а не только название номинации (необязательно).<br>
                         Если компания вошла в шорт лист, а потом получила награду в номинации, то учитывается ТОЛЬКО более весомая награда. Если компания подет данные о 3 шорт листах и 5 победах, это значит, что в 3 случаях она была упомянута в шорт листе и награды не получила, а в 5 получила и то, и другое.<br>
 
@@ -344,74 +352,80 @@
                         <b class="categs-item">Категория Б: <span id="category-b-awards">0</span> наград, <span id="category-b-shortlist">0</span> шорт листов , <span id="category-b-grandprix">0</span> гранд приксов</b>
                         <b class="categs-item">Категория В: <span id="category-c-awards">0</span> наград, <span id="category-c-shortlist">0</span> шорт листов , <span id="category-c-grandprix">0</span> гранд приксов</b>
                     </div>
-                    {% for form in awards_formset %}
-                    <div class="input-row">
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Премия</span>
-                            {{ form.id }}{{ form.award_name }}
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Категория премии</span>
-                            <div class="custom-select">{{ form.id }}{{ form.award_category }}</div>
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Тип награды</span>
-                            <div class="custom-select">
-                                {{ form.id }}{{ form.award_type }}
+                    <div class="input-rows">
+                        {% for form in awards_formset %}
+                        <div class="input-row">
+                            <div class="input-row__item">
+                                <span class="input-row__item-title">Премия</span>
+                                {{ form.id }}{{ form.award_name }}
                             </div>
+                            <div class="input-row__item">
+                                <span class="input-row__item-title">Категория премии</span>
+                                <div class="custom-select">{{ form.id }}{{ form.award_category }}</div>
+                            </div>
+                            <div class="input-row__item">
+                                <span class="input-row__item-title">Тип награды</span>
+                                <div class="custom-select">
+                                    {{ form.id }}{{ form.award_type }}
+                                </div>
+                            </div>
+                            <button class="input-row__btn-delete">Удалить</button>
                         </div>
-                        <button class="input-row__btn-delete">Удалить</button>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                     <div class="button-container">
-                        <button class="btn-str" type="button" onclick="add_awards_row()">+ Добавить строку</button>
+                        <button class="btn-str" type="button">+ Добавить строку</button>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="events">
                     <label>10. Количество профессиональных мероприятий, организованных в течение года </label>
-                            {% for form in events_formset %}{{ form.DELETE}}{% endfor %}
+                    <div class="form-group-checkboxes hidden">
+                        {% for form in events_formset %}{{ form.DELETE}}{% endfor %}
+                    </div>
                     <i>В параметре учитываются мероприятия, ориентированные на специалистов по коммуникациям, предполагающие равные возможности
                         доступа для всех желающих участвовать. При этом учитываются обучающие программы в ВУЗах, но не учитываются клиентские
                         обучающие программы и тренинги. Наибольший вес при подсчете имеют крупные отраслевые мероприятия (Дни PR, Baltic Weekend et c.), обучающие программы в ВУЗах учитываются как одно мероприятие при условии, что это комплексные программы. Единичные мастер классы для студентов не учитываются. НЕ УЧИТЫВАЮТСЯ КЛИЕНТСКИЕ МЕРОПРИЯТИЯ.Онлайн, а также студенческие мероприятия учитываются на 1 градацию ниже, чем оффлайн или мероприятия, ориентированные на специалистов. Т.е. курс онлайн лекций для студентов будет учитываться как небольшое мероприятие, даже если участников были "тысячи". </i>
-                {% for form in events_formset %}
-                    <div class="input-row">
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Мероприятие</span>
-                            {{ form.id }}{{ form.event_name }}
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Аудитория</span>
-                            <div class="custom-select">
-                                {{ form.id }} {{ form.audience }}
+                        <div class="input-rows">
+                            {% for form in events_formset %}
+                            <div class="input-row">
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Мероприятие</span>
+                                    {{ form.id }}{{ form.event_name }}
+                                </div>
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Аудитория</span>
+                                    <div class="custom-select">
+                                        {{ form.id }} {{ form.audience }}
+                                    </div>
+                                </div>
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Количество участников</span>
+                                    {{ form.id }} {{ form.participant_count }}
+                                </div>
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Формат проведения</span>
+                                    <div class="custom-select">
+                                        {{ form.id }}{{ form.event_format }}
+                                    </div>
+                                </div>
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Формат мероприятия</span>
+                                    <div class="custom-select">
+                                        {{ form.id }}{{ form.event_type }}
+                                    </div>
+                                </div>
+                                <div class="input-row__item">
+                                    <span class="input-row__item-title">Статус участия</span>
+                                    <div class="custom-select">
+                                        {{ form.id }}{{ form.participation_type }}
+                                    </div>
+                                </div>
+                                <button class="input-row__btn-delete">Удалить</button>
                             </div>
+                            {% endfor %}
                         </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Количество участников</span>
-                            {{ form.id }} {{ form.participant_count }}
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Формат проведения</span>
-                            <div class="custom-select">
-                                {{ form.id }}{{ form.event_format }}
-                            </div>
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Формат мероприятия</span>
-                            <div class="custom-select">
-                                {{ form.id }}{{ form.event_type }}
-                            </div>
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Статус участия</span>
-                            <div class="custom-select">
-                                {{ form.id }}{{ form.participation_type }}
-                            </div>
-                        </div>
-                        <button class="input-row__btn-delete">Удалить</button>
-                    </div>
-                    {% endfor %}
                     <div class="button-container">
-                        <button class="btn-str" type="button" onclick="add_mero_row()">+ Добавить строку</button>
+                        <button class="btn-str" type="button">+ Добавить строку</button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -447,10 +461,6 @@
                         <div class="input-row__item">
                             <span class="input-row__item-title">Госнаграды РФ</span>
                             {{ survey_form.num_government_awards }}
-                        </div>
-                        <div class="input-row__item">
-                            <span class="input-row__item-title">Категория премии</span>
-                            <div class="custom-select">{% for form in awards_formset %}{{ form.id }}{{ form.award_category }} {% endfor %}</div>
                         </div>
                         <div class="input-row__item">
                             <span class="input-row__item-title">Профильные сертификаты РАСО, IABC, АКОС</span>
@@ -510,510 +520,4 @@
         </div>
     </li>
 </ul>
-<script>
-function addRevenueRow(deleteStr) {
-    const container = document.getElementById("revenue-container");
-    const totalFormsInput = document.getElementById("id_revenue-TOTAL_FORMS");
-
-    if (!container) {
-        console.error("Container with ID 'revenue-container' not found.");
-        return;
-    }
-
-console.log("zxc");
-    // Удаление последней строки
-
-console.log("zxc");
-    // Получаем все элементы с id, содержащими 'revenue-'
-    const existingIds = document.querySelectorAll('[id^="id_revenue-"]');
-    let maxIndex = 0;
-
-    // Находим максимальный индекс среди существующих id
-    existingIds.forEach((element) => {
-        const match = element.id.match(/revenue-(\d+)-/); // Ищем числа в id
-        if (match) {
-            const index = parseInt(match[1], 10);
-            maxIndex = Math.max(maxIndex, index);
-        }
-    });
-
-    // Новый индекс будет больше максимального на 1
-    const formIndex = maxIndex + 1;
-
-    // Клонируем строку для ввода данных
-    const firstRow = document.getElementById("revenue_row");
-    if (!firstRow) {
-        console.error("Row with ID 'revenue_row' not found.");
-        return;
-    }
-
-    // Клонируем первую строку
-    const newRow = firstRow.cloneNode(true);
-    console.log(firstRow);
-    console.log(newRow);
-    newRow.style = "";
-    // Очищаем значения в полях и обновляем атрибуты
-    const inputs = newRow.querySelectorAll("input, select, textarea");
-    console.log(inputs, formIndex);
-    inputs.forEach(input => {
-        // Очищаем значения в полях
-        input.value = '';
-        // Обновляем атрибуты name и id с новым индексом
-       const regex = /-\d+-/; // Регулярное выражение
-    input.name = input.name.replace(regex, `-${formIndex}-`);
-    input.id = input.id.replace(regex, `-${formIndex}-`);
-    });
-
-    // Создаем новый скрытый инпут для ID
-    const hiddenInput = document.createElement("input");
-    hiddenInput.type = "hidden";
-    hiddenInput.name = `revenue-${formIndex}-id`;  // Имя для id
-    hiddenInput.id = `id_revenue-${formIndex}-id`;
-    hiddenInput.value = '';  // Очищаем значение
-    container.appendChild(hiddenInput);
-
-
-    // Увеличиваем общее количество форм
-    totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
-    // Добавляем новую строку в контейнер
-    container.appendChild(newRow);
-}
-
-function add_emp_number_row(deleteStr, text_class, number_class, input_text, input_number) {
-    const totalFormsInput = document.getElementById("id_employees-TOTAL_FORMS");
-
-    if (deleteStr === "delete") {
-        const textContainer = document.querySelector("." + text_class);
-        const numberContainer = document.querySelector("." + number_class);
-
-        if (!textContainer || !numberContainer) {
-            console.error("Text or number container not found.");
-            return;
-        }
-
-        // Удаляем последнюю строку из обоих контейнеров
-        if (textContainer.lastElementChild) {
-            textContainer.removeChild(textContainer.lastElementChild);
-        }
-        if (numberContainer.lastElementChild) {
-            numberContainer.removeChild(numberContainer.lastElementChild);
-        }
-
-        // Уменьшаем значение TOTAL_FORMS
-        totalFormsInput.value = Math.max(parseInt(totalFormsInput.value, 10) - 1, 0);
-
-    } else {
-        // Найти максимальный индекс
-        const existingIds = document.querySelectorAll('[id^="id_employees-"]');
-        let maxIndex = 0;
-
-        existingIds.forEach((element) => {
-            const match = element.id.match(/employees-(\d+)-/);
-            if (match) {
-                const index = parseInt(match[1], 10);
-                maxIndex = Math.max(maxIndex, index);
-            }
-        });
-
-        // Новый индекс
-        const formIndex = maxIndex + 1;
-
-        // Контейнеры
-        const textContainer = document.querySelector("." + text_class);
-        const numberContainer = document.querySelector("." + number_class);
-
-        if (!textContainer || !numberContainer) {
-            console.error("Text or number container not found.");
-            return;
-        }
-
-        // Найти элементы для клонирования
-        const textInput = document.querySelector("." + input_text);
-        const numberInput = document.querySelector("." + input_number);
-
-        if (!textInput || !numberInput) {
-            console.error("Input elements not found.");
-            return;
-        }
-
-        // Клонирование
-        const newTextInput = textInput.cloneNode(true);
-        const newNumberInput = numberInput.cloneNode(true);
-
-        // Очистить значения
-        newTextInput.value = "";
-        newNumberInput.value = "";
-
-        // Обновить атрибуты
-        newTextInput.name = `employees-${formIndex}-department`;
-        newTextInput.id = `id_employees-${formIndex}-department`;
-
-        newNumberInput.name = `employees-${formIndex}-employee_count`;
-        newNumberInput.id = `id_employees-${formIndex}-employee_count`;
-
-        // Создать скрытое поле для идентификатора
-        const hiddenInput = document.createElement("input");
-        hiddenInput.type = "hidden";
-        hiddenInput.name = `employees-${formIndex}-id`;
-        hiddenInput.id = `id_employees-${formIndex}-id`;
-        hiddenInput.value = ""; // Новая строка, идентификатор пустой
-
-        // Добавить новые элементы в контейнеры
-        textContainer.appendChild(hiddenInput);
-        textContainer.appendChild(newTextInput);
-        numberContainer.appendChild(newNumberInput);
-
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.name = `employees-${formIndex}-DELETE`;
-        checkbox.id = `id_employees-${formIndex}-DELETE`;
-
-        // Обернем чекбокс в div для структурирования (если требуется)
-        const checkboxWrapper = document.createElement('div');
-        checkboxWrapper.classList.add('checkbox-wrapper');
-        checkboxWrapper.appendChild(checkbox);
-        checkboxWrapper.style = "margin-top: 60px;"
-        document.getElementById('employee_delete_buttons').appendChild(checkboxWrapper)
-
-
-        // Увеличить значение TOTAL_FORMS
-        totalFormsInput.value = parseInt(totalFormsInput.value, 10) + 1;
-    }
-}
-
-function add_awards_row(deleteStr) {
-    const totalFormsInput = document.getElementById("id_awards-TOTAL_FORMS");
-    const container = document.getElementById("awards_wrapper");
-
-    if (!totalFormsInput || !container) {
-        console.error("Контейнер или поле TOTAL_FORMS не найдены.");
-        return;
-    }
-
-    if (deleteStr === "delete") {
-        // Получаем все добавленные элементы (кроме шаблона)
-        const rows = container.querySelectorAll(".awards_section");
-
-        // Удаляем последний элемент, если их больше одного
-        if (rows.length > 1) {
-            container.removeChild(rows[rows.length - 1]);
-
-            // Уменьшаем значение TOTAL_FORMS
-            totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
-        } else {
-            alert("Нельзя удалить последнюю строку!");
-        }
-        return;
-    }
-
-    // Добавление новой строки
-    const template = document.getElementById("award_template");
-    if (!template) {
-        console.error("Шаблон award_template не найден.");
-        return;
-    }
-
-    const existingIds = container.querySelectorAll('[id^="id_awards-"]');
-    let maxIndex = 0;
-
-    // Находим максимальный индекс среди существующих строк
-    existingIds.forEach((element) => {
-        const match = element.id.match(/awards-(\d+)-/);
-        if (match) {
-            const index = parseInt(match[1], 10);
-            maxIndex = Math.max(maxIndex, index);
-        }
-    });
-
-    // Новый индекс для формы
-    const formIndex = maxIndex + 1;
-
-    // Клонируем шаблон
-    const clone = template.cloneNode(true);
-    clone.classList.remove("hidden"); // Убедитесь, что новая строка становится видимой
-    clone.id = ""; // Убираем id у клона, чтобы избежать дублирования
-
-    // Очищаем значения инпутов и селектов
-    const inputs = clone.querySelectorAll("input, select");
-    inputs.forEach((input) => {
-        if (input.tagName === "INPUT") {
-            input.value = ""; // Очищаем текстовые поля
-        } else if (input.tagName === "SELECT") {
-            input.selectedIndex = 0; // Сбрасываем селекты на первый элемент
-        }
-
-        // Обновляем атрибуты name и id
-        if (input.name) {
-            input.name = input.name.replace(/awards-\d+-/, `awards-${formIndex}-`);
-        }
-        if (input.id) {
-            input.id = input.id.replace(/id_awards-\d+-/, `id_awards-${formIndex}-`);
-        }
-    });
-
-    // Создаём скрытое поле для ID
-    const hiddenInput = document.createElement("input");
-    hiddenInput.type = "hidden";
-    hiddenInput.name = `awards-${formIndex}-id`;
-    hiddenInput.id = `id_awards-${formIndex}-id`;
-    hiddenInput.value = ""; // Новая форма, ID пустое
-
-    // Добавляем скрытое поле и клон в контейнер
-    container.appendChild(hiddenInput);
-    container.appendChild(clone);
-
-  const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.name = `awards-${formIndex}-DELETE`; // Имя для чекбокса удаления
-    checkbox.id = `id_awards-${formIndex}-DELETE`; // id для чекбокса удаления
-
-    // Оборачиваем чекбокс в div для структурирования
-    const checkboxWrapper = document.createElement("div");
-    checkboxWrapper.classList.add("checkbox-wrapper"); // Класс обертки для стилей
-    checkboxWrapper.style = "margin-top: 10px;";
-    checkboxWrapper.appendChild(checkbox);
-
-    // Добавляем чекбокс в контейнер
-    const deleteButtonsContainer = document.getElementById("award_delete_buttons");
-    if (deleteButtonsContainer) {
-      //  deleteButtonsContainer.appendChild(checkboxWrapper);
-    } else {
-        console.error("Контейнер для кнопок удаления не найден.");
-    }
-
-
-    // Увеличиваем значение TOTAL_FORMS
-    totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
-}
-
-function add_row_pos_update() {
-    // Получаем все элементы с id, содержащими 'positioning-'
-    const existingIds = document.querySelectorAll('[id^="id_positioning-"]');
-    let maxIndex = 0;
-
-    // Находим максимальный индекс среди существующих id
-    existingIds.forEach((element) => {
-        const match = element.id.match(/positioning-(\d+)-/); // Ищем числа в id
-        if (match) {
-            const index = parseInt(match[1], 10);
-            maxIndex = Math.max(maxIndex, index);
-        }
-    });
-
-    // Новый индекс будет больше максимального на 1
-    const rowCount = maxIndex + 1;
-
-    // Создаем новый div с классом custom-select
-    const customSelectDiv = document.createElement('div');
-    customSelectDiv.classList.add('custom-select');
-
-    // Создаем скрытый input для id
-    const hiddenInputId = document.createElement('input');
-    hiddenInputId.type = 'hidden';
-    hiddenInputId.name = `positioning-${rowCount}-id`;  // Имя для id
-    hiddenInputId.id = `id_positioning-${rowCount}-id`;  // id для скрытого инпута
-    hiddenInputId.value = ''; // Устанавливаем значение id пустым, для новой строки
-    customSelectDiv.appendChild(hiddenInputId);
-
-    // Создаем select
-    const select = document.createElement('select');
-    select.name = `positioning-${rowCount}-service`;  // Имя для select элемента
-    select.id = `id_positioning-${rowCount}-service`;  // id для select элемента
-
-    // Добавляем варианты в select
-    select.innerHTML = `
-        <option value="students" selected>Агентство полного цикла</option>
-        <option value="service">Маркетинговые коммуникации / Маркетинговые услуги</option>
-        <option value="explore">Коммуникационные исследования и аналитика / Исследования и аналитика</option>
-        <option value="commune">Корпоративные и общественные коммуникации, связи с общественностью и органами публичной власти / Связи с общественностью</option>
-        <option value="consult">Политические коммуникации / Политическое консультирование</option>
-        <option value="ads">Рекламные коммуникации / Реклама</option>
-        <option value="event">Событийные коммуникации / Мероприятия / Event</option>
-        <option value="digital">Цифровые коммуникации / Digital</option>
-    `;
-    customSelectDiv.appendChild(select);
-
-    // Добавляем customSelectDiv в контейнер для select
-    document.getElementById('position-selects-container').appendChild(customSelectDiv);
-
-    // Создаем новый input для распределения выручки
-    const input = document.createElement('input');
-    input.classList.add('input');
-    input.type = 'number';
-    input.name = `positioning-${rowCount}-revenue_share`;  // Имя для поля распределения выручки
-    input.id = `id_positioning-${rowCount}-revenue_share`;  // id для input элемента
-    document.getElementById('position-inputs-container').appendChild(input);
-
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.name = `positioning-${rowCount}-DELETE`;  // Имя для чекбокса удаления
-    checkbox.id = `id_positioning-${rowCount}-DELETE`;  // id для чекбокса удаления
-
-    // Обернем чекбокс в div для структурирования (если требуется)
-    const checkboxWrapper = document.createElement('div');
-    checkboxWrapper.classList.add('checkbox-wrapper'); // Класс обертки для стилей
-    checkboxWrapper.style = "margin-top: 60px;"
-    checkboxWrapper.appendChild(checkbox);
-
-
-    // Добавляем чекбокс в контейнер (если есть специальный контейнер, замените id)
-    document.getElementById('position-checkboxes-container').appendChild(checkboxWrapper)
-    // Обновляем TOTAL_FORMS, чтобы отслеживать количество форм
-    const totalFormsInput = document.getElementById('id_positioning-TOTAL_FORMS');
-    totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
-}
-
-function remove_row_update() {
-    const totalFormsInput = document.getElementById('id_positioning-TOTAL_FORMS');
-
-        // Удаляем последний select и input для позиции
-        const selects = document.querySelectorAll('#position-selects-container select');
-        const inputs = document.querySelectorAll('#position-inputs-container input');
-
-        // Удаляем последний select
-        const select = selects[selects.length - 1];
-         // Удаляем input для выручки
-        const existingIds = document.querySelectorAll('[id^="id_positioning-"]');
-        let maxIndex = 0;
-
-        // Находим максимальный индекс среди существующих id
-        existingIds.forEach((element) => {
-            const match = element.id.match(/positioning-(\d+)-/); // Ищем числа в id
-            if (match) {
-                const index = parseInt(match[1], 10);
-                maxIndex = Math.max(maxIndex, index);
-            }
-        });
-    const hiddenInputs = document.querySelectorAll('[id^="id_positioning-"]');
-    console.log(hiddenInputs);
-    const lastHiddenInput = hiddenInputs[hiddenInputs.length - 1];
-    if (lastHiddenInput) {
-    const hiddenInputs = document.getElementById(`id_positioning-${maxIndex}-id`);
-    console.log(maxIndex, hiddenInputs, `id_positioning-${maxIndex}-id`)
-        const rowId = 0 // Получаем id из value скрытого инпута
-
-        // Удаляем скрытый input для id
-        lastHiddenInput.remove();
-
-        // Отправляем запрос на сервер для удаления данных из базы, если это необходимо
-          const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
-            fetch('/delete-revenue/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({ id: rowId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Данные успешно удалены из базы данных');
-                } else {
-                    console.error('Ошибка при удалении данных', data);
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-            });
-    }
-        const hiddenInputId = document.getElementById(`id_positioning-${maxIndex}-id`);
-        if (hiddenInputId) {
-            hiddenInputId.remove();  // Удаляем скрытый input для id
-        }
-    if (select) {
-        //console.log(select.parentElement.nextElementSibling);
-        select.classList.add('hidden');
-        select.parentElement.remove();
-        //select.remove();
-    }  // Удаляем весь div, содержащий select
-
-        // Удаляем последний input для распределения выручки
-        const input = inputs[inputs.length - 1];
-        input.remove();
-        // Обновляем значение TOTAL_FORMS
-        totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
-
-}
-
-function add_mero_row(deleteStr) {
-    const totalFormsInput = document.getElementById("id_events-TOTAL_FORMS");
-    const container = document.getElementById("mero_wrapper");
-
-    if (!totalFormsInput || !container) {
-        console.error("Контейнер или поле TOTAL_FORMS не найдены.");
-        return;
-    }
-
-    if (deleteStr === "delete") {
-        // Получаем все добавленные элементы (кроме шаблона)
-        const rows = container.querySelectorAll(".revenue_inputs");
-        container.removeChild(rows[rows.length - 1]);
-        totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
-        return;
-    }
-
-    // Добавление новой строки
-    const template = document.getElementById("mero_template");
-    if (!template) {
-        console.error("Шаблон mero_template не найден.");
-        return;
-    }
-
-    const existingIds = container.querySelectorAll('[id^="id_events-"]');
-    let maxIndex = 0;
-
-    // Находим максимальный индекс среди существующих строк
-    existingIds.forEach((element) => {
-        const match = element.id.match(/events-(\d+)-/);
-        if (match) {
-            const index = parseInt(match[1], 10);
-            maxIndex = Math.max(maxIndex, index);
-        }
-    });
-    // Новый индекс для формы
-    const formIndex = maxIndex + 1;
-
-    // Клонируем шаблон
-    const clone = template.cloneNode(true);
-    clone.classList.remove("hidden"); // Убедитесь, что новая строка становится видимой
-    clone.id = ""; // Убираем id у клона, чтобы избежать дублирования
-
-    // Очищаем значения инпутов и селектов
-    const inputs = clone.querySelectorAll("input, select");
-    inputs.forEach((input) => {
-        if (input.tagName === "INPUT") {
-            input.value = ""; // Очищаем текстовые поля
-        } else if (input.tagName === "SELECT") {
-            input.selectedIndex = 0; // Сбрасываем селекты на первый элемент
-        }
-
-        // Обновляем атрибуты name и id
-        if (input.name) {
-            input.name = input.name.replace(/events-\d+-/, `events-${formIndex}-`);
-        }
-        if (input.id) {
-            input.id = input.id.replace(/id_events-\d+-/, `id_events-${formIndex}-`);
-        }
-    });
-
-    // Создаём скрытое поле для ID
-    const hiddenInput = document.createElement("input");
-    hiddenInput.type = "hidden";
-    hiddenInput.name = `events-${formIndex}-id`;
-    hiddenInput.id = `id_events-${formIndex}-id`;
-    hiddenInput.value = ""; // Новая форма, ID пустое
-
-    // Добавляем скрытое поле и клон в контейнер
-    container.appendChild(hiddenInput);
-    container.appendChild(clone);
-
-    // Увеличиваем значение TOTAL_FORMS
-    totalFormsInput.value = parseInt(totalFormsInput.value) + 1;
-}
-
-</script>
 {% endblock %}

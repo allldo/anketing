@@ -215,6 +215,7 @@
                     <label for="{{ positioning_formset.service.id_for_label }}">4. Приоритетное позиционирование компании</label>
                     <div class="form-group-checkboxes">
                         {% for form in positioning_formset %}
+                        {{ form.id }}
                         {{ form.mask_for_deletion }}
                         {% endfor %}
                     </div>

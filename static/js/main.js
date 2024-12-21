@@ -24,6 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
     addRow('events')
 
     deleteRow('positioning')
+    deleteRow('revenue')
+    deleteRow('employees')
+    deleteRow('awards')
+    deleteRow('events')
   }
 
   if (urlPath.includes('moderator')) {
@@ -398,12 +402,15 @@ function updateCategoryCounts() {
 
 function addRow(id) {
   const formGroup = document.querySelector(`#${id}`)
-  const inputRows = formGroup.querySelector('.input-rows')
-  const rowList = inputRows.querySelectorAll('.input-row')
+
   const btnAdd = formGroup.querySelector('.btn-str')  
 
   
   btnAdd.addEventListener('click', () => {
+    const formGroup = document.querySelector(`#${id}`)
+    const inputRows = formGroup.querySelector('.input-rows')
+    const rowList = inputRows.querySelectorAll('.input-row')
+
     const lastRow = rowList[rowList.length - 1]
     const lastRowItems = lastRow.querySelectorAll('.input-row__item')
     const btnDelete = lastRow.querySelector('.input-row__btn-delete')
@@ -415,47 +422,56 @@ function addRow(id) {
     for (const item of lastRowItems) {
       const inputItem = document.createElement('div')
       inputItem.classList.add('input-row__item')
-
-      const cloneChild = item.children[1].cloneNode(true)
+      console.log('children', item.children);
+      const cloneChild = item
       console.log('cloneChild', cloneChild);
-      if (typeof cloneChild?.children[1]?.selectedIndex === 'number') {
-        cloneChild.children[0].value = ''
-        cloneChild.children[0].name = cloneChild.children[0].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-        cloneChild.children[0].id = cloneChild.children[0].id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-        cloneChild.children[1].selectedIndex = 0
-        cloneChild.children[1].name = cloneChild.children[1].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-        cloneChild.children[1].id = cloneChild.children[1].id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-      } else {
-        if (cloneChild.getAttribute('type') === 'number') {
-          cloneChild.setAttribute('value', '0')
-        } else {
-          cloneChild.setAttribute('value', '')
-        }
-        cloneChild.name = cloneChild.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-        cloneChild.id = cloneChild.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-      }
 
-      inputItem.appendChild(cloneChild)     
-      row.append(inputItem)
+      // if (typeof cloneChild.children[1]?.selectedIndex === 'number') {
+      //   cloneChild.children[0].removeAttribute('value')
+      //   cloneChild.children[0].name = cloneChild.children[0].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+      //   cloneChild.children[0].id = cloneChild.children[0].id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+      //   cloneChild.children[1].selectedIndex = 0
+      //   cloneChild.children[1].name = cloneChild.children[1].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+      //   cloneChild.children[1].id = cloneChild.children[1].id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+      // } else {
+      //   if (cloneChild.getAttribute('type') === 'number') {
+      //     cloneChild.setAttribute('value', '0')
+      //   } else {
+      //     cloneChild.setAttribute('value', '')
+      //   }
+      //   cloneChild.name = cloneChild.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+      //   cloneChild.id = cloneChild.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+      // }
+
+      // inputItem.appendChild(cloneChild)     
+      // row.append(inputItem)
     }
 
-    row.append(cloneBtnDelete)
+    // row.append(cloneBtnDelete)
     
-    inputRows.appendChild(row)
+    // inputRows.appendChild(row)
 
-    const checkboxes = formGroup.querySelector('.form-group-checkboxes')
-    const checkboxesItems = checkboxes.querySelectorAll('input[type="checkbox"]')
-    const lastCheckbox = checkboxesItems[checkboxesItems.length - 1]
-    const cloneLastCheckobx = lastCheckbox.cloneNode(true)
+    // const checkboxes = formGroup.querySelector('.form-group-checkboxes')
+    // const checkboxesItems = checkboxes.querySelectorAll('input[type="hidden"]')
 
-    cloneLastCheckobx.name = cloneLastCheckobx.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-    cloneLastCheckobx.id = cloneLastCheckobx.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
-    checkboxes.appendChild(cloneLastCheckobx)
+    // const lastCheckbox = checkboxesItems[checkboxesItems.length - 2]
+    // const lastCheckboxDelete = checkboxesItems[checkboxesItems.length - 1]
+    // const cloneLastCheckbox = lastCheckbox.cloneNode(true)
+    // const clonelastCheckboxDelete = lastCheckboxDelete.cloneNode(true)
 
-    const checkboxName = cloneLastCheckobx.name.split('-')[0]
-    const inputForDjango = document.querySelector(`input[name=${checkboxName}-TOTAL_FORMS]`)
-    const inputForDjangoValue = Number(inputForDjango.getAttribute('value'))
-    inputForDjango.setAttribute('value', inputForDjangoValue + 1)
+    // cloneLastCheckbox.name = cloneLastCheckbox.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+    // cloneLastCheckbox.id = cloneLastCheckbox.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+    // cloneLastCheckbox.removeAttribute('value')
+    // clonelastCheckboxDelete.name = clonelastCheckboxDelete.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+    // clonelastCheckboxDelete.id = clonelastCheckboxDelete.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
+
+    // checkboxes.appendChild(cloneLastCheckbox)
+    // checkboxes.appendChild(clonelastCheckboxDelete)
+
+    // const checkboxName = cloneLastCheckbox.name.split('-')[0]
+    // const inputForDjango = document.querySelector(`input[name=${checkboxName}-TOTAL_FORMS]`)
+    // const inputForDjangoValue = Number(inputForDjango.getAttribute('value'))
+    // inputForDjango.setAttribute('value', inputForDjangoValue + 1)
   })
 }
 
@@ -466,15 +482,12 @@ function deleteRow(id) {
 
   const inputsList = formGroup.querySelector('.form-group-checkboxes')
   const inputListItems = inputsList.querySelectorAll('input[type="hidden"]')
-  console.log('inputsList', inputsList);
-  console.log('inputListItems', inputListItems);
 
   for (const row of rowList) {
     const btnDelete = row.querySelector('.input-row__btn-delete')
 
     btnDelete.addEventListener('click', () => {
       const parent = btnDelete.parentElement
-      console.log('parent', parent);
 
       if (inputRows.childElementCount < 2) {
         console.log('many');
@@ -482,16 +495,15 @@ function deleteRow(id) {
       }
 
       const index = Array.from(inputRows.children).indexOf(parent)
-      console.log('index', index);
       inputRows.removeChild(parent)
 
       console.log('inputListItemsinputListItems', inputListItems);
       for (const input of inputListItems) {
-        const inputId = Number(input.getAttribute('name').match(/-(\d+)-/)[1])
-        console.log('inputId', inputId);
-        if (inputId === index) {
-          console.log('del');
-          input.value = 'DELETE'
+        if (input.name.includes('mask_for_deletion')) {
+          const inputId = Number(input.getAttribute('name').match(/-(\d+)-/)[1])
+          if (inputId === index) {
+            input.value = 'DELETE'
+          }
         }
       }
       

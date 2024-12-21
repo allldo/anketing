@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addRow('events')
     addRow('positioning')
 
+    deleteRow('positioning')
   }
 
   if (urlPath.includes('moderator')) {
@@ -57,7 +58,6 @@ function chooseImg() {
         const files = e.target.files
     
         if (files.length) {
-          console.log('files', files);
 
           if (!startImgSrc.length) {
             img.style.display="block"
@@ -288,7 +288,6 @@ function toggleForms() {
 }
 
 function toggleFormsModerator() {
-  console.log('toggle');
   const list =  document.querySelectorAll('.subaccordeon-body.profile')
   const headers = document.querySelectorAll('.subaccordeon-header__company')
 
@@ -354,15 +353,10 @@ function updateCategoryCounts() {
   };
 
   // const categs
-  console.log("start");
   document.querySelectorAll(".awards_section").forEach((row) => {
       const category = row.querySelector(".category-select").value;
       const type = row.querySelector(".type-select").value;
-      console.log("gogo");
-      console.log(category);
-      console.log(type);
       if (type === "shortlist") {
-      console.log(categoryCounts[category].shortlist);
           categoryCounts[category].shortlist += 1;
       } else if (type === "award") {
           categoryCounts[category].awards += 1;
@@ -403,13 +397,9 @@ function addRow(id) {
   const rowList = inputRows.querySelectorAll('.input-row')
   const btnAdd = formGroup.querySelector('.btn-str')  
 
-  console.log('formGroup', formGroup);
-  console.log('rowList', rowList);
-  console.log('btnAdd', btnAdd);
   
   btnAdd.addEventListener('click', () => {
     const lastRow = rowList[rowList.length - 1]
-    console.log('lastRow', lastRow);
     const lastRowItems = lastRow.querySelectorAll('.input-row__item')
     const btnDelete = lastRow.querySelector('.input-row__btn-delete')
     const cloneBtnDelete = btnDelete.cloneNode(true)
@@ -418,14 +408,12 @@ function addRow(id) {
     row.classList.add('input-row')
 
     for (const item of lastRowItems) {
+      console.log('children', item.children);
       const inputItem = document.createElement('div')
       inputItem.classList.add('input-row__item')
 
       const cloneChild = item.children[1].cloneNode(true)
-      console.log('cloneChildcloneChild', cloneChild);
       if (typeof cloneChild?.children[1]?.selectedIndex === 'number') {
-        console.log('cloneChild.children[0]', cloneChild.children[0]);
-        console.log('cloneChild.children[1]', cloneChild.children[1]);
         cloneChild.children[0].value = ''
         cloneChild.children[0].name = cloneChild.children[0].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
         cloneChild.children[0].id = cloneChild.children[0].id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
@@ -438,19 +426,15 @@ function addRow(id) {
         } else {
           cloneChild.setAttribute('value', '')
         }
-        console.log('cloneChild', cloneChild);
-        console.log('cloneChild.name', cloneChild.name);
         cloneChild.name = cloneChild.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
         cloneChild.id = cloneChild.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
       }
-      console.log('cloneChild', cloneChild);
       inputItem.appendChild(cloneChild)
       
       row.append(inputItem)
     }
 
     row.append(cloneBtnDelete)
-    console.log('row', row);
     
     inputRows.appendChild(row)
 
@@ -459,18 +443,28 @@ function addRow(id) {
     const lastCheckbox = checkboxesItems[checkboxesItems.length - 1]
     const cloneLastCheckobx = lastCheckbox.cloneNode(true)
 
-    console.log('cloneLastCheckobx', cloneLastCheckobx);
-    console.log('cloneLastCheckobx.id', cloneLastCheckobx.id);
     cloneLastCheckobx.name = cloneLastCheckobx.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
     cloneLastCheckobx.id = cloneLastCheckobx.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
     checkboxes.appendChild(cloneLastCheckobx)
-    console.log('cloneLastCheckobx', cloneLastCheckobx)
 
     const checkboxName = cloneLastCheckobx.name.split('-')[0]
-    console.log('checkboxName', cloneLastCheckobx.name.split('-')[0]);
     const inputForDjango = document.querySelector(`input[name=${checkboxName}-TOTAL_FORMS]`)
     const inputForDjangoValue = Number(inputForDjango.getAttribute('value'))
     inputForDjango.setAttribute('value', inputForDjangoValue + 1)
-    console.log('inputForDjango', inputForDjango.getAttribute('value'));
   })
+}
+
+function deleteRow(id) {
+  const formGroup = document.querySelector(`#${id}`)
+  const inputRows = formGroup.querySelector('.input-rows')
+  const rowList = inputRows.querySelectorAll('.input-row')
+
+  for (const row of rowList) {
+    const btnDelete = row.querySelector('.input-row__btn-delete')
+
+    btnDelete.addEventListener('click', () => {
+      console.log('click');
+    })
+  }
+
 }

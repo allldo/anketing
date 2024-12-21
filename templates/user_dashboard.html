@@ -273,7 +273,6 @@
                     <b class="revenue-price" id="total-revenue"></b>
                     <div class="input-rows">
                         {% for form in revenue_formset %}
-                        {{ form.id }}
                         <div class="input-row">
                             <div class="input-row__item">
                                 <span class="input-row__item-title">Компания</span>
@@ -314,7 +313,6 @@
                         Для ГК указывается сумма данных на конец 2023 года для каждого из юр.лиц.</i>
                         <div class="input-rows">
                             {% for form in employees_formset %}
-                            {{ form.id }}
                             <div class="input-row">
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Компания</span>
@@ -360,7 +358,6 @@
                     </div>
                     <div class="input-rows">
                         {% for form in awards_formset %}
-                        {{ form.id }}
                         <div class="input-row">
                             <div class="input-row__item">
                                 <span class="input-row__item-title">Премия</span>
@@ -394,7 +391,6 @@
                         обучающие программы и тренинги. Наибольший вес при подсчете имеют крупные отраслевые мероприятия (Дни PR, Baltic Weekend et c.), обучающие программы в ВУЗах учитываются как одно мероприятие при условии, что это комплексные программы. Единичные мастер классы для студентов не учитываются. НЕ УЧИТЫВАЮТСЯ КЛИЕНТСКИЕ МЕРОПРИЯТИЯ.Онлайн, а также студенческие мероприятия учитываются на 1 градацию ниже, чем оффлайн или мероприятия, ориентированные на специалистов. Т.е. курс онлайн лекций для студентов будет учитываться как небольшое мероприятие, даже если участников были "тысячи". </i>
                         <div class="input-rows">
                             {% for form in events_formset %}
-                            {{ form.id }}
                             <div class="input-row">
                                 <div class="input-row__item">
                                     <span class="input-row__item-title">Мероприятие</span>
@@ -474,7 +470,6 @@
                             <span class="input-row__item-title">Профильные сертификаты РАСО, IABC, АКОС</span>
                             {{ survey_form.num_certificates }}
                         </div>
-                        <button class="input-row__btn-delete" type="button">Удалить</button>
                     </div>
                 </div>
                 <div class="form-group files">

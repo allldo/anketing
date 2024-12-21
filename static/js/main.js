@@ -333,13 +333,12 @@ function toggleFormsModerator() {
 }
 
 function calculateRevenue() {
-  const revenue = document.querySelector(".form-group.revenue")
-  const revenueInputs = revenue.querySelectorAll(".input-row__item.price");
-  let totalRevenue = 0;
-
-  revenueInputs.forEach((input) => {
-      const value = parseFloat(input.value) || 0;
-      totalRevenue += value;
+    let totalRevenue = 0;
+    const revenue_inputs = document.querySelectorAll(".revenue-input")
+    revenue_inputs.forEach((input) => {
+    const value = parseFloat(input.value) || 0;
+    console.log(input.value)
+    totalRevenue += value;
   });
   revenue.querySelector("#total-revenue").innerText =
       new Intl.NumberFormat("ru-RU").format(totalRevenue * 1000) + " руб.";

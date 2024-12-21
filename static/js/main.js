@@ -464,9 +464,10 @@ function deleteRow(id) {
   const inputRows = formGroup.querySelector('.input-rows')
   const rowList = inputRows.querySelectorAll('.input-row')
 
-  const checkboxList = formGroup.querySelector('.form-group-checkboxes')
-  const checkboxListItems = checkboxList.querySelectorAll('input[type="checkbox"]')
-  console.log('checkboxList', checkboxList);
+  const inputsList = formGroup.querySelector('.form-group-checkboxes')
+  const inputListItems = inputsList.querySelectorAll('input[type="hidden"]')
+  console.log('inputsList', inputsList);
+  console.log('inputListItems', inputListItems);
 
   for (const row of rowList) {
     const btnDelete = row.querySelector('.input-row__btn-delete')
@@ -476,25 +477,21 @@ function deleteRow(id) {
       console.log('parent', parent);
 
       if (inputRows.childElementCount < 2) {
+        console.log('many');
         return
       }
 
       const index = Array.from(inputRows.children).indexOf(parent)
-      console.log('inputRows.children', inputRows.children);
       console.log('index', index);
       inputRows.removeChild(parent)
 
-      for (const checkbox of checkboxListItems) {
-        console.log('checkbox', checkbox);
-        const checkboxId = Number(checkbox.getAttribute('name').match(/-(\d+)-/)[1])
-        console.log('checkboxId', checkboxId);
-        if (checkboxId === index) {
-          // checkbox.addEventListener('click', () => {
-          //   console.log('checkbox.value', checkbox.value);
-          // })
-          // checkbox.value = 'on'
-          // checkbox.setAttribute('checked', true)
-          checkbox.click()
+      console.log('inputListItemsinputListItems', inputListItems);
+      for (const input of inputListItems) {
+        const inputId = Number(input.getAttribute('name').match(/-(\d+)-/)[1])
+        console.log('inputId', inputId);
+        if (inputId === index) {
+          console.log('del');
+          input.value = 'DELETE'
         }
       }
       

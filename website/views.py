@@ -618,7 +618,7 @@ def user_dashboard(request):
                             instance.survey = survey
                             instance.save()
                         for form in formset:
-                            if form.cleaned_data.get('delete_marker') == "DELETE":
+                            if form.cleaned_data.get('mask_for_deletion') == "DELETE":
                                 form.instance.delete()
                     else:
                         print(f"Errors in {formset.prefix} formset: {formset.errors}")

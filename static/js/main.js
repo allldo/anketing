@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     addRow('employees')
     addRow('awards')
     addRow('events')
-    addRow('positioning')
 
     deleteRow('positioning')
   }
@@ -409,16 +408,16 @@ function addRow(id) {
     const lastRowItems = lastRow.querySelectorAll('.input-row__item')
     const btnDelete = lastRow.querySelector('.input-row__btn-delete')
     const cloneBtnDelete = btnDelete.cloneNode(true)
-    
+
     const row = document.createElement('div')
     row.classList.add('input-row')
 
     for (const item of lastRowItems) {
-      console.log('children', item.children);
       const inputItem = document.createElement('div')
       inputItem.classList.add('input-row__item')
 
       const cloneChild = item.children[1].cloneNode(true)
+      console.log('cloneChild', cloneChild);
       if (typeof cloneChild?.children[1]?.selectedIndex === 'number') {
         cloneChild.children[0].value = ''
         cloneChild.children[0].name = cloneChild.children[0].name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
@@ -435,8 +434,8 @@ function addRow(id) {
         cloneChild.name = cloneChild.name.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
         cloneChild.id = cloneChild.id.replace(/-(\d+)-/, (_, num) => `-${+num + 1}-`)
       }
-      inputItem.appendChild(cloneChild)
-      
+
+      inputItem.appendChild(cloneChild)     
       row.append(inputItem)
     }
 
@@ -465,11 +464,40 @@ function deleteRow(id) {
   const inputRows = formGroup.querySelector('.input-rows')
   const rowList = inputRows.querySelectorAll('.input-row')
 
+  const checkboxList = formGroup.querySelector('.form-group-checkboxes')
+  const checkboxListItems = checkboxList.querySelectorAll('input[type="checkbox"]')
+  console.log('checkboxList', checkboxList);
+
   for (const row of rowList) {
     const btnDelete = row.querySelector('.input-row__btn-delete')
 
     btnDelete.addEventListener('click', () => {
-      console.log('click');
+      const parent = btnDelete.parentElement
+      console.log('parent', parent);
+
+      if (inputRows.childElementCount < 2) {
+        return
+      }
+
+      const index = Array.from(inputRows.children).indexOf(parent)
+      console.log('inputRows.children', inputRows.children);
+      console.log('index', index);
+      inputRows.removeChild(parent)
+
+      for (const checkbox of checkboxListItems) {
+        console.log('checkbox', checkbox);
+        const checkboxId = Number(checkbox.getAttribute('name').match(/-(\d+)-/)[1])
+        console.log('checkboxId', checkboxId);
+        if (checkboxId === index) {
+          // checkbox.addEventListener('click', () => {
+          //   console.log('checkbox.value', checkbox.value);
+          // })
+          // checkbox.value = 'on'
+          // checkbox.setAttribute('checked', true)
+          checkbox.click()
+        }
+      }
+      
     })
   }
 
